@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "471499484372",
+    "firebase_url": "https://friendly-places-3ea3c.firebaseio.com",
+    "project_id": "friendly-places-3ea3c",
+    "storage_bucket": "friendly-places-3ea3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471499484372:android:9ad62448cdc6ef24",
+        "android_client_info": {
+          "package_name": "com.friendlyplaces.friendlyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471499484372-a6fflu17n1met0j99aq72aiqm6habva0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.friendlyplaces.friendlyapp",
+            "certificate_hash": "bd5a5ed289fe2a55aa17437219e98b48cfb06998"
+          }
+        },
+        {
+          "client_id": "471499484372-n88eo1qqadb7a6brv78t7bo8j2uo3dt0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk7cs5dAxcGteKeYfhsxNDz6Z2LKT6-YA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471499484372-n88eo1qqadb7a6brv78t7bo8j2uo3dt0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

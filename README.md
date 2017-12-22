@@ -1,0 +1,1 @@
+# FriendlyPlaces2
