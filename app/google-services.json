@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "471499484372-salms6j9vd92h1psg94as3ummus6b504.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.friendlyplaces.friendlyapp",
+            "certificate_hash": "839d0c9532a44941f1e3ffaa5a58b64dd4db50ba"
+          }
+        },
+        {
           "client_id": "471499484372-a6fflu17n1met0j99aq72aiqm6habva0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
