@@ -16,5 +16,6 @@
         android:layout_marginStart="10dp"
         android:text="Usuario"
         android:textColor="#fff"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:id="@+id/user_email_drawer_textview"/>
 </FrameLayout>
