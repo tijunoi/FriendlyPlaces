@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity{
                                 break;
                             case R.id.op_logoff:
                                 FirebaseAuth.getInstance().signOut();
+                                finish();
                                 //aqui s'haurà de cambiar aixo i ficar un popup que
                                 //et digui "Quieres cerrar sesión?" SI/NO o algo aixi
                                 Log.i("NavigationView", "Pulsado cerrar sesión");
