@@ -19,6 +19,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.firebase.ui.auth.AuthUI;
+import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -130,9 +131,12 @@ public class MainActivity extends AppCompatActivity{
                     //signed in
                     emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                 } else {
+                    Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
+                    startActivity(intent);
+                    finish();
                     //not logged in
 
-                    //Llista de providers pel login
+                    /*//Llista de providers pel login
                     List<AuthUI.IdpConfig> providers = Arrays.asList(
                             new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                             new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
@@ -144,7 +148,7 @@ public class MainActivity extends AppCompatActivity{
                                     .setAvailableProviders(providers)
                                     .build(),
                             RC_SIGN_IN
-                    );
+                    );*/
                 }
             }
         };
