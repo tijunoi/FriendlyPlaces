@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,50 +19,52 @@
             android:text="FRIENDLY PLACES"
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Username"
-            android:textSize="16sp" />
-
         <EditText
             android:id="@+id/et_register_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/editext_login_border"
-            android:padding="10dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="24dp"
-            android:text="Email"
-            android:textSize="16sp" />
+            android:alpha="0.45"
+            android:background="@drawable/editext_login_border"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Username" />
+
 
         <EditText
             android:id="@+id/et_register_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/editext_login_border"
-            android:padding="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginTop="24dp"
-            android:text="Contraseña"
-            android:textSize="16sp" />
+            android:alpha="0.45"
+            android:background="@drawable/editext_login_border"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Email" />
 
-        <EditText
-            android:id="@+id/et_register_password"
-            android:inputType="textPassword"
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/editext_login_border"
-            android:padding="10dp" />
+            android:layout_marginTop="10dp"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/et_register_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="8dp"
+                android:alpha="0.45"
+                android:background="@drawable/editext_login_border"
+                android:gravity="center"
+                android:hint="Contraseña"
+                android:padding="10dp" />
+
+        </android.support.design.widget.TextInputLayout>
 
 
         <!--<android.support.v4.widget.Space
@@ -69,23 +72,28 @@
             android:layout_height="0dp"
             android:layout_weight="1" />-->
 
-            <Button
-                android:id="@+id/bt_register_crear_cuenta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#7C4DFF"
-                android:text="CREAR CUENTA"
-                android:textColor="#ffff" />
+        <Button
+            android:id="@+id/bt_register_crear_cuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#7C4DFF"
+            android:text="CREAR CUENTA"
+            android:layout_marginHorizontal="50dp"
+            android:textColor="#ffff"/>
 
 
-            <Button
-                android:id="@+id/bt_register_login_google"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#7C4DFF"
-                android:drawableStart="@drawable/ic_search"
-                android:text="LOGIN CON GOOGLE"
-                android:textColor="#ffff" />
+        <Button
+            android:id="@+id/bt_register_login_google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#7C4DFF"
+            android:layout_marginHorizontal="50dp"
+            android:drawableStart="@drawable/ic_search"
+            android:text="LOGIN CON GOOGLE"
+            android:textColor="#ffff" />
 
     </LinearLayout>
 

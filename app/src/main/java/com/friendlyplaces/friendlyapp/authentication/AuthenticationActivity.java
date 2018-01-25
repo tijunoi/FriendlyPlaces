@@ -23,6 +23,9 @@ import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.MainActivity;
 import com.friendlyplaces.friendlyapp.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -46,9 +49,17 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getResources().getString(R.string.web_google_id_client))
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 

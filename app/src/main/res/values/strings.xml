@@ -2,6 +2,7 @@
     <string name="app_name">Friendly Places</string>
     <string name="title_activity_login">Sign in</string>
 
+    <string name="web_google_id_client">471499484372-n88eo1qqadb7a6brv78t7bo8j2uo3dt0.apps.googleusercontent.com</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
