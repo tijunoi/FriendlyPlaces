@@ -5,88 +5,94 @@
     android:orientation="vertical"
     tools:context="com.friendlyplaces.friendlyapp.authentication.LoginFragment">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:text="FRIENDLY PLACES"
-            android:textSize="20sp" />
-
-        <TextView
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Email"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/et_login_email"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Email"
-            android:background="@drawable/editext_login_border"
-            android:padding="10dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/roboto_thin"
-            android:text="Contraseña"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="70dp"
+                android:text="FRIENDLY PLACES"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/et_login_password"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="Contraseña"
-            android:background="@drawable/editext_login_border"
-            android:padding="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Has olvidado la contraseña?" />
+            <EditText
+                android:id="@+id/et_login_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="70dp"
+                android:alpha="0.5"
+                android:background="@drawable/editext_login_border_cuadrat"
+                android:gravity="center_horizontal"
+                android:hint="Dirección de correo electrónico"
+                android:padding="10dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:alpha="0.5"
+                android:background="@drawable/editext_login_border_cuadrat"
+                android:gravity="center_horizontal"
+                android:hint="Constraseña"
+                android:inputType="textPassword"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:text="Has olvidado la contraseña?" />
 
             <Button
                 android:id="@+id/bt_login_iniciar_sesion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#7C4DFF"
-                android:text="INICIA SESIÓN"
-                android:textColor="#ffff" />
-
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginTop="40dp"
+                android:background="#7C4DFF"
+                android:outlineProvider="bounds"
+                android:paddingHorizontal="8dp"
+                android:text="INICIAR SESIÓN"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/bt_login_login_google"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginTop="8dp"
+                android:background="#fff"
+                android:drawableStart="@drawable/common_google_signin_btn_icon_dark_normal"
+                android:paddingHorizontal="8dp"
+                android:text="Sign in with google"
+                android:textColor="#000" />
+
+
+            <!--<TextView
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#7C4DFF"
-                android:drawableStart="@drawable/ic_search"
-                android:text="LOGIN CON GOOGLE"
-                android:textColor="#ffff" />
-        </LinearLayout>
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/roboto_thin"
+                android:text="Contraseña"
+                android:textSize="16sp" />-->
 
-    </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

@@ -26,8 +26,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     //private static final String ARG_PARAM1 = "param1";
     //private static final String ARG_PARAM2 = "param2";
 
-    private EditText et_email;
-    private EditText et_password;
+    private EditText et_email, et_password;
+    private Button login_button, loginWithGoogleButton;
+
     // TODO: Rename and change types of parameters
     // private String mParam1;
     //private String mParam2;
@@ -63,10 +64,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         // Inflate the layout for this fragment
-        Button login_button = (Button) v.findViewById(R.id.bt_login_iniciar_sesion);
+        login_button = (Button) v.findViewById(R.id.bt_login_iniciar_sesion);
         login_button.setOnClickListener(this);
 
-        Button loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
+        loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
         loginWithGoogleButton.setOnClickListener(this);
 
         et_email = (EditText) v.findViewById(R.id.et_login_email);

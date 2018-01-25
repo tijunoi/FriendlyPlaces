@@ -4,11 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 
@@ -26,9 +31,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     //private static final String ARG_PARAM1 = "param1";
     //private static final String ARG_PARAM2 = "param2";
 
-    private EditText et_email;
-    private EditText et_password;
-    private EditText et_username;
+    private EditText inputEmail, inputPassword, inputUsername;
+    private Button btSignUp, btResetPass;
+    private String email, password;
 
     // TODO: Rename and change types of parameters
     //private String mParam1;
@@ -66,11 +71,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        et_email = (EditText) v.findViewById(R.id.et_register_email);
-        et_password = (EditText) v.findViewById(R.id.et_register_password);
-        //et_username = (EditText)
-        Button bt_signup = (Button) v.findViewById(R.id.bt_register_crear_cuenta);
-        bt_signup.setOnClickListener(this);
+        inputEmail = (EditText) v.findViewById(R.id.et_register_email);
+        inputPassword = (EditText) v.findViewById(R.id.et_register_password);
+        //inputUsername = (EditText)
+        Button btSignUp = (Button) v.findViewById(R.id.bt_register_crear_cuenta);
+        btSignUp.setOnClickListener(this);
+
         return v;
     }
 
@@ -97,13 +103,68 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.bt_register_crear_cuenta:
                 if (mListener != null){
-                    mListener.onRegisterInteraction(et_email.getText().toString(), et_password.getText().toString());
+                    email = inputEmail.getText().toString();
+                    password = inputPassword.getText().toString();
+
+                    if (TextUtils.isEmpty(email)){
+                        inputEmail.setError("Debes introducir un email");
+
+                    }
+                    if (TextUtils.isEmpty(password)){
+                        inputPassword.setError("Debes introducir una contraseña");
+                    }
+                    if (password.length() < 6){
+                        inputPassword.setError("La contraseña debe contener más de 6 caracteres");
+                    }
+                    //mListener.onRegisterInteraction(inputEmail.getText().toString(), inputPassword.getText().toString());
+
                 }
-                break;
-            case R.id.bt_register_login_google:
+                inputEmail.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (email.length() <= 0){
+                            inputEmail.setError("Debes introducir un email.");
+                        }else{
+                            inputEmail.setError(null);
+                        }
+                    }
+                });
+                inputPassword.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (password.isEmpty()){
+                            inputPassword.setError("Debes introducir una contraseña");
+                        }else if(password.length() < 6){
+                            inputPassword.setError("La contraseña debe contener más de 6 caracteres");
+                        }else{
+                            inputPassword.setError(null);
+                        }
+                    }
+                });
                 break;
         }
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
