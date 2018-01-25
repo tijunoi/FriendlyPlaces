@@ -1,7 +1,6 @@
 package com.friendlyplaces.friendlyapp.authentication;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -67,6 +66,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         Button login_button = (Button) v.findViewById(R.id.bt_login_iniciar_sesion);
         login_button.setOnClickListener(this);
 
+        Button loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
+        loginWithGoogleButton.setOnClickListener(this);
+
         et_email = (EditText) v.findViewById(R.id.et_login_email);
         et_password = (EditText) v.findViewById(R.id.et_login_password);
 
@@ -104,6 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.bt_login_login_google:
+                mListener.onLoginWithGoogleButtonPressed();
                 break;
         }
 
@@ -121,5 +124,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnLoginFragmentInteractionListener {
         void onLoginInteraction(String email, String password);
+
+        void onLoginWithGoogleButtonPressed();
     }
 }

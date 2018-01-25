@@ -21,6 +21,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -32,13 +33,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:hint="Email"
             android:background="@drawable/editext_login_border"
             android:padding="10dp" />
 
         <TextView
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_thin"
             android:text="Contraseña"
             android:textSize="16sp" />
 
@@ -48,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:hint="Contraseña"
             android:background="@drawable/editext_login_border"
             android:padding="10dp" />
 
@@ -73,7 +78,7 @@
 
 
             <Button
-                android:id="@+id/bt_login_google"
+                android:id="@+id/bt_login_login_google"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
