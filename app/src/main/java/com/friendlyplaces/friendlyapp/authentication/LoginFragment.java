@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.friendlyplaces.friendlyapp.R;
+
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +78,41 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         et_email = (EditText) v.findViewById(R.id.et_login_email);
         et_password = (EditText) v.findViewById(R.id.et_login_password);
 
+        //Inicialitzo TextWatchers per clear errors quan usuari escrigui bé
+        et_email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isEmailValid(s.toString())) et_email.setError(null);
+            }
+        });
+
+        et_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals("")) et_password.setError(null);
+            }
+        });
+
         return v;
     }
 
@@ -102,7 +142,28 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_login_iniciar_sesion:
-                if (mListener != null){
+                //todo: optimize, check conditions in a method
+
+                boolean requiredConditions = true;
+                if (et_password.getText().toString().equals("")) {
+                    et_password.setError("La contraseña no puede estar vacía");
+                    et_password.requestFocus();
+                    requiredConditions = false;
+                }
+
+                if (!isEmailValid(et_email.getText().toString())) {
+                    et_email.setError("Introduce un email válido");
+                    et_email.requestFocus();
+                    requiredConditions = false;
+                }
+                if (et_email.getText().toString().equals("")) {
+                    et_email.setError("Introduce tu email");
+                    et_email.requestFocus();
+                    requiredConditions = false;
+                }
+
+
+                if (requiredConditions && mListener != null) {
                     mListener.onLoginInteraction(et_email.getText().toString(), et_password.getText().toString());
                 }
                 break;
@@ -111,6 +172,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
+    }
+
+    private boolean isEmailValid(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
     }
 
     /**
