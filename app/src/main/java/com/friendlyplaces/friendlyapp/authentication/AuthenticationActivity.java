@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.MainActivity;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AuthenticationActivity extends AppCompatActivity implements LoginFragment.OnLoginFragmentInteractionListener, SignUpFragment.OnSignUpFragmentInteractionListener{
 
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -81,6 +83,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        progressBar = findViewById(R.id.progress_bar_auth);
     }
 
 
@@ -108,7 +111,18 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     @Override
     public void onLoginInteraction(String email, String password) {
-
+        progressBar.setVisibility(View.VISIBLE);
+        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    progressBar.setVisibility(View.INVISIBLE);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     @Override
