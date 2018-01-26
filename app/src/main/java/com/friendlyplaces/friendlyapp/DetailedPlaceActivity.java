@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 public class DetailedPlaceActivity extends AppCompatActivity {
 
@@ -16,6 +17,10 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_place);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        String name = getIntent().getStringExtra("placeName");
+
+        Toast.makeText(this, name, Toast.LENGTH_LONG).show();
 
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
 

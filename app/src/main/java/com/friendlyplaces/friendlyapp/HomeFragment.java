@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,9 +23,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
-import com.google.android.gms.maps.model.PointOfInterest;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -33,7 +33,8 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
         View.OnClickListener,
-        GoogleMap.OnPoiClickListener {
+        GoogleMap.OnPoiClickListener,
+        GoogleMap.OnInfoWindowClickListener {
 
     GoogleMap mMap;
     Fragment mapFragment;
@@ -103,7 +104,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnPoiClickListener(this);
-
+        mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
@@ -159,10 +160,20 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
             } else {
                 currentMarker.remove();
                 currentMarker = mMap.addMarker(new MarkerOptions()
-                        .position(pointOfInterest.latLng));
+                        .position(pointOfInterest.latLng)
+                        .title(pointOfInterest.name)
+                        .snippet(pointOfInterest.placeId));
+                currentMarker.setTag(pointOfInterest);
+                currentPointOfInterest = pointOfInterest;
             }
+        } else {
+            currentMarker = mMap.addMarker(new MarkerOptions()
+                    .position(pointOfInterest.latLng)
+                    .title(pointOfInterest.name)
+                    .snippet(pointOfInterest.placeId));
+            currentMarker.setTag(pointOfInterest);
+            currentPointOfInterest = pointOfInterest;
         }
-
     }
 
 
@@ -176,10 +187,18 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         }
 
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        PointOfInterest poi = (PointOfInterest) marker.getTag();
+        Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
+        intent.putExtra("placeId", poi.placeId);
+        intent.putExtra("placeName", poi.name);
+        startActivity(intent);
+    }
 }
 
 interface OnPlacePickedListener{
     void OnTryingPickingAPlace();
 }
 
-}
