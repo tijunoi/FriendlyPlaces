@@ -3,19 +3,28 @@ package com.friendlyplaces.friendlyapp;
 
 import android.*;
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,16 +33,37 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLocationButtonClickListener,
+public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener{
 
     GoogleMap mMap;
+    Fragment mapFragment;
+    FragmentManager fmanager;
+    FloatingActionButton floatingActionButton;
+    public static final int PLACE_PICKER_REQUEST = 1;
+    OnPlacePickedListener mOnPlacePickedListener;
+
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        super.onCreateView(layoutInflater, viewGroup, bundle);
+        View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
+
+        floatingActionButton = v.findViewById(R.id.find_my_location);
+        floatingActionButton.setOnClickListener(this);
+        mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment supportmapfragment = (SupportMapFragment)mapFragment;
+        supportmapfragment.getMapAsync(this);
+        return v;
+
+    }
 
     /**
      * Request code for location permission request.
@@ -58,7 +88,18 @@ public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLo
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
 
         }
-        getMapAsync(this);
+        //getMapAsync(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnPlacePickedListener) {
+            mOnPlacePickedListener = (OnPlacePickedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -111,4 +152,18 @@ public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLo
             getActivity().finish();
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.find_my_location:
+                mOnPlacePickedListener.OnTryingPickingAPlace();
+                break;
+        }
+
+    }
+}
+
+interface OnPlacePickedListener{
+    void OnTryingPickingAPlace();
 }
