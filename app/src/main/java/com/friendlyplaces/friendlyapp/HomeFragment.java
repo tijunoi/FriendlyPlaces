@@ -1,28 +1,20 @@
 package com.friendlyplaces.friendlyapp;
 
 
-import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PointOfInterest;
 
 
 /**
@@ -31,9 +23,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        GoogleMap.OnPoiClickListener {
 
     GoogleMap mMap;
+
+    /**
+     * Referencia del marker visualizandose actualmente. Se guarda para poder borrarlo luego, ya que GoogleMap no tiene el método
+     */
+    Marker currentMarker;
+    PointOfInterest currentPointOfInterest; //para comparar el place id
 
     /**
      * Request code for location permission request.
@@ -64,6 +63,7 @@ public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLo
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnPoiClickListener(this);
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -111,4 +111,19 @@ public class HomeFragment extends SupportMapFragment implements GoogleMap.OnMyLo
             getActivity().finish();
         }
     }
+
+    @Override
+    public void onPoiClick(PointOfInterest pointOfInterest) {
+        if (currentMarker != null) {
+            if (pointOfInterest.placeId.equals(currentPointOfInterest.placeId)) {
+                //do nothing
+            } else {
+                currentMarker.remove();
+                currentMarker = mMap.addMarker(new MarkerOptions()
+                        .position(pointOfInterest.latLng));
+            }
+        }
+
+    }
+
 }
