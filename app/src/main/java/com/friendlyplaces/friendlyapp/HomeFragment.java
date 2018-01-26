@@ -1,13 +1,11 @@
 package com.friendlyplaces.friendlyapp;
 
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,23 +13,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.maps.model.PointOfInterest;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -42,7 +31,9 @@ import static android.app.Activity.RESULT_OK;
 public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback, View.OnClickListener{
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        View.OnClickListener,
+        GoogleMap.OnPoiClickListener {
 
     GoogleMap mMap;
     Fragment mapFragment;
@@ -64,6 +55,12 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         return v;
 
     }
+
+    /**
+     * Referencia del marker visualizandose actualmente. Se guarda para poder borrarlo luego, ya que GoogleMap no tiene el método
+     */
+    Marker currentMarker;
+    PointOfInterest currentPointOfInterest; //para comparar el place id
 
     /**
      * Request code for location permission request.
@@ -105,6 +102,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnPoiClickListener(this);
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -154,6 +152,22 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     }
 
     @Override
+    public void onPoiClick(PointOfInterest pointOfInterest) {
+        if (currentMarker != null) {
+            if (pointOfInterest.placeId.equals(currentPointOfInterest.placeId)) {
+                //do nothing
+            } else {
+                currentMarker.remove();
+                currentMarker = mMap.addMarker(new MarkerOptions()
+                        .position(pointOfInterest.latLng));
+            }
+        }
+
+    }
+
+
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.find_my_location:
@@ -166,4 +180,6 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
 
 interface OnPlacePickedListener{
     void OnTryingPickingAPlace();
+}
+
 }
