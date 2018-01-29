@@ -162,7 +162,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     requiredConditions = false;
                 }
 
-
                 if (requiredConditions && mListener != null) {
                     mListener.onLoginInteraction(et_email.getText().toString(), et_password.getText().toString());
                 }
