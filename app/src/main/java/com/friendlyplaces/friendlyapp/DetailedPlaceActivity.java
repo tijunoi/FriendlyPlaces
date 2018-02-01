@@ -19,8 +19,13 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         String name = getIntent().getStringExtra("placeName");
+        String id = getIntent().getStringExtra("placeId");
+
+        //setear el name al layuot
 
         Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+
+        //con el id hago una query a la api de google places i seteo las cosis
 
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
 
@@ -32,5 +37,7 @@ public class DetailedPlaceActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 }

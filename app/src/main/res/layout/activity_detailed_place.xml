@@ -13,6 +13,7 @@
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
+        <!--Aqui seteo la imagen de backgroundo-->
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"

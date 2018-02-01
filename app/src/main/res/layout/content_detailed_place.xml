@@ -130,6 +130,22 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="4dp"/>
 
+        <TextView
+            android:id="@+id/box_opiniones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No hay opiniones. Sé el primero en escribir una!"
+            app:layout_constraintTop_toBottomOf="@id/det_description_title"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Esto es para rellenar y que se vea el scroll.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc bibendum metus consectetur ex rutrum, in viverra nunc fermentum. Sed vitae consectetur lectus. Integer aliquam ullamcorper mattis. In ut metus nibh. Vestibulum ipsum sapien, congue vel risus at, cursus consectetur elit. Ut a lacinia leo. Proin id nibh at dui condimentum aliquet. Nulla auctor dapibus varius. Ut semper mattis nisl id tristique. Phasellus vitae mollis lectus. Quisque dignissim sapien non felis facilisis euismod."
+            app:layout_constraintTop_toBottomOf="@+id/box_opiniones"
+            android:layout_marginTop="8dp"/>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>
