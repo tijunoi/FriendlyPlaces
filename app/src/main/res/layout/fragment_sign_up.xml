@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -90,7 +89,36 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />-->
 
-            <Button
+            <FrameLayout
+                android:id="@+id/frame_button_register"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="4dp"
+                android:background="@drawable/login_fancy_button"
+                android:foreground="?selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/register_frame_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crear cuenta"
+                    android:layout_gravity="center"
+                    android:textColor="#ffffff" />
+
+                <ProgressBar
+                    android:id="@+id/register_progressbar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
+            </FrameLayout>
+            <!--<Button
                 android:id="@+id/bt_register_crear_cuenta"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -100,10 +128,17 @@
                 android:background="#7C4DFF"
                 android:outlineProvider="bounds"
                 android:text="crear cuenta"
-                android:textColor="#fff" />
+                android:textColor="#fff" />-->
 
 
         </LinearLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/reveal_register_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/friendlyLila"
+        android:visibility="invisible" />
 
 </FrameLayout>

@@ -5,7 +5,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,9 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
@@ -51,7 +56,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         floatingActionButton = v.findViewById(R.id.find_my_location);
         floatingActionButton.setOnClickListener(this);
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
-        SupportMapFragment supportmapfragment = (SupportMapFragment)mapFragment;
+        SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
         supportmapfragment.getMapAsync(this);
         return v;
 
@@ -83,7 +88,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     @Override
     public void onStart() {
         super.onStart();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }
         //getMapAsync(this);
@@ -103,11 +108,40 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.setOnPoiClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
+        if (mMap.isMyLocationEnabled()) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+
+            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+            if (location != null) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                        .zoom(17)                   // Sets the zoom
+                        .bearing(90)                // Sets the orientation of the camera to east
+                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                        .build();                   // Creates a CameraPosition from the builder
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        }
 
         // Add a marker in Sydney and move the camera
        /* LatLng sydney = new LatLng(-34, 151);
@@ -162,7 +196,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
                 currentMarker = mMap.addMarker(new MarkerOptions()
                         .position(pointOfInterest.latLng)
                         .title(pointOfInterest.name)
-                        .snippet(pointOfInterest.placeId));
+                        .snippet("Pulsa para ver los detalles"));
                 currentMarker.setTag(pointOfInterest);
                 currentPointOfInterest = pointOfInterest;
             }
@@ -170,7 +204,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
             currentMarker = mMap.addMarker(new MarkerOptions()
                     .position(pointOfInterest.latLng)
                     .title(pointOfInterest.name)
-                    .snippet(pointOfInterest.placeId));
+                    .snippet("Pulsa para ver los detalles"));
             currentMarker.setTag(pointOfInterest);
             currentPointOfInterest = pointOfInterest;
         }

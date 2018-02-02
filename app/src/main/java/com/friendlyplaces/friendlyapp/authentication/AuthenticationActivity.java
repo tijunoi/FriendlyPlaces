@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.MainActivity;
@@ -38,7 +37,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     public static final int RC_GOOGLE_SIGN_IN = 3736;
     private FirebaseAuth mAuth;
-    private ProgressBar progressBar;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -86,7 +84,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        progressBar = findViewById(R.id.progress_bar_auth);
     }
 
 
@@ -114,13 +111,11 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     @Override
     public void onLoginInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
-        progressBar.setVisibility(View.VISIBLE);
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    progressBar.setVisibility(View.INVISIBLE);
                     startActivity(intent);
                     finish();
                 }
@@ -180,14 +175,12 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     }
 
     @Override
-    public void onRegisterInteraction(String email, String password) {
+    public void onRegisterInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        progressBar.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    progressBar.setVisibility(View.INVISIBLE);
                     startActivity(intent);
                     finish();
                 }

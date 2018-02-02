@@ -85,8 +85,7 @@
                 android:focusable="true"
                 android:elevation="4dp"
                 android:background="@drawable/login_fancy_button"
-                android:foreground="?selectableItemBackground"
-                android:onClick="load">
+                android:foreground="?selectableItemBackground">
 
                 <TextView
                     android:id="@+id/login_frame_textview"
