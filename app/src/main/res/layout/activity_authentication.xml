@@ -69,5 +69,4 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </android.support.constraint.ConstraintLayout>
-
 </android.support.design.widget.CoordinatorLayout>

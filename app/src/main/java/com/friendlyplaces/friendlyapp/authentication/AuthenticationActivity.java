@@ -113,7 +113,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     }
 
     @Override
-    public void onLoginInteraction(String email, String password) {
+    public void onLoginInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
         progressBar.setVisibility(View.VISIBLE);
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -125,7 +125,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                     finish();
                 }
             }
-        });
+        }).addOnCompleteListener(onCompleteListener);
     }
 
     @Override
