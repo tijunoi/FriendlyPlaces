@@ -68,6 +68,11 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
         //objecte d'instancia de FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

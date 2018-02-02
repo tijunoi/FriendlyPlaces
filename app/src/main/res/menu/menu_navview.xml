@@ -7,15 +7,15 @@
             android:icon="@drawable/ic_home_black_24dp"/>
         <item
             android:id="@+id/op_pos_rated"
-            android:title="Opcio 1"
+            android:title="Sitios a visitar"
             android:icon="@drawable/ic_thumb_up_black_24dp"/>
         <item
             android:id="@+id/op_neg_rated"
-            android:title="Opcio 2"
+            android:title="Sitios a evitar"
             android:icon="@drawable/ic_thumb_down_black_24dp"/>
         <item
             android:id="@+id/op_rated_places"
-            android:title="Opcio 3"
+            android:title="Mis sitios puntuados"
             android:icon="@drawable/ic_pin_drop_black_24dp"/>
     </group>
     <item

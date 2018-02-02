@@ -17,7 +17,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -71,6 +70,7 @@ public class DetailedPlaceActivity extends AppCompatActivity {
 
                     tvUbi.setText(placeUbication);
                     tvPhone.setText(placePhone);
+                    rbStars.setIsIndicator(true);
                     rbStars.setRating(placeRate);
 
                     Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
