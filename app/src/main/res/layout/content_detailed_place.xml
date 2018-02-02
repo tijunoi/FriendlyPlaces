@@ -70,7 +70,16 @@
             android:layout_marginTop="4dp"
             android:layout_marginStart="15dp"/>
 
-        <ImageView
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            app:layout_constraintStart_toStartOf="@id/ag_valorar"
+            app:layout_constraintTop_toBottomOf="@id/ag_valorar"/>
+
+        <!--<ImageView
             android:id="@+id/star1"
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -109,7 +118,7 @@
             android:src="@drawable/ic_grade_black_24dp"
             android:alpha="0.25"
             app:layout_constraintStart_toEndOf="@id/star4"
-            app:layout_constraintTop_toTopOf="@id/star1" />
+            app:layout_constraintTop_toTopOf="@id/star1" />-->
 
         <ImageView
             android:id="@+id/det_descripcion_icon"

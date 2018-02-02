@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
         <!--Aqui seteo la imagen de backgroundo-->
 
-        <TextView
+        <!--<TextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,6 +25,8 @@
             android:textColor="#fff"
             android:textSize="20sp"
             android:fontFamily="sans-serif-medium" />
+            setTitle a la toolbarlayout dabaix desde java
+            -->
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
