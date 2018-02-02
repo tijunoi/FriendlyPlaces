@@ -59,7 +59,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="Has olvidado la contraseña?" />
 
-            <Button
+            <!--<Button
                 android:id="@+id/bt_login_iniciar_sesion"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -71,7 +71,38 @@
                 android:outlineProvider="bounds"
                 android:paddingHorizontal="8dp"
                 android:text="INICIAR SESIÓN"
-                android:textColor="#fff" />
+                android:textColor="#fff" />-->
+
+            <FrameLayout
+                android:id="@+id/frame_button_login_login"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="4dp"
+                android:background="@drawable/login_fancy_button"
+                android:foreground="?selectableItemBackground"
+                android:onClick="load">
+
+                <TextView
+                    android:id="@+id/login_frame_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicia sesión"
+                    android:layout_gravity="center"
+                    android:textColor="#ffffff" />
+
+                <ProgressBar
+                    android:id="@+id/login_progressbar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
+            </FrameLayout>
 
             <Button
                 android:id="@+id/bt_login_login_google"
@@ -101,4 +132,11 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/reveal_login_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/friendlyLila"
+        android:visibility="invisible" />
 </FrameLayout>
