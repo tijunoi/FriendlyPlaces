@@ -15,11 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.GeoDataApi;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class DetailedPlaceActivity extends AppCompatActivity {
 
@@ -44,30 +45,34 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         tvUbi = findViewById(R.id.det_ubicacion);
         tvPhone = findViewById(R.id.det_num_phone);
         rbStars = findViewById(R.id.ratingBar);
-
+        GeoDataClient geoDataClient = Places.getGeoDataClient(this, null);
 
         //con el id hago una query a la api de google places i seteo las cosis
+        Task<PlaceBufferResponse> placeById = geoDataClient.getPlaceById(id).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                if (task.isSuccessful()) {
+                    PlaceBufferResponse places = task.getResult();
+                    Place myPlace = places.get(0);
 
-        Places.GeoDataApi.getPlaceById(mGoogleApiClient, id)
-                .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                    @Override
-                    public void onResult(@NonNull PlaceBuffer places) {
-                        if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                            final Place myPlace = places.get(0);
-                            placeUbication = myPlace.getAddress();
-                            placePhone = myPlace.getPhoneNumber();
-                            placeRate = ((int) myPlace.getRating());
+                    placeUbication = myPlace.getAddress();
+                    placePhone = myPlace.getPhoneNumber();
+                    placeRate = ((int) myPlace.getRating());
 
-                            tvUbi.setText(placeUbication);
-                            tvPhone.setText(placePhone);
-                            rbStars.setNumStars(placeRate);
-                            Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
-                        }else {
-                            Log.e("TAGAGAGPLACE", "Place no encontrada");
-                        }
-                        places.release();
-                    }
-                });
+                    tvUbi.setText(placeUbication);
+                    tvPhone.setText(placePhone);
+                    rbStars.setNumStars(placeRate);
+                    Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
+                } else {
+                    Log.e("TAGAGAGPLACE", "Place no encontrada");
+                }
+                task.getResult().release();
+            }
+        });
+
+
+
+
 
 
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
