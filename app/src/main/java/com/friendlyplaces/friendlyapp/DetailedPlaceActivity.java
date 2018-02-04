@@ -11,8 +11,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +44,13 @@ public class DetailedPlaceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setContentView(R.layout.activity_detailed_place);
+        Slide explodeAnimation = new Slide();
+        explodeAnimation.setDuration(250);
+        getWindow().setEnterTransition(explodeAnimation);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -112,6 +120,7 @@ public class DetailedPlaceActivity extends AppCompatActivity {
                 // Get the first photo in the list.
                 PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
 
+
                 // Get the attribution text.
                 CharSequence attribution = photoMetadata.getAttributions();
                 // Get a full-size bitmap for the photo.
@@ -124,6 +133,7 @@ public class DetailedPlaceActivity extends AppCompatActivity {
                         setBackgroundImage(bitmap);
                     }
                 });
+                photoMetadataBuffer.release();
             }
         });
     }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -52,8 +53,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         super.onCreateView(layoutInflater, viewGroup, bundle);
         View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
-
-        floatingActionButton = v.findViewById(R.id.find_my_location);
+        floatingActionButton = v.findViewById(R.id.quick_button);
         floatingActionButton.setOnClickListener(this);
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
         SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
@@ -215,7 +215,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.find_my_location:
+            case R.id.quick_button:
                 mOnPlacePickedListener.OnTryingPickingAPlace();
                 break;
         }
@@ -225,10 +225,13 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
     @Override
     public void onInfoWindowClick(Marker marker) {
         PointOfInterest poi = (PointOfInterest) marker.getTag();
+
         Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
         intent.putExtra("placeId", poi.placeId);
         intent.putExtra("placeName", poi.name);
-        startActivity(intent);
+
+        startActivity(intent, optionsCompat.toBundle());
     }
 }
 

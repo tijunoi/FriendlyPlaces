@@ -12,13 +12,14 @@
         tools:context="com.friendlyplaces.friendlyapp.HomeFragment"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/find_my_location"
+        android:id="@+id/quick_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:src="@drawable/ic_add_black_24dp"
         app:backgroundTint="#7C4DFF"
+        android:transitionName="@string/fabTransition"
         />
 </android.support.design.widget.CoordinatorLayout>
 
