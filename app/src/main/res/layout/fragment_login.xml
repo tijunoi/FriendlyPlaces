@@ -72,7 +72,6 @@
                 android:paddingHorizontal="8dp"
                 android:text="INICIAR SESIÓN"
                 android:textColor="#fff" />-->
-
             <FrameLayout
                 android:id="@+id/frame_button_login_login"
                 android:layout_width="match_parent"

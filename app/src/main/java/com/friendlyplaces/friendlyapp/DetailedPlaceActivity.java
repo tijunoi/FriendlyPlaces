@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,9 +48,10 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setContentView(R.layout.activity_detailed_place);
-        Slide explodeAnimation = new Slide();
-        explodeAnimation.setDuration(250);
-        getWindow().setEnterTransition(explodeAnimation);
+        Slide slideTransition = new Slide();
+        slideTransition.setDuration(250);
+        getWindow().setEnterTransition(slideTransition);
+        getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

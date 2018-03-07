@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements OnPlacePickedList
                     startActivity(intent);
                     finish();
                     //not logged in
-
                     /*//Llista de providers pel login
                     List<AuthUI.IdpConfig> providers = Arrays.asList(
                             new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),

@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         super.onCreateView(layoutInflater, viewGroup, bundle);
         View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
         floatingActionButton = v.findViewById(R.id.quick_button);
+        floatingActionButton.setTransitionName(getString(R.string.fabTransition));
         floatingActionButton.setOnClickListener(this);
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
         SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
@@ -227,7 +228,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         PointOfInterest poi = (PointOfInterest) marker.getTag();
 
         Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
-        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
         intent.putExtra("placeId", poi.placeId);
         intent.putExtra("placeName", poi.name);
 
