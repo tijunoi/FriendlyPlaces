@@ -54,6 +54,7 @@
             android:name=".DetailedPlaceActivity"
             android:label="@string/title_activity_detailed_place"
             android:theme="@style/AppTheme" />
+        <activity android:name=".TestingActivity"></activity>
     </application>
 
 </manifest>

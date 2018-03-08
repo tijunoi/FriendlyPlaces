@@ -17,6 +17,10 @@
             android:id="@+id/op_rated_places"
             android:title="Mis sitios puntuados"
             android:icon="@drawable/ic_pin_drop_black_24dp"/>
+        <item
+            android:visible="false"
+            android:id="@+id/op_testing_button"
+            android:title="Testing menu" />
     </group>
     <item
         android:id="@+id/nav_logoff"

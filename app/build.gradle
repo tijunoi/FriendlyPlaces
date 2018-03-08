@@ -19,6 +19,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions("full")
+    productFlavors {
+        dev {
+            applicationId "com.friendlyplaces.friendlyapp"
+            versionCode 1
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            //resConfigs auto perque agafi els strings del idioma que correspon (translations) requerti per FirebaseUI
+            resConfigs "auto"
+        }
+        production {
+            applicationId "com.friendlyplaces.friendlyapp"
+            versionCode 1
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            //resConfigs auto perque agafi els strings del idioma que correspon (translations) requerti per FirebaseUI
+            resConfigs "auto"
+        }
+    }
     buildToolsVersion '26.0.2'
 }
 
@@ -40,6 +59,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
+    implementation 'com.google.firebase:firebase-firestore:11.8.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }

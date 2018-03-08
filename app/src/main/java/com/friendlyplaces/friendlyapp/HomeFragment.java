@@ -16,10 +16,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +31,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
@@ -142,6 +149,39 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
                         .build();                   // Creates a CameraPosition from the builder
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
+
+            //Agafo la instancia de la Database Firestore. Normalment no l'agafes per el mig del codi.
+            // L'agafes al principi del onCreate, o fas servir FirebaseFirestore.getInstance() directament
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            /*
+             * En aquesta demo agafo tots els places que hi ha a la database i faig un marker per cada un
+             * OBVIAMENT no sera aixi en real, es només per que et facis idea de Firebase
+             */
+            db.collection("FriendlyPlaces")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                //La queri retorna un array de DocumentSnapshots (task.getResult() es la array) per aixo es fa un foreach
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    Log.d("Firestore", document.getId() + " => ");
+
+                                    //Firebase AUTOPARSEJA, aixi que ja tens el objecte creat i parsejat
+                                    FriendlyPlace lloc = document.toObject(FriendlyPlace.class); //Obviament si lo que et retorna la query no te els atribut que te el Objecte peta
+
+                                    Marker marker = mMap.addMarker(new MarkerOptions().position(lloc.getLatLng()).title("Nom del lloc").snippet("Rating: " + lloc.avgRating));
+                                    marker.showInfoWindow();
+
+                                }
+                            } else {
+                                Log.d("Firestore", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+
         }
 
         // Add a marker in Sydney and move the camera

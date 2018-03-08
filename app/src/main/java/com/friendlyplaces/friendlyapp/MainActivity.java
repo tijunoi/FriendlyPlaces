@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements OnPlacePickedList
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.navview);
+
+        //Mostra el botó de testing en el menu
+        if (BuildConfig.FLAVOR.equals("dev"))
+            navView.getMenu().findItem(R.id.op_testing_button).setVisible(true);
+
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
         navView.setNavigationItemSelectedListener(
@@ -101,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements OnPlacePickedList
                                 //et digui "Quieres cerrar sesión?" SI/NO o algo aixi
                                 Log.i("NavigationView", "Pulsado cerrar sesión");
                                 break;
+                            case R.id.op_testing_button:
+                                //TODO: Intent
                         }
                         if (fragmentTransaction){
                             getSupportFragmentManager().beginTransaction()
