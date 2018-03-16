@@ -1,4 +1,4 @@
-package com.friendlyplaces.friendlyapp;
+package com.friendlyplaces.friendlyapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,14 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.friendlyplaces.friendlyapp.BuildConfig;
+import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.TestingActivity;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
+import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
+import com.friendlyplaces.friendlyapp.fragments.NegativeFragment;
+import com.friendlyplaces.friendlyapp.fragments.PositiveFragment;
+import com.friendlyplaces.friendlyapp.fragments.RatedPlacesFragment;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -23,7 +30,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements OnPlacePickedListener{
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener {
 
     //Constants
     public static final int RC_SIGN_IN = 1;

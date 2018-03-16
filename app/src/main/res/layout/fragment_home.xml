@@ -9,7 +9,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.friendlyplaces.friendlyapp.HomeFragment"/>
+        tools:context="com.friendlyplaces.friendlyapp.fragments.HomeFragment" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/quick_button"
@@ -28,7 +28,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.friendlyplaces.friendlyapp.HomeFragment">
+    tools:contecom.friendlyplaces.friendlyapp.fragments.HomeFragmentment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.friendlyplaces.friendlyapp;
+package com.friendlyplaces.friendlyapp.fragments;
 
 
 import android.Manifest;
@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -274,9 +276,11 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
 
         startActivity(intent, optionsCompat.toBundle());
     }
+
+    public interface OnPlacePickedListener {
+        void OnTryingPickingAPlace();
+    }
 }
 
-interface OnPlacePickedListener{
-    void OnTryingPickingAPlace();
-}
+
 
