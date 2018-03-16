@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Random;
 
 public class TestingActivity extends AppCompatActivity {
+    public static final String REVIEW_COLLECTION = "Reviews";
 
     Button mButton;
 
@@ -39,12 +40,13 @@ public class TestingActivity extends AppCompatActivity {
         int rating = new Random().nextInt(((5 - 1) + 1) + 1);
 
 
-        Review review = new Review(FirebaseAuth.getInstance().getUid(), "ChIJkemk1oGYpBIRctBUxnisr4o", rating, "Mola mugullo");
+        Review review = new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), "ChIJkemk1oGYpBIRctBUxnisr4o", rating, "Mola mugullo");
 
-        FirebaseFirestore instance = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
         //Aqui puja un objecte directament a Firebase. Aixo s'hauria de fer millor dins de un metode, ferho mes ordenat, i bla bla
-        instance.collection("Reviews").add(review).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        db.collection("Reviews").add(review).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {

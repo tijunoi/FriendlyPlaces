@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements OnPlacePickedList
                                 Log.i("NavigationView", "Pulsado cerrar sesión");
                                 break;
                             case R.id.op_testing_button:
-                                //TODO: Intent
                                 Intent intent = new Intent(getApplicationContext(), TestingActivity.class);
                                 startActivity(intent);
                         }
