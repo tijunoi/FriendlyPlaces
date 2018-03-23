@@ -43,15 +43,14 @@
         <activity
             android:name=".authentication.AuthenticationActivity"
             android:label="@string/title_activity_authentication"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.DetailedPlaceActivity"
             android:label="@string/title_activity_detailed_place"
             android:theme="@style/AppTheme" />
         <activity android:name=".TestingActivity" />
-        <activity android:name=".activities.IntroActivity">
+        <activity android:name=".activities.IntroActivity" />
+        <activity android:name=".activities.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
