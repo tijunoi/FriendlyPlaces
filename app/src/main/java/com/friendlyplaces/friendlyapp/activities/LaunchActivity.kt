@@ -35,15 +35,9 @@ class LaunchActivity : AppCompatActivity() {
         thread.start()
     }
 
-    private fun handleNormalRun() {
-        val intent: Intent = if (FirebaseAuth.getInstance().currentUser != null) Intent(this, MainActivity::class.java)
-        else Intent(this, AuthenticationActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun handleDeepLinking() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun checkIfItsFirstRun(): Boolean {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+        return sharedPreferences.getBoolean("firstStart", true)
     }
 
     private fun handleFirstRun() {
@@ -56,8 +50,14 @@ class LaunchActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun checkIfItsFirstRun(): Boolean {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-        return sharedPreferences.getBoolean("firstStart", true)
+    private fun handleNormalRun() {
+        val intent: Intent = if (FirebaseAuth.getInstance().currentUser != null) Intent(this, MainActivity::class.java)
+        else Intent(this, AuthenticationActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun handleDeepLinking() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
