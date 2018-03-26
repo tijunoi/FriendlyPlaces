@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -243,7 +244,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     }
                                 });
                                 revealAnimator.start();
+                            } else {
+                                //TODO: organizar y hacer legible (ask Nil)
+
+
+                                ViewGroup parent = (ViewGroup) loginButtonFrame.getParent();
+                                Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).show();
+                                int index = parent.indexOfChild(loginButtonFrame);
+                                View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false);
+                                View nouButoLogin = v.findViewById(R.id.frame_button_login_login);
+                                parent.removeView(loginButtonFrame);
+                                loginButtonFrame = (FrameLayout) nouButoLogin;
+                                ((ViewGroup) loginButtonFrame.getParent()).removeView(loginButtonFrame);
+                                parent.addView(loginButtonFrame, index);
+
+                                loginButtonFrame.setOnClickListener(LoginFragment.this);
+
                             }
+
                         }
                     };
                     mListener.onLoginInteraction(et_email.getText().toString().trim(), et_password.getText().toString().trim(), onCompleteListener);
@@ -263,7 +281,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                     anim.setDuration(250);
                     anim.start();
-
                     loginFramebuttonTextview.animate()
                             .alpha(0f)
                             .setDuration(250)
