@@ -2,6 +2,7 @@ package com.friendlyplaces.friendlyapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import com.friendlyplaces.friendlyapp.R
@@ -22,17 +23,23 @@ class LaunchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launchscreen)
-        val thread = Thread {
-            val firstRun = checkIfItsFirstRun()
-            if (firstRun) {
-                handleFirstRun()
-            } else {
-                handleDeepLinking()
-                handleNormalRun()
-            }
-        }
 
-        thread.start()
+        val SPLASH_TIME_OUT = 2000
+        Handler().postDelayed({
+            val thread = Thread {
+                val firstRun = checkIfItsFirstRun()
+                if (firstRun) {
+                    handleFirstRun()
+                } else {
+                    handleDeepLinking()
+                    handleNormalRun()
+                }
+            }
+
+            thread.start()
+        }, SPLASH_TIME_OUT.toLong())
+
+
     }
 
     private fun checkIfItsFirstRun(): Boolean {
