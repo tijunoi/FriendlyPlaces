@@ -24,42 +24,49 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/et_register_username"
+                android:id="@+id/et_register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="70dp"
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Nombre de usuario"
-                android:padding="10dp" />
-
-            <EditText
-                android:id="@+id/et_register_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:alpha="0.5"
-                android:background="@drawable/editext_login_border_cuadrat"
-                android:gravity="center_horizontal"
-                android:hint="Dirección de correo electrónico"
+                android:hint="@string/correo_electronico"
                 android:inputType="textEmailAddress"
-                android:padding="10dp" />
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textColorHint="@color/colorPrimary" />
 
             <EditText
                 android:id="@+id/et_register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Constraseña"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textColorHint="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/et_register_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:alpha="0.5"
+                android:background="@drawable/editext_login_border_cuadrat"
+                android:gravity="center_horizontal"
+                android:hint="Confirmar contraseña"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textColorHint="@color/colorPrimary" />
 
             <!--<EditText
                 android:id="@+id/et_register_username"
@@ -92,23 +99,21 @@
             <FrameLayout
                 android:id="@+id/frame_button_register"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginEnd="35dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:clickable="true"
-                android:focusable="true"
-                android:elevation="4dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/login_fancy_button"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
                 android:foreground="?selectableItemBackground">
 
                 <TextView
                     android:id="@+id/register_frame_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Crear cuenta"
                     android:layout_gravity="center"
+                    android:text="CREAR CUENTA"
                     android:textColor="#ffffff" />
 
                 <ProgressBar
@@ -138,7 +143,7 @@
         android:id="@+id/reveal_register_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/friendlyLila"
+        android:background="@color/colorPrimary"
         android:visibility="invisible" />
 
 </FrameLayout>

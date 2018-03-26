@@ -41,9 +41,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     //private static final String ARG_PARAM1 = "param1";
     //private static final String ARG_PARAM2 = "param2";
 
-    private EditText inputEmail, inputPassword, inputUsername;
+    private EditText inputEmail, inputPassword, inputConfirmedPass;
     private Button btSignUp, btResetPass;
-    private String email, password;
+    private String email, password, confirmedPass;
 
     //Fancy button vars
     FrameLayout registerButtonFrame;
@@ -89,6 +89,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         inputEmail = (EditText) v.findViewById(R.id.et_register_email);
         inputPassword = (EditText) v.findViewById(R.id.et_register_password);
+        inputConfirmedPass = v.findViewById(R.id.et_register_confirm_password);
         reveal = v.findViewById(R.id.reveal_register_view);
 
         registerButtonFrame = v.findViewById(R.id.frame_button_register);
@@ -128,6 +129,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 if (mListener != null){
                     email = inputEmail.getText().toString().trim();
                     password = inputPassword.getText().toString().trim();
+                    confirmedPass = inputConfirmedPass.getText().toString().trim();
 
                     boolean requiredConditions = true;
                     if (TextUtils.isEmpty(email)){
@@ -141,6 +143,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                     if (password.length() < 6){
                         requiredConditions = false;
                         inputPassword.setError("La contraseña debe contener más de 6 caracteres");
+                    }
+
+                    if (!password.equals(confirmedPass)){
+                        requiredConditions = false;
+                        inputConfirmedPass.setError("Las contraseñas no coinciden");
                     }
 
                     if (requiredConditions && mListener != null) {

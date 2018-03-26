@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.friendlyplaces.friendlyapp.authentication.LoginFragment">
 
@@ -15,49 +16,57 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="70dp"
-                android:text="FRIENDLY PLACES"
-                android:textSize="20sp" />
-
+                android:adjustViewBounds="true"
+                android:maxHeight="80dp"
+                android:src="@drawable/definitiu" />
 
             <EditText
                 android:id="@+id/et_login_email"
-                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="70dp"
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Dirección de correo electrónico"
-                android:padding="10dp" />
+                android:hint="@string/correo_electronico"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textColorHint="@color/colorPrimary" />
 
             <EditText
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Constraseña"
+                android:hint="@string/password"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"
+                android:textColorHint="@color/colorPrimary" />
 
             <TextView
+                android:id="@+id/et_login_forgotten_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:text="Has olvidado la contraseña?" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/forgotten_pass"
+                android:textColor="@color/colorPrimary" />
 
             <!--<Button
                 android:id="@+id/bt_login_iniciar_sesion"
@@ -75,23 +84,21 @@
             <FrameLayout
                 android:id="@+id/frame_button_login_login"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginEnd="35dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:clickable="true"
-                android:focusable="true"
-                android:elevation="4dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/login_fancy_button"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
                 android:foreground="?selectableItemBackground">
 
                 <TextView
                     android:id="@+id/login_frame_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Inicia sesión"
                     android:layout_gravity="center"
+                    android:text="INICIAR SESIÓN"
                     android:textColor="#ffffff" />
 
                 <ProgressBar
@@ -102,20 +109,32 @@
                     android:visibility="invisible" />
             </FrameLayout>
 
-            <Button
+
+            <com.shobhitpuri.custombuttons.GoogleSignInButton
                 android:id="@+id/bt_login_login_google"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/google_sign_up"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:isDarkTheme="false" />
+
+            <!--<Button
+                android:id="@+id/bt_login_login_google"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:background="#fff"
                 android:drawableStart="@drawable/common_google_signin_btn_icon_dark_normal"
-                android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="Sign in with google"
-                android:textColor="#000" />
+                android:textColor="#000" />-->
 
 
             <!--<TextView
@@ -135,6 +154,6 @@
         android:id="@+id/reveal_login_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/friendlyLila"
+        android:background="@color/colorPrimary"
         android:visibility="invisible" />
 </FrameLayout>

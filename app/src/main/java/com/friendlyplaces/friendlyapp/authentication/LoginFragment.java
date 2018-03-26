@@ -91,6 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         //login_button = (Button) v.findViewById(R.id.bt_login_iniciar_sesion);
         //login_button.setOnClickListener(this);
 
+
         loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
         loginWithGoogleButton.setOnClickListener(this);
 

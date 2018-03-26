@@ -67,6 +67,8 @@ dependencies {
     //FirebaseAuth UI. Ha d'anar a la par amb la versio de Firebase que correspon. Taula aqui: https://github.com/firebase/FirebaseUI-Android
     implementation 'com.firebaseui:firebase-ui-auth:3.1.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    //todo: esto no va si pones implementation pero si con compile
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 }
 
 
