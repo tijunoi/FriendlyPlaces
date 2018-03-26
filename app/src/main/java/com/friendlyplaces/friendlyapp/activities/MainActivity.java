@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -53,6 +54,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         return super.onOptionsItemSelected(item);
     }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +74,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         tx.replace(R.id.content_frame, new HomeFragment());
         tx.commit();
 
+
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(appbar);
+        appbar.setPadding(0, getStatusBarHeight(), 0, 0);
 
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
@@ -147,20 +160,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);
                     finish();
-                    //not logged in
-                    /*//Llista de providers pel login
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
-                    );
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                            RC_SIGN_IN
-                    );*/
+
                 }
             }
         };

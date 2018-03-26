@@ -5,8 +5,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MainActivity"
+    android:theme="@style/AppTheme.TranslucentStatus"
+    android:fitsSystemWindows="false">
 
     <include layout = "@layout/content_layout"/>
 
@@ -18,4 +19,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_navview"
         app:menu="@menu/menu_navview" />
+
 </android.support.v4.widget.DrawerLayout>
