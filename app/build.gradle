@@ -69,6 +69,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     //todo: esto no va si pones implementation pero si con compile
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }
 
 

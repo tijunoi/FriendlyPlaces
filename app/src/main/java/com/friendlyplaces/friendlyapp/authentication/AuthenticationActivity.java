@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.activities.JoinActivity;
 import com.friendlyplaces.friendlyapp.activities.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -161,7 +162,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     @Override
     public void onRegisterInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        final Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
