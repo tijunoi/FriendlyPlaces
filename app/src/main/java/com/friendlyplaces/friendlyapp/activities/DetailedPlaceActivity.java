@@ -1,5 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -75,11 +76,12 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         //con el id hago una query a la api de google places i seteo las cosis
         Task<PlaceBufferResponse> placeById = geoDataClient.getPlaceById(id).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
-                    Place myPlace = places.get(0);
+                    @SuppressLint("RestrictedApi") Place myPlace = places.get(0);
                     mPlace = myPlace;
 
                     friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
