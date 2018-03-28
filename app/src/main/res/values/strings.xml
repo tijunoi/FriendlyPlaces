@@ -19,6 +19,16 @@
     </string>
     <string name="cerrar_sesion">Cerrar sesión</string>
 
+    <string name="sexOrientation_prompt">Cuál es tu orientación sexual?</string>
+    <string-array name="sexual_orientation">
+        <item>Gay</item>
+        <item>Lesbian</item>
+        <item>Bisexual</item>
+        <item>Pansexual</item>
+        <item>Transgender</item>
+        <item>Heterosexual</item>
+        <item>Others</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
