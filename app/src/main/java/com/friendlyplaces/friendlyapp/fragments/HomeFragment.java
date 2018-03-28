@@ -22,10 +22,13 @@ import android.view.ViewGroup;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
+import com.friendlyplaces.friendlyapp.utilities.MarkerColorUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,12 +40,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButtonClickListener,
+public class HomeFragment extends Fragment implements
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
@@ -119,9 +124,8 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
         // mMap.setOnPoiClickListener(this);
-        mMap.setOnInfoWindowClickListener(mClusterManager);
-        mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         if (mMap.isMyLocationEnabled()) {
@@ -154,9 +158,11 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
             // Initialize the manager with the context and the map.
             // (Activity extends context, so we can pass 'this' in the constructor.)
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
+            mMap.setOnInfoWindowClickListener(mClusterManager);
             mMap.setOnCameraIdleListener(mClusterManager);
             mMap.setOnMarkerClickListener(mClusterManager);
             mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+            mClusterManager.setRenderer(new FriendlyPlaceClusterItemRenderer(getContext(), mMap, mClusterManager));
 
             //Agafo la instancia de la Database Firestore. Normalment no l'agafes per el mig del codi.
             // L'agafes al principi del onCreate, o fas servir FirebaseFirestore.getInstance() directament
@@ -210,11 +216,6 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
         }
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        return false;
     }
 
     @Override
@@ -292,6 +293,20 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
 
     public interface OnPlacePickedListener {
         void OnTryingPickingAPlace();
+    }
+
+    public class FriendlyPlaceClusterItemRenderer extends DefaultClusterRenderer<FriendlyPlace> {
+        private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
+
+        @Override
+        protected void onBeforeClusterItemRendered(FriendlyPlace item, MarkerOptions markerOptions) {
+            BitmapDescriptor markerDescriptor = BitmapDescriptorFactory.defaultMarker(MarkerColorUtil.getColor(item));
+            markerOptions.icon(markerDescriptor);
+        }
+
+        public FriendlyPlaceClusterItemRenderer(Context context, GoogleMap map, ClusterManager<FriendlyPlace> clusterManager) {
+            super(context, map, clusterManager);
+        }
     }
 }
 

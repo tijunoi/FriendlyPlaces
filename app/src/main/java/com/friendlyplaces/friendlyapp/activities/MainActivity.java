@@ -145,26 +145,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    //signed in
-                    emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                 } else {
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);
                     finish();
-                    //not logged in
-                    /*//Llista de providers pel login
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
-                    );
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                            RC_SIGN_IN
-                    );*/
                 }
             }
         };
@@ -208,9 +193,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             startActivityForResult(builder.build(this), HomeFragment.PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
     }

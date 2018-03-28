@@ -115,7 +115,6 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         FloatingActionButton fab = (FloatingActionButton) mFab;
         mFab.setOnClickListener(this);
 
-
     }
 
     private void getPhotos() {
