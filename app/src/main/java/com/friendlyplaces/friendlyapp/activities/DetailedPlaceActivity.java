@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -31,8 +32,9 @@ import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class DetailedPlaceActivity extends AppCompatActivity {
+public class DetailedPlaceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CharSequence placeUbication, placePhone;
     private Float placeRate;
@@ -42,6 +44,9 @@ public class DetailedPlaceActivity extends AppCompatActivity {
     private PlacePhotoMetadataResponse mPlacePhotoMetadataResponse;
     private String name, id;
     private AppBarLayout appBarLayout;
+    private FloatingActionButton mFab;
+    private Place mPlace;
+    private FriendlyPlace friendlyPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         tvPhone = findViewById(R.id.det_num_phone);
         rbStars = findViewById(R.id.ratingBar);
         geoDataClient = Places.getGeoDataClient(this, null);
+        Place place;
 
         //con el id hago una query a la api de google places i seteo las cosis
         Task<PlaceBufferResponse> placeById = geoDataClient.getPlaceById(id).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
@@ -74,6 +80,10 @@ public class DetailedPlaceActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
                     Place myPlace = places.get(0);
+                    mPlace = myPlace;
+
+                    friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
+
 
                     placeUbication = myPlace.getAddress();
                     placePhone = myPlace.getPhoneNumber();
@@ -99,14 +109,9 @@ public class DetailedPlaceActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mFab = findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) mFab;
+        mFab.setOnClickListener(this);
 
 
     }
@@ -121,21 +126,26 @@ public class DetailedPlaceActivity extends AppCompatActivity {
                 // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
                 PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                 // Get the first photo in the list.
-                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                try {
+                    PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
 
 
-                // Get the attribution text.
-                CharSequence attribution = photoMetadata.getAttributions();
-                // Get a full-size bitmap for the photo.
-                Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
-                photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                        PlacePhotoResponse photo = task.getResult();
-                        Bitmap bitmap = photo.getBitmap();
-                        setBackgroundImage(bitmap);
-                    }
-                });
+                    // Get the attribution text.
+                    CharSequence attribution = photoMetadata.getAttributions();
+                    // Get a full-size bitmap for the photo.
+                    Task<PlacePhotoResponse> photoResponse = geoDataClient.getPhoto(photoMetadata);
+                    photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                            PlacePhotoResponse photo = task.getResult();
+                            Bitmap bitmap = photo.getBitmap();
+                            setBackgroundImage(bitmap);
+                        }
+                    });
+
+                } catch (IllegalStateException ignore) {
+
+                }
                 photoMetadataBuffer.release();
             }
         });
@@ -143,5 +153,20 @@ public class DetailedPlaceActivity extends AppCompatActivity {
     public void setBackgroundImage(Bitmap bitmap){
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         appBarLayout.setBackground(drawable);
+    }
+
+    @Override
+    public void onClick(View view) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        db.collection("FriendlyPlaces").document(friendlyPlace.pid).set(friendlyPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Snackbar.make(mFab, "Se ha subido los datos del sitio a Firebase", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

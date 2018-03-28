@@ -2,40 +2,44 @@ package com.friendlyplaces.friendlyapp.model;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.maps.android.clustering.ClusterItem;
 
 /**
  * Created by Nil Ordoñez on 25/1/18.
  */
 
-public class FriendlyPlace {
+public class FriendlyPlace implements ClusterItem {
     public String pid;
+    public String name;
     public float avgRating;
     public int reviewCount;
 
 
-    //Guardo lat i long en doubles en comptes de LatLng per no emmagatzemar objecte en Firebase
     public GeoPoint location;
 
     public FriendlyPlace() {
     }
 
-    public FriendlyPlace(String pid, float avgRating, int reviewCount, double lat, double lng) {
+    public FriendlyPlace(String pid, float avgRating, String name, int reviewCount, double lat, double lng) {
         this.pid = pid;
         this.avgRating = avgRating;
+        this.name = name;
         this.reviewCount = reviewCount;
         this.location = new GeoPoint(lat, lng);
     }
 
-    public FriendlyPlace(String pid, float avgRating, int reviewCount, LatLng latLng) {
+    public FriendlyPlace(String pid, float avgRating, String name, int reviewCount, LatLng latLng) {
         this.pid = pid;
         this.avgRating = avgRating;
+        this.name = name;
         this.reviewCount = reviewCount;
-        new GeoPoint(latLng.latitude, latLng.longitude);
+        this.location = new GeoPoint(latLng.latitude, latLng.longitude);
     }
 
-    public FriendlyPlace(String pid, float avgRating, int reviewCount, GeoPoint location) {
+    public FriendlyPlace(String pid, float avgRating, String name, int reviewCount, GeoPoint location) {
         this.pid = pid;
         this.avgRating = avgRating;
+        this.name = name;
         this.reviewCount = reviewCount;
         this.location = location;
     }
@@ -74,6 +78,21 @@ public class FriendlyPlace {
 
     public LatLng getLatLng() {
         return new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return getLatLng();
+    }
+
+    @Override
+    public String getTitle() {
+        return name;
+    }
+
+    @Override
+    public String getSnippet() {
+        return "Pun. media: " + String.valueOf(avgRating);
     }
 }
 

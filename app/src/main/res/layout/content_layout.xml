@@ -17,7 +17,7 @@
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/Theme.AppCompat.Light" />
+        app:popupTheme="@style/Theme.AppCompat.Light"></android.support.v7.widget.Toolbar>
 
     <!--Resto de la interfaz de usuario -->
 

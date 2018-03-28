@@ -9,11 +9,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -49,10 +50,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.search_button:
+                OnTryingPickingAPlace();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,15 +69,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar);
+        final android.support.v7.widget.Toolbar appbar = findViewById(R.id.appbar);
         setSupportActionBar(appbar);
 
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navView = (NavigationView) findViewById(R.id.navview);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.navview);
 
         //Mostra el botó de testing en el menu
         if (BuildConfig.FLAVOR.equals("dev"))
@@ -187,7 +191,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
                 Place place = PlacePicker.getPlace(this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                System.out.println(place.getId());
+
+
+                Intent intent = new Intent(this, DetailedPlaceActivity.class);
+                intent.putExtra("placeId", place.getId());
+                intent.putExtra("placeName", place.getName());
+
+                startActivity(intent);
             }
         }
     }
@@ -203,4 +214,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
 }
