@@ -20,7 +20,6 @@ import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.friendlyplaces.friendlyapp.R
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -51,7 +50,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         when (view?.getId()) {
             R.id.register_button -> {
                 if (checkearDatosNotEmpty()) {
-                    (Activity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
+                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
                     //AQUI HO GUARDARIA TOT AL FIREBASE I FARIA EL INTENT
                 }
             }
@@ -122,9 +121,9 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     private fun checkPermisionCamera() {
 
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(Activity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(Activity(), arrayOf(Manifest.permission.CAMERA), 999)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 999)
 
         } else {
             showPictureDialog()
@@ -133,7 +132,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     private fun showPictureDialog() {
 
-        val pictureDialog = AlertDialog.Builder(Activity())
+        val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle("Selecciona una opción")
         val pictureDialogItems = arrayOf("Hacer una foto", "Elegir una foto de tu galería")
 
@@ -164,7 +163,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 GET_FROM_GALLERY -> if (data != null) {
                     val contentURI = data.data
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(Activity().getContentResolver(), contentURI)
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI)
 
                         bitmap?.let {
                             imageString = getStringImage(it)
@@ -175,7 +174,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
                     } catch (e: IOException) {
                         e.printStackTrace()
-                        Toast.makeText(Activity(), "Failed!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
                     }
 
                 }
