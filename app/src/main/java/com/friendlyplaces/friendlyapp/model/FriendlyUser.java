@@ -5,19 +5,18 @@ package com.friendlyplaces.friendlyapp.model;
  */
 
 public class FriendlyUser {
+    public String uid;
     public String username;
     public String biografia;
     public String sexualOrientation;
-    public String photo;
 
     public FriendlyUser() {
     }
 
-    public FriendlyUser(String username, String biografia, String sexualOrientation, String photo) {
+    public FriendlyUser(String uid, String username, String biografia, String sexualOrientation) {
+        this.uid = uid;
         this.username = username;
         this.biografia = biografia;
         this.sexualOrientation = sexualOrientation;
-        this.photo = photo;
     }
-
 }

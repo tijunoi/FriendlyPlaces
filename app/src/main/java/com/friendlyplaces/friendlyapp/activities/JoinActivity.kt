@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,7 +20,16 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.firebase.ui.auth.data.model.User
 import com.friendlyplaces.friendlyapp.R
+import com.friendlyplaces.friendlyapp.model.FriendlyUser
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -42,6 +52,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         when (view?.getId()) {
             R.id.sp_sex_orientation -> {
                 sp_sex_orientation.setSelection(position)
+
             }
         }
     }
@@ -51,6 +62,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             R.id.register_button -> {
                 if (checkearDatosNotEmpty()) {
                     (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
+
                     //AQUI HO GUARDARIA TOT AL FIREBASE I FARIA EL INTENT
                 }
             }
@@ -59,6 +71,56 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 checkPermisionCamera()
             }
         }
+    }
+
+    fun uploadPhotoToFirebase(){
+
+        val storage = FirebaseStorage.getInstance()
+
+        val imageReference = storage.getReference().child("profilePictures/" + FirebaseAuth.getInstance().currentUser + ".jpg")
+
+
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        val data = baos.toByteArray()
+
+        val uploadTask = imageReference.putBytes(data)
+        uploadTask.addOnCompleteListener({
+            if (it.isSuccessful){
+                setearImagenPerfilUserFirebase(it.result.downloadUrl!!)
+            }
+        })
+    }
+    fun setearImagenPerfilUserFirebase(uri: Uri){
+
+        val profileChangeRequest = UserProfileChangeRequest.Builder()
+                .setDisplayName(friendlyUser.username).setPhotoUri(uri).build()
+
+
+        var task = FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)
+
+        /*task?.addOnCompleteListener({
+            if (it.isSuccessful){}
+        })*/
+
+            /*
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+            .setDisplayName("Jane Q. User")
+            .setPhotoUri(Uri.parse("IMAGENURL"))
+            .build();
+
+            User user = FirebaseAuth.getInstance().getCurrentUser();
+            user.updateProfile(profileUpdates)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "User profile updated.");
+                    }
+                }
+            });
+             */
+        //}
     }
 
     fun checkearDatosNotEmpty(): Boolean {
@@ -84,14 +146,21 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             sp_sex_orientation.requestFocus()
             requiredConditions = false
         }
+        if (bitmap == null){
+            requiredConditions = false
+        }
+        if (requiredConditions){
+            friendlyUser = FriendlyUser(FirebaseAuth.getInstance().currentUser!!.uid, trimName, trimDescription, sp_sex_orientation.selectedItem as String)
+        }
         return requiredConditions
     }
 
     val GET_FROM_GALLERY = 3
     val GET_FROM_CAMERA = 4
 
+    lateinit var friendlyUser:FriendlyUser
     var bitmap: Bitmap? = null
-    lateinit var imageString: String
+    var imageString: String? = null
     private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
     /*private val etName by bindeasion<EditText>(R.id.et_name)
     private val etDescription by bindeasion<EditText>(R.id.et_description)
