@@ -133,11 +133,11 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d("FBaseGoogleLogin", "firebaseAuthWithGoogle:" + acct.getId());
 
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -145,6 +145,10 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("FBaseGoogleLogin", "signInWithCredential:success");
+                            //todo: HOLA AQUI VA LA CARD FP-46
+                            //si el mail ya ha sido registrado en firebase se startea la main activity
+                            //sino se redirige a la joinActivity
+
                             startActivity(intent);
                             finish();
                             //updateUI(user);
