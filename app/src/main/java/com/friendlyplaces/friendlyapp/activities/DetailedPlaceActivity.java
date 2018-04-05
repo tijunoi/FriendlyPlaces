@@ -114,6 +114,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mFab = findViewById(R.id.fab);
         FloatingActionButton fab = (FloatingActionButton) mFab;
         mFab.setOnClickListener(this);
+        //TODO: do something
 
     }
 

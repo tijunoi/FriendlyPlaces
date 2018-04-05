@@ -61,7 +61,6 @@ public class HomeFragment extends Fragment implements
     //
     // FloatingActionButton floatingActionButton;
     public static final int PLACE_PICKER_REQUEST = 1;
-    OnPlacePickedListener mOnPlacePickedListener;
 
     // Declare a variable for the cluster manager.
     private ClusterManager<FriendlyPlace> mClusterManager;
@@ -108,16 +107,6 @@ public class HomeFragment extends Fragment implements
         super.onStart();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnPlacePickedListener) {
-            mOnPlacePickedListener = (OnPlacePickedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -290,10 +279,6 @@ public class HomeFragment extends Fragment implements
         startActivity(intent);
     }
 
-
-    public interface OnPlacePickedListener {
-        void OnTryingPickingAPlace();
-    }
 
     public class FriendlyPlaceClusterItemRenderer extends DefaultClusterRenderer<FriendlyPlace> {
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
