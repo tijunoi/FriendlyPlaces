@@ -30,7 +30,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener {
+public class MainActivity extends AppCompatActivity {
 
     //Constants
     public static final int RC_SIGN_IN = 1;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.search_button:
-                OnTryingPickingAPlace();
+                startGooglePlacePicker();
         }
 
         return super.onOptionsItemSelected(item);
@@ -188,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         }
     }
 
-    @Override
-    public void OnTryingPickingAPlace() {
+    public void startGooglePlacePicker() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             startActivityForResult(builder.build(this), HomeFragment.PLACE_PICKER_REQUEST);
