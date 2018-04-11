@@ -16,6 +16,7 @@ import android.support.annotation.IdRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
@@ -30,6 +31,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -99,28 +101,11 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
         var task = FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)
 
-        /*task?.addOnCompleteListener({
-            if (it.isSuccessful){}
-        })*/
-
-            /*
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-            .setDisplayName("Jane Q. User")
-            .setPhotoUri(Uri.parse("IMAGENURL"))
-            .build();
-
-            User user = FirebaseAuth.getInstance().getCurrentUser();
-            user.updateProfile(profileUpdates)
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "User profile updated.");
-                    }
-                }
-            });
-             */
-        //}
+        task?.addOnCompleteListener({
+            if (it.isSuccessful){
+                Log.i("USERPROFILEUPDATE", "Updatejat correctament")
+            }
+        })
     }
 
     fun checkearDatosNotEmpty(): Boolean {
@@ -162,17 +147,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     var bitmap: Bitmap? = null
     var imageString: String? = null
     private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
-    /*private val etName by bindeasion<EditText>(R.id.et_name)
-    private val etDescription by bindeasion<EditText>(R.id.et_description)
-    private val btRegister by bindeasion<Button>(R.id.register_button)
-    private val imageJoin by bindeasion<CircleImageView>(R.id.imageJoin)
-    //private val buttonClick = AlphaAnimation(1f, 0.85f)
 
-
-    fun <T : View> Activity.bindeasion(@IdRes res: Int): Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy { findViewById(res) as T }
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -237,6 +212,11 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                         bitmap?.let {
                             imageString = getStringImage(it)
                         }
+
+                        Picasso.with(this)
+                                .load(imageString)
+                                .into(imageJoin)
+
                         Toast.makeText(this, "S'ha fet bé from gallery", Toast.LENGTH_LONG).show()
                         //photoRequestMethod()
                         //imageString sería lo que enviarías a Firebase para guardar la foto de usuario en la database
@@ -251,7 +231,12 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                     bitmap = data!!.extras!!.get("data") as Bitmap
                     bitmap?.let {
                         imageString = getStringImage(it)
+
                     }
+
+                    Picasso.with(this)
+                            .load(imageString)
+                            .into(imageJoin)
 
                     Toast.makeText(this, "S'ha fet bé from camera", Toast.LENGTH_LONG).show()
 
