@@ -54,6 +54,15 @@ public class HomeFragment extends Fragment implements
         GoogleMap.OnPoiClickListener,
         GoogleMap.OnInfoWindowClickListener, ClusterManager.OnClusterItemInfoWindowClickListener<FriendlyPlace> {
 
+    private static HomeFragment instance;
+
+    public static HomeFragment getInstance() {
+        if (instance == null) {
+            instance = new HomeFragment();
+        }
+        return instance;
+    }
+
     GoogleMap mMap;
     Fragment mapFragment;
     FragmentManager fmanager;
@@ -137,9 +146,7 @@ public class HomeFragment extends Fragment implements
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                        .zoom(17)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                        .zoom(17)           // Sets the tilt of the camera to 30 degrees
                         .build();                   // Creates a CameraPosition from the builder
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }

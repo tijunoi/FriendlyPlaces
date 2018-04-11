@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (menuItem.getItemId()){
                             case R.id.op_home:
-                                fragment = new HomeFragment();
+                                fragment = HomeFragment.getInstance();
                                 fragmentTransaction = true;
                                 break;
                             case R.id.op_pos_rated:
