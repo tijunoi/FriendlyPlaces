@@ -1,6 +1,8 @@
 package com.friendlyplaces.friendlyapp.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,12 +11,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.TestingActivity;
@@ -30,7 +36,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener, View.OnClickListener {
 
     //Constants
     public static final int RC_SIGN_IN = 1;
@@ -38,10 +44,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private TextView emailDrawerTextview;
+    private TextView tv_appbar;
+
     //Firebase Instance variables
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_floating_search_bar, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -49,10 +66,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.action_search:
+                //al on click de abajo hacer lo mismo
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +88,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar);
+        final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar_main);
         setSupportActionBar(appbar);
 
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
+
+
+        tv_appbar = findViewById(R.id.clickable_appbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.navview);
 
+        tv_appbar.setOnClickListener(this);
         //Mostra el botó de testing en el menu
         if (BuildConfig.FLAVOR.equals("dev"))
             navView.getMenu().findItem(R.id.op_testing_button).setVisible(true);
@@ -202,5 +230,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
