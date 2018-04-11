@@ -36,7 +36,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener, View.OnClickListener {
 
     //Constants
     public static final int RC_SIGN_IN = 1;
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private TextView emailDrawerTextview;
+    private TextView tv_appbar;
+
     //Firebase Instance variables
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_search:
+                //al on click de abajo hacer lo mismo
+
                 return true;
         }
 
@@ -90,10 +94,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
+
+
+        tv_appbar = findViewById(R.id.clickable_appbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.navview);
 
+        tv_appbar.setOnClickListener(this);
         //Mostra el botó de testing en el menu
         if (BuildConfig.FLAVOR.equals("dev"))
             navView.getMenu().findItem(R.id.op_testing_button).setVisible(true);
@@ -221,5 +230,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
