@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -60,8 +61,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             R.id.register_button -> {
                 if (checkearDatosNotEmpty()) {
                     (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
-
-                    //AQUI HO GUARDARIA TOT AL FIREBASE I FARIA EL INTENT
+                    setProfileValuesToUser(friendlyUser)
+                    uploadPhotoToFirebase()
                 }
             }
             R.id.imageJoin -> {
@@ -71,7 +72,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         }
     }
 
-    fun uploadPhotoToFirebase(){
+    fun uploadPhotoToFirebase() {
 
         val storage = FirebaseStorage.getInstance()
 
@@ -84,12 +85,13 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
         val uploadTask = imageReference.putBytes(data)
         uploadTask.addOnCompleteListener({
-            if (it.isSuccessful){
+            if (it.isSuccessful) {
                 setearImagenPerfilUserFirebase(it.result.downloadUrl!!)
             }
         })
     }
-    fun setearImagenPerfilUserFirebase(uri: Uri){
+
+    fun setearImagenPerfilUserFirebase(uri: Uri) {
 
         val profileChangeRequest = UserProfileChangeRequest.Builder()
                 .setDisplayName(friendlyUser.username) //We also set the screen name for the user. We know it's not really well documented
@@ -98,8 +100,9 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
 
         FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
-            if (it.isSuccessful){
+            if (it.isSuccessful) {
                 Log.i("USERPROFILEUPDATE", "Updatejat correctament")
+                setProfileValuesToUser(friendlyUser)
             }
         })
     }
@@ -123,16 +126,15 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             et_description.requestFocus()
             requiredConditions = false
         }
-        if (sp_sex_orientation.selectedItemPosition == 0){
+        if (sp_sex_orientation.selectedItemPosition == 0) {
             sp_sex_orientation.requestFocus()
             requiredConditions = false
         }
-        if (bitmap == null){
+        if (bitmap == null) {
             requiredConditions = false
         }
-        if (requiredConditions){
+        if (requiredConditions) {
             friendlyUser = FriendlyUser(FirebaseAuth.getInstance().currentUser!!.uid, trimName, trimDescription, sp_sex_orientation.selectedItem as String)
-            setProfileValuesToUser(friendlyUser)
 
         }
         return requiredConditions
@@ -143,12 +145,21 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 .collection(FirestoreConstants.COLLECTION_USERS)
                 .document(user.uid)
                 .set(user)
+                .addOnCompleteListener({
+                    if (it.isSuccessful) goToHomescreen()
+                    else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                })
+    }
+
+    private fun goToHomescreen() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     val GET_FROM_GALLERY = 3
     val GET_FROM_CAMERA = 4
 
-    lateinit var friendlyUser:FriendlyUser
+    lateinit var friendlyUser: FriendlyUser
     var bitmap: Bitmap? = null
     var imageString: String? = null
     private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")

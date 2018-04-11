@@ -29,6 +29,9 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener {
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private TextView emailDrawerTextview;
+    private CircleImageView profilePictureCircleImageView;
     //Firebase Instance variables
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
+        profilePictureCircleImageView = headerView.findViewById(R.id.profile_picture_navigation_drawer);
         navView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -142,7 +147,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     //signed in
+
                     emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    Picasso.with(MainActivity.this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(profilePictureCircleImageView);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);
