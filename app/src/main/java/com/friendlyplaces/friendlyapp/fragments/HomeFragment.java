@@ -160,6 +160,7 @@ public class HomeFragment extends Fragment implements GoogleMap.OnMyLocationButt
              * En aquesta demo agafo tots els places que hi ha a la database i faig un marker per cada un
              * OBVIAMENT no sera aixi en real, es només per que et facis idea de Firebase
              */
+
             db.collection("FriendlyPlaces")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

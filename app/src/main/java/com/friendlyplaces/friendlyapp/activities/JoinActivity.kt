@@ -1,36 +1,32 @@
 package com.friendlyplaces.friendlyapp.activities
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.annotation.IdRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import com.firebase.ui.auth.data.model.User
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.friendlyplaces.friendlyapp.R
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
-import com.google.android.gms.tasks.OnFailureListener
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
@@ -96,12 +92,12 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     fun setearImagenPerfilUserFirebase(uri: Uri){
 
         val profileChangeRequest = UserProfileChangeRequest.Builder()
-                .setDisplayName(friendlyUser.username).setPhotoUri(uri).build()
+                .setDisplayName(friendlyUser.username) //We also set the screen name for the user. We know it's not really well documented
+                .setPhotoUri(uri)
+                .build()
 
 
-        var task = FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)
-
-        task?.addOnCompleteListener({
+        FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
             if (it.isSuccessful){
                 Log.i("USERPROFILEUPDATE", "Updatejat correctament")
             }
@@ -136,8 +132,17 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         }
         if (requiredConditions){
             friendlyUser = FriendlyUser(FirebaseAuth.getInstance().currentUser!!.uid, trimName, trimDescription, sp_sex_orientation.selectedItem as String)
+            setProfileValuesToUser(friendlyUser)
+
         }
         return requiredConditions
+    }
+
+    private fun setProfileValuesToUser(user: FriendlyUser) {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreConstants.COLLECTION_USERS)
+                .document(user.uid)
+                .set(user)
     }
 
     val GET_FROM_GALLERY = 3
@@ -157,8 +162,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         imageJoin.setOnClickListener(this)
 
         val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
-        sp_sex_orientation.setAdapter(orienAdapter)
-        sp_sex_orientation.setOnItemSelectedListener(this)
+        sp_sex_orientation.adapter = orienAdapter
+        sp_sex_orientation.onItemSelectedListener = this
 
     }
 
