@@ -19,8 +19,6 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arlib.floatingsearchview.FloatingSearchView;
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.TestingActivity;
@@ -74,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         return super.onOptionsItemSelected(item);
     }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,26 +165,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    //signed in
-                    emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                 } else {
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);
                     finish();
-                    //not logged in
-                    /*//Llista de providers pel login
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
-                    );
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setAvailableProviders(providers)
-                                    .build(),
-                            RC_SIGN_IN
-                    );*/
                 }
             }
         };
@@ -215,7 +196,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
                 Place place = PlacePicker.getPlace(this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                System.out.println(place.getId());
+
+
+                Intent intent = new Intent(this, DetailedPlaceActivity.class);
+                intent.putExtra("placeId", place.getId());
+                intent.putExtra("placeName", place.getName());
+
+                startActivity(intent);
             }
         }
     }
@@ -225,9 +213,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             startActivityForResult(builder.build(this), HomeFragment.PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
     }

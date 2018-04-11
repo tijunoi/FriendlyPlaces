@@ -1,5 +1,6 @@
 package com.friendlyplaces.friendlyapp.authentication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -55,6 +53,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     private ViewPager mViewPager;
     private GoogleSignInClient mGoogleSignInClient;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,7 +76,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
-
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -111,7 +109,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     @Override
     public void onLoginWithGoogleButtonPressed() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        @SuppressLint("RestrictedApi") Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
@@ -120,7 +118,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RC_GOOGLE_SIGN_IN:
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                @SuppressLint("RestrictedApi") Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
