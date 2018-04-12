@@ -33,6 +33,9 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener, View.OnClickListener {
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private TextView emailDrawerTextview;
+    private CircleImageView profilePictureCircleImageView;
     private TextView tv_appbar;
 
     //Firebase Instance variables
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
+        profilePictureCircleImageView = headerView.findViewById(R.id.profile_picture_navigation_drawer);
         navView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -165,7 +170,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
+                    //signed in
+
                     emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                    Picasso.with(MainActivity.this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(profilePictureCircleImageView);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);

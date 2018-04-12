@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="200dp"
+    android:background="@color/colorPrimary">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#7C4DFF" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_picture_navigation_drawer"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,7 +18,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
-        android:text="Usuario"
+        android:text="Nombre de usuario"
         android:textColor="#fff"
         android:textStyle="bold"
         android:id="@+id/user_email_drawer_textview"/>

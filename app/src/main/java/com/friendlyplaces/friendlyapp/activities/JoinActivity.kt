@@ -1,25 +1,34 @@
 package com.friendlyplaces.friendlyapp.activities
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.support.v7.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.annotation.IdRes
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.friendlyplaces.friendlyapp.R
+import com.friendlyplaces.friendlyapp.model.FriendlyUser
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -42,6 +51,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         when (view?.getId()) {
             R.id.sp_sex_orientation -> {
                 sp_sex_orientation.setSelection(position)
+
             }
         }
     }
@@ -51,7 +61,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             R.id.register_button -> {
                 if (checkearDatosNotEmpty()) {
                     (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
-                    //AQUI HO GUARDARIA TOT AL FIREBASE I FARIA EL INTENT
+                    setProfileValuesToUser(friendlyUser)
+                    uploadPhotoToFirebase()
                 }
             }
             R.id.imageJoin -> {
@@ -59,6 +70,41 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 checkPermisionCamera()
             }
         }
+    }
+
+    fun uploadPhotoToFirebase() {
+
+        val storage = FirebaseStorage.getInstance()
+
+        val imageReference = storage.getReference().child("profilePictures/" + FirebaseAuth.getInstance().currentUser + ".jpg")
+
+
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        val data = baos.toByteArray()
+
+        val uploadTask = imageReference.putBytes(data)
+        uploadTask.addOnCompleteListener({
+            if (it.isSuccessful) {
+                setearImagenPerfilUserFirebase(it.result.downloadUrl!!)
+            }
+        })
+    }
+
+    fun setearImagenPerfilUserFirebase(uri: Uri) {
+
+        val profileChangeRequest = UserProfileChangeRequest.Builder()
+                .setDisplayName(friendlyUser.username) //We also set the screen name for the user. We know it's not really well documented
+                .setPhotoUri(uri)
+                .build()
+
+
+        FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
+            if (it.isSuccessful) {
+                Log.i("USERPROFILEUPDATE", "Updatejat correctament")
+                setProfileValuesToUser(friendlyUser)
+            }
+        })
     }
 
     fun checkearDatosNotEmpty(): Boolean {
@@ -80,30 +126,44 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             et_description.requestFocus()
             requiredConditions = false
         }
-        if (sp_sex_orientation.selectedItemPosition == 0){
+        if (sp_sex_orientation.selectedItemPosition == 0) {
             sp_sex_orientation.requestFocus()
             requiredConditions = false
         }
+        if (bitmap == null) {
+            requiredConditions = false
+        }
+        if (requiredConditions) {
+            friendlyUser = FriendlyUser(FirebaseAuth.getInstance().currentUser!!.uid, trimName, trimDescription, sp_sex_orientation.selectedItem as String)
+
+        }
         return requiredConditions
+    }
+
+    private fun setProfileValuesToUser(user: FriendlyUser) {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreConstants.COLLECTION_USERS)
+                .document(user.uid)
+                .set(user)
+                .addOnCompleteListener({
+                    if (it.isSuccessful) goToHomescreen()
+                    else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                })
+    }
+
+    private fun goToHomescreen() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     val GET_FROM_GALLERY = 3
     val GET_FROM_CAMERA = 4
 
+    lateinit var friendlyUser: FriendlyUser
     var bitmap: Bitmap? = null
-    lateinit var imageString: String
+    var imageString: String? = null
     private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
-    /*private val etName by bindeasion<EditText>(R.id.et_name)
-    private val etDescription by bindeasion<EditText>(R.id.et_description)
-    private val btRegister by bindeasion<Button>(R.id.register_button)
-    private val imageJoin by bindeasion<CircleImageView>(R.id.imageJoin)
-    //private val buttonClick = AlphaAnimation(1f, 0.85f)
 
-
-    fun <T : View> Activity.bindeasion(@IdRes res: Int): Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy { findViewById(res) as T }
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,8 +173,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         imageJoin.setOnClickListener(this)
 
         val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
-        sp_sex_orientation.setAdapter(orienAdapter)
-        sp_sex_orientation.setOnItemSelectedListener(this)
+        sp_sex_orientation.adapter = orienAdapter
+        sp_sex_orientation.onItemSelectedListener = this
 
     }
 
@@ -168,6 +228,11 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                         bitmap?.let {
                             imageString = getStringImage(it)
                         }
+
+                        Picasso.with(this)
+                                .load(imageString)
+                                .into(imageJoin)
+
                         Toast.makeText(this, "S'ha fet bé from gallery", Toast.LENGTH_LONG).show()
                         //photoRequestMethod()
                         //imageString sería lo que enviarías a Firebase para guardar la foto de usuario en la database
@@ -182,7 +247,12 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                     bitmap = data!!.extras!!.get("data") as Bitmap
                     bitmap?.let {
                         imageString = getStringImage(it)
+
                     }
+
+                    Picasso.with(this)
+                            .load(imageString)
+                            .into(imageJoin)
 
                     Toast.makeText(this, "S'ha fet bé from camera", Toast.LENGTH_LONG).show()
 
