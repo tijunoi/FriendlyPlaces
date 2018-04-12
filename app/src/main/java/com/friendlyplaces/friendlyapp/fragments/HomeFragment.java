@@ -142,6 +142,8 @@ public class HomeFragment extends Fragment implements
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+
+            //todo: crear nosaltres un botó que sigui com el de location i copipastear aixo a el onclick
             Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             if (location != null) {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
