@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.BuildConfig;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView emailDrawerTextview;
     private CircleImageView profilePictureCircleImageView;
     private TextView tv_appbar;
+    private LinearLayout linearProfile;
 
     //Firebase Instance variables
     //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
-
-
         tv_appbar = findViewById(R.id.clickable_appbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.navview);
-
         tv_appbar.setOnClickListener(this);
         //Mostra el botó de testing en el menu
         if (BuildConfig.FLAVOR.equals("dev"))
@@ -110,15 +110,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
         profilePictureCircleImageView = headerView.findViewById(R.id.profile_picture_navigation_drawer);
+        linearProfile = headerView.findViewById(R.id.linearProfile);
+
         navView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
 
                         boolean fragmentTransaction = false;
-                       android.support.v4.app.Fragment fragment = null;
+                        android.support.v4.app.Fragment fragment = null;
 
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.op_home:
                                 fragment = new HomeFragment();
                                 fragmentTransaction = true;
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Intent intent = new Intent(getApplicationContext(), TestingActivity.class);
                                 startActivity(intent);
                         }
-                        if (fragmentTransaction){
+                        if (fragmentTransaction) {
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.content_frame, fragment)
                                     .commit();
@@ -165,11 +167,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
         );
 
+        linearProfile.setOnClickListener(this);
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null){
+                if (user != null) {
                     //signed in
 
                     emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -227,7 +230,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        v.setAnimation(buttonClick);
-        OnTryingPickingAPlace();
+        switch (v.getId()) {
+            case R.id.clickable_appbar:
+                v.setAnimation(buttonClick);
+                OnTryingPickingAPlace();
+                break;
+            case R.id.linearProfile:
+                startActivity(new Intent(this, ProfileActivity.class));
+                break;
+        }
     }
 }
