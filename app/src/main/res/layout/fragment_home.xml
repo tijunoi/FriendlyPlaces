@@ -1,7 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment
         android:id="@+id/map"
@@ -10,16 +11,16 @@
         android:layout_height="match_parent"
         tools:context="com.friendlyplaces.friendlyapp.fragments.HomeFragment" />
 
-    <!--<android.support.design.widget.FloatingActionButton
-        android:id="@+id/quick_button"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/home_fragment_center_map_fab"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="#7C4DFF"
-        android:transitionName="@string/fabTransition"
-        />-->
+        app:fabSize="normal"
+        app:backgroundTint="@color/icons"
+        android:src="@drawable/ic_gps_fixed_black_24px"
+        android:elevation="8dp" />
 </android.support.design.widget.CoordinatorLayout>
 
     <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
