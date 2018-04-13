@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.JoinActivity;
 import com.friendlyplaces.friendlyapp.activities.MainActivity;
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,6 +32,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AuthenticationActivity extends AppCompatActivity implements LoginFragment.OnLoginFragmentInteractionListener, SignUpFragment.OnSignUpFragmentInteractionListener{
 
@@ -95,13 +98,11 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     @Override
     public void onLoginInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    startActivity(intent);
-                    finish();
+                    checkIfUserHasAlreadyCompletedProfile();
                 }
             }
         }).addOnCompleteListener(onCompleteListener);
@@ -118,7 +119,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RC_GOOGLE_SIGN_IN:
-                @SuppressLint("RestrictedApi") Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -146,9 +147,8 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                             //todo: HOLA AQUI VA LA CARD FP-46
                             //si el mail ya ha sido registrado en firebase se startea la main activity
                             //sino se redirige a la joinActivity
+                            checkIfUserHasAlreadyCompletedProfile();
 
-                            startActivity(intent);
-                            finish();
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -174,6 +174,37 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                 }
             }
         });
+    }
+
+    private void checkIfUserHasAlreadyCompletedProfile() {
+
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreConstants.COLLECTION_USERS)
+                .document(mAuth.getCurrentUser().getUid())
+                .get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                          @Override
+                                          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                              if (task.isSuccessful()) {
+                                                  if (task.getResult().exists()) {
+                                                      sendToHomescreen();
+                                                  } else {
+                                                      sendToJoinActivity();
+                                                  }
+                                              }
+                                          }
+                                      }
+                );
+    }
+
+    private void sendToHomescreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void sendToJoinActivity() {
+        Intent intent = new Intent(this, JoinActivity.class);
+        startActivity(intent);
     }
 
     /**
