@@ -257,7 +257,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 loginButtonFrame = (FrameLayout) nouButoLogin;
                                 ((ViewGroup) loginButtonFrame.getParent()).removeView(loginButtonFrame);
                                 parent.addView(loginButtonFrame, index);
-
+                                mProgressBar = loginButtonFrame.findViewById(R.id.login_progressbar);
+                                loginFramebuttonTextview = loginButtonFrame.findViewById(R.id.login_frame_textview);
                                 loginButtonFrame.setOnClickListener(LoginFragment.this);
 
                             }
