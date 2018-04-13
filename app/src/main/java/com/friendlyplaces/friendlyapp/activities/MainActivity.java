@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 OnTryingPickingAPlace();
                 break;
             case R.id.linearProfile:
-                //todo: se va al profile layout
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
         }
     }
