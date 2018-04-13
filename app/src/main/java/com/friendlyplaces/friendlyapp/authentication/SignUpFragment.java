@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -96,7 +97,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         registerFramebuttonTextview = v.findViewById(R.id.register_frame_textview);
         mProgressBar = v.findViewById(R.id.register_progressbar);
         registerButtonFrame.setOnClickListener(this);
-        reveal = v.findViewById(R.id.reveal_login_view);
         //inputUsername = (EditText)
         // Button btSignUp = (Button) v.findViewById(R.id.bt_register_crear_cuenta);
         //btSignUp.setOnClickListener(this);
@@ -176,6 +176,22 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                                         }
                                     });
                                     revealAnimator.start();
+                                } else {
+                                    //TODO: organizar y hacer legible (ask Nil)
+
+
+                                    ViewGroup parent = (ViewGroup) registerButtonFrame.getParent();
+                                    Snackbar.make(parent, "Ya existe una cuenta con este email o no hay internet", Snackbar.LENGTH_LONG).show();
+                                    int index = parent.indexOfChild(registerButtonFrame);
+                                    View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false);
+                                    View nouButoLogin = v.findViewById(R.id.frame_button_register);
+                                    parent.removeView(registerButtonFrame);
+                                    registerButtonFrame = (FrameLayout) nouButoLogin;
+                                    ((ViewGroup) registerButtonFrame.getParent()).removeView(registerButtonFrame);
+                                    parent.addView(registerButtonFrame, index);
+
+                                    registerButtonFrame.setOnClickListener(SignUpFragment.this);
+
                                 }
                             }
                         };
