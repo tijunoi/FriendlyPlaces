@@ -237,6 +237,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     private fun goToHomescreen() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     //UTIL METHODS

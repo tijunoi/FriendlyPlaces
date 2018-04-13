@@ -189,9 +189,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                                     registerButtonFrame = (FrameLayout) nouButoLogin;
                                     ((ViewGroup) registerButtonFrame.getParent()).removeView(registerButtonFrame);
                                     parent.addView(registerButtonFrame, index);
-
+                                    mProgressBar = registerButtonFrame.findViewById(R.id.register_progressbar);
+                                    registerFramebuttonTextview = registerButtonFrame.findViewById(R.id.register_frame_textview);
                                     registerButtonFrame.setOnClickListener(SignUpFragment.this);
-
                                 }
                             }
                         };
