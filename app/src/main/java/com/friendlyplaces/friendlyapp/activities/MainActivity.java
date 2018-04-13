@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.85F);
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                 return true;
             case R.id.action_search:
                 //al on click de abajo hacer lo mismo
-
+                OnTryingPickingAPlace();
                 return true;
         }
 
@@ -228,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
 
     @Override
     public void onClick(View v) {
-
+        v.setAnimation(buttonClick);
+        OnTryingPickingAPlace();
     }
 }

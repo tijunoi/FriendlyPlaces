@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment implements
 
     // Declare a variable for the cluster manager.
     private ClusterManager<FriendlyPlace> mClusterManager;
+
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
