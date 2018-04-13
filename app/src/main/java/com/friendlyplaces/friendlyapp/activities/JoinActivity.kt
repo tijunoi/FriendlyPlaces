@@ -1,6 +1,7 @@
 package com.friendlyplaces.friendlyapp.activities
 
 import android.Manifest
+
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -29,10 +30,10 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-
 /*
 0 gay
 1 lesb
@@ -43,8 +44,91 @@ import java.io.IOException
 6 othters
  */
 class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemSelectedListener {
-    override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    //FIELDS
+
+    val GET_FROM_GALLERY = 3
+    val GET_FROM_CAMERA = 4
+    lateinit var friendlyUser: FriendlyUser
+    var bitmap: Bitmap? = null
+
+
+    var imageString: String? = null
+
+    private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
+
+    private var userHasChosenNewImage: Boolean = false
+
+    //LIFECYCLE METHODS
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_join)
+
+        register_button.setOnClickListener(this)
+        imageJoin.setOnClickListener(this)
+        et_name.setText(FirebaseAuth.getInstance().currentUser?.displayName)
+
+        Picasso.get().load(FirebaseAuth.getInstance().currentUser?.photoUrl).into(imageJoin)
+
+        val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
+        sp_sex_orientation.adapter = orienAdapter
+        sp_sex_orientation.onItemSelectedListener = this
+
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode == RESULT_OK) {
+
+            userHasChosenNewImage = true
+            when (requestCode) {
+                GET_FROM_GALLERY -> if (data != null) {
+                    val contentURI = data.data
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI)
+                        bitmap?.let {
+                            imageString = getStringImage(it)
+                        }
+                        uploadPhotoToFirebase()
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                GET_FROM_CAMERA -> {
+                    bitmap = data!!.extras!!.get("data") as Bitmap
+                    bitmap?.let {
+                        imageString = getStringImage(it)
+                        val imageview = findViewById<CircleImageView>(R.id.imageJoin)
+                        uploadPhotoToFirebase()
+                    }
+
+
+                    //photoRequestMethod()
+                }
+            }
+        }
+    }
+
+    //IMPLEMENTED METHODS FROM INTERFACES
+
+    override fun onClick(view: View?) {
+        when (view?.getId()) {
+            R.id.register_button -> {
+                if (checkearDatosNotEmpty()) {
+                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
+                    setProfileValuesToUser(friendlyUser)
+                }
+            }
+            R.id.imageJoin -> {
+                view.startAnimation(AlphaAnimation(1f, 0.85f))
+                checkPermisionCamera()
+            }
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -56,31 +140,21 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         }
     }
 
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.register_button -> {
-                if (checkearDatosNotEmpty()) {
-                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
-                    setProfileValuesToUser(friendlyUser)
-                    uploadPhotoToFirebase()
-                }
-            }
-            R.id.imageJoin -> {
-                view.startAnimation(AlphaAnimation(1f, 0.85f))
-                checkPermisionCamera()
-            }
-        }
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
+
+    //IMAGEN PROCESS METHODS
 
     fun uploadPhotoToFirebase() {
 
         val storage = FirebaseStorage.getInstance()
 
-        val imageReference = storage.getReference().child("profilePictures/" + FirebaseAuth.getInstance().currentUser + ".jpg")
+        val imageReference = storage.reference.child("profilePictures/" + FirebaseAuth.getInstance().currentUser?.uid + ".jpg")
 
 
         val baos = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
         val uploadTask = imageReference.putBytes(data)
@@ -91,18 +165,17 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         })
     }
 
+
     fun setearImagenPerfilUserFirebase(uri: Uri) {
 
         val profileChangeRequest = UserProfileChangeRequest.Builder()
-                .setDisplayName(friendlyUser.username) //We also set the screen name for the user. We know it's not really well documented
                 .setPhotoUri(uri)
                 .build()
 
-
         FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
             if (it.isSuccessful) {
-                Log.i("USERPROFILEUPDATE", "Updatejat correctament")
-                setProfileValuesToUser(friendlyUser)
+                Log.i("FirebaseAuth UserUpdate", "Updatejat correctament")
+                Picasso.get().load(FirebaseAuth.getInstance().currentUser!!.photoUrl).into(imageJoin)
             }
         })
     }
@@ -130,7 +203,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             sp_sex_orientation.requestFocus()
             requiredConditions = false
         }
-        if (bitmap == null) {
+        if (FirebaseAuth.getInstance().currentUser!!.photoUrl == null) {
             requiredConditions = false
         }
         if (requiredConditions) {
@@ -140,15 +213,25 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         return requiredConditions
     }
 
+    //JOIN METHODS
+
     private fun setProfileValuesToUser(user: FriendlyUser) {
-        FirebaseFirestore.getInstance()
-                .collection(FirestoreConstants.COLLECTION_USERS)
-                .document(user.uid)
-                .set(user)
-                .addOnCompleteListener({
-                    if (it.isSuccessful) goToHomescreen()
-                    else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
-                })
+        val profileChangeRequest = UserProfileChangeRequest.Builder()
+                .setDisplayName(user.username)
+                .build()
+
+        FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
+            if (it.isSuccessful) {
+                FirebaseFirestore.getInstance()
+                        .collection(FirestoreConstants.COLLECTION_USERS)
+                        .document(user.uid)
+                        .set(user)
+                        .addOnCompleteListener({
+                            if (it.isSuccessful) goToHomescreen()
+                            else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                        })
+            }
+        })
     }
 
     private fun goToHomescreen() {
@@ -156,27 +239,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         startActivity(intent)
     }
 
-    val GET_FROM_GALLERY = 3
-    val GET_FROM_CAMERA = 4
-
-    lateinit var friendlyUser: FriendlyUser
-    var bitmap: Bitmap? = null
-    var imageString: String? = null
-    private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_join)
-
-        register_button.setOnClickListener(this)
-        imageJoin.setOnClickListener(this)
-
-        val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
-        sp_sex_orientation.adapter = orienAdapter
-        sp_sex_orientation.onItemSelectedListener = this
-
-    }
+    //UTIL METHODS
 
     private fun checkPermisionCamera() {
 
@@ -211,55 +274,10 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         startActivityForResult(galleryIntent, GET_FROM_GALLERY)
     }
 
+
     private fun takePhotoFromCamera() {
         val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, GET_FROM_CAMERA)
-    }
-
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                GET_FROM_GALLERY -> if (data != null) {
-                    val contentURI = data.data
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI)
-
-                        bitmap?.let {
-                            imageString = getStringImage(it)
-                        }
-
-                        Picasso.get()
-                                .load(imageString)
-                                .into(imageJoin)
-
-                        Toast.makeText(this, "S'ha fet bé from gallery", Toast.LENGTH_LONG).show()
-                        //photoRequestMethod()
-                        //imageString sería lo que enviarías a Firebase para guardar la foto de usuario en la database
-
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
-                    }
-
-                }
-                GET_FROM_CAMERA -> {
-                    bitmap = data!!.extras!!.get("data") as Bitmap
-                    bitmap?.let {
-                        imageString = getStringImage(it)
-
-                    }
-
-                    Picasso.get()
-                            .load(imageString)
-                            .into(imageJoin)
-
-                    Toast.makeText(this, "S'ha fet bé from camera", Toast.LENGTH_LONG).show()
-
-                    //photoRequestMethod()
-                }
-            }
-        }
     }
 
     private fun getStringImage(bmp: Bitmap): String {
