@@ -1,8 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
@@ -37,7 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnPlacePickedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Constants
     public static final int RC_SIGN_IN = 1;
@@ -173,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
                     //signed in
 
                     emailDrawerTextview.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                    Picasso.with(MainActivity.this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(profilePictureCircleImageView);
+                    Picasso.get().load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(profilePictureCircleImageView);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
                     startActivity(intent);
@@ -216,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnPl
         }
     }
 
-    @Override
     public void OnTryingPickingAPlace() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {

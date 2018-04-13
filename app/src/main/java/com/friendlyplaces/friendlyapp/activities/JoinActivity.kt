@@ -196,7 +196,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         pictureDialog.setTitle("Selecciona una opción")
         val pictureDialogItems = arrayOf("Hacer una foto", "Elegir una foto de tu galería")
 
-        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+        pictureDialog.setItems(pictureDialogItems) { _, which ->
             when (which) {
                 1 -> choosePhotoFromGallery()
                 0 -> takePhotoFromCamera()
@@ -229,7 +229,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                             imageString = getStringImage(it)
                         }
 
-                        Picasso.with(this)
+                        Picasso.get()
                                 .load(imageString)
                                 .into(imageJoin)
 
@@ -250,7 +250,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
                     }
 
-                    Picasso.with(this)
+                    Picasso.get()
                             .load(imageString)
                             .into(imageJoin)
 

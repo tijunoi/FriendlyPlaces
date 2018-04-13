@@ -10,8 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        //resConfigs auto perque agafi els strings del idioma que correspon (translations) requerti per FirebaseUI
-        resConfigs "auto"
     }
     buildTypes {
         release {
@@ -26,16 +24,12 @@ android {
             versionCode 1
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-            //resConfigs auto perque agafi els strings del idioma que correspon (translations) requerti per FirebaseUI
-            resConfigs "auto"
         }
         production {
             applicationId "com.friendlyplaces.friendlyapp"
             versionCode 1
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-            //resConfigs auto perque agafi els strings del idioma que correspon (translations) requerti per FirebaseUI
-            resConfigs "auto"
         }
     }
     buildToolsVersion '27.0.3'
@@ -64,15 +58,15 @@ dependencies {
         transitive = true
     }
     implementation 'com.github.apl-devs:appintro:v4.2.3'
-    //FirebaseAuth UI. Ha d'anar a la par amb la versio de Firebase que correspon. Taula aqui: https://github.com/firebase/FirebaseUI-Android
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.google.firebase:firebase-storage:12.0.1'
-
-
+    implementation 'com.android.support:exifinterface:27.1.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
 

@@ -10,6 +10,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +25,8 @@ import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.friendlyplaces.friendlyapp.utilities.MarkerColorUtil;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,6 +47,10 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,11 +65,14 @@ public class HomeFragment extends Fragment implements
     GoogleMap mMap;
     Fragment mapFragment;
     FragmentManager fmanager;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+
     //
     //
-    // FloatingActionButton floatingActionButton;
+    @BindView(R.id.home_fragment_center_map_fab)
+    FloatingActionButton centerLocationFab;
     public static final int PLACE_PICKER_REQUEST = 1;
-    OnPlacePickedListener mOnPlacePickedListener;
 
     // Declare a variable for the cluster manager.
     private ClusterManager<FriendlyPlace> mClusterManager;
@@ -76,8 +87,15 @@ public class HomeFragment extends Fragment implements
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
         SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
         supportmapfragment.getMapAsync(this);
+        ButterKnife.bind(this, v);
         return v;
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
     /**
@@ -109,17 +127,6 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnPlacePickedListener) {
-            mOnPlacePickedListener = (OnPlacePickedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -129,34 +136,8 @@ public class HomeFragment extends Fragment implements
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         if (mMap.isMyLocationEnabled()) {
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
 
-            if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-
-            //todo: crear nosaltres un botó que sigui com el de location i copipastear aixo a el onclick
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            if (location != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                        .zoom(17)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                        .build();                   // Creates a CameraPosition from the builder
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-
+            centerMapToUserLocation();
             // Initialize the manager with the context and the map.
             // (Activity extends context, so we can pass 'this' in the constructor.)
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
@@ -210,6 +191,37 @@ public class HomeFragment extends Fragment implements
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
+    @OnClick(R.id.home_fragment_center_map_fab)
+    //El metode seria privat, pero per utilitzar ButterKnife,
+    public void centerMapToUserLocation() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        //Si no te els permisos de ubicacio els demana el botó no fa res i ja esta
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if (location != null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                            .zoom(17)
+                            .tilt(0)
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                } else {
+                    Snackbar.make(mapFragment.getView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -226,21 +238,6 @@ public class HomeFragment extends Fragment implements
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            enableMyLocation();
-        } else {
-            getActivity().finish();
-        }
-    }
 
     @Override
     public void onPoiClick(PointOfInterest pointOfInterest) {
@@ -293,10 +290,6 @@ public class HomeFragment extends Fragment implements
         startActivity(intent);
     }
 
-
-    public interface OnPlacePickedListener {
-        void OnTryingPickingAPlace();
-    }
 
     public class FriendlyPlaceClusterItemRenderer extends DefaultClusterRenderer<FriendlyPlace> {
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
