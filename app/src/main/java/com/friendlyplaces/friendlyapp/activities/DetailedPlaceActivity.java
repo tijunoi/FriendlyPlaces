@@ -34,13 +34,13 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.varunest.sparkbutton.SparkButton;
 
 public class DetailedPlaceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CharSequence placeUbication, placePhone;
     private Float placeRate;
     private TextView tvUbi, tvPhone;
-    private RatingBar rbStars;
     private GeoDataClient geoDataClient;
     private PlacePhotoMetadataResponse mPlacePhotoMetadataResponse;
     private String name, id;
@@ -48,6 +48,8 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     private FloatingActionButton mFab;
     private Place mPlace;
     private FriendlyPlace friendlyPlace;
+
+    private SparkButton likeButton, dislikeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +72,10 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         tvUbi = findViewById(R.id.det_ubicacion);
         tvPhone = findViewById(R.id.det_num_phone);
-        rbStars = findViewById(R.id.ratingBar);
         geoDataClient = Places.getGeoDataClient(this, null);
+        likeButton = findViewById(R.id.like_button);
+        dislikeButton = findViewById(R.id.dislike_button);
+
         Place place;
 
         //con el id hago una query a la api de google places i seteo las cosis
@@ -93,8 +97,8 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
                     tvUbi.setText(placeUbication);
                     tvPhone.setText(placePhone);
-                    rbStars.setIsIndicator(true);
-                    rbStars.setRating(placeRate);
+
+
 
                     Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
                 } else {
