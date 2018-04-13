@@ -5,9 +5,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
@@ -196,14 +193,13 @@ public class HomeFragment extends Fragment implements
     @OnClick(R.id.home_fragment_center_map_fab)
     //El metode seria privat, pero per utilitzar ButterKnife,
     public void centerMapToUserLocation() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
 
         //Si no te els permisos de ubicacio els demana el botó no fa res i ja esta
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
             return;
         }
+        enableMyLocation();
 
         mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
