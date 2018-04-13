@@ -17,7 +17,8 @@
             android:id="@+id/det_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_place_black_24dp" />
+            android:src="@drawable/ic_place_black_24dp"
+            android:tint="@color/secondary_text" />
 
         <TextView
             android:id="@+id/det_ubicacion"
@@ -37,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_phone_black_24dp"
+            android:tint="@color/secondary_text"
             app:layout_constraintTop_toBottomOf="@id/det_placeholder" />
 
         <TextView
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_assessment_black_24dp"
+            android:tint="@color/secondary_text"
             app:layout_constraintTop_toBottomOf="@id/det_phone_icon" />
 
         <TextView
@@ -70,66 +73,45 @@
             app:layout_constraintStart_toEndOf="@id/ag_puntuar"
             app:layout_constraintTop_toTopOf="@id/ag_puntuar" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:numStars="5"
-            android:stepSize="1.0"
-            app:layout_constraintStart_toStartOf="@id/ag_valorar"
-            app:layout_constraintTop_toBottomOf="@id/ag_valorar" />
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/like_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:sparkbutton_activeImage="@drawable/ic_thumb_up_active"
+            app:sparkbutton_inActiveImage="@drawable/ic_thumb_up_inactive"
+            app:sparkbutton_iconSize="30dp"
+            app:sparkbutton_primaryColor="@color/colorPrimary"
+            app:sparkbutton_secondaryColor="@color/colorPrimaryDark"
+            app:layout_constraintTop_toBottomOf="@id/ag_puntuar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            />
 
-        <!--<ImageView
-            android:id="@+id/star1"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_grade_black_24dp"
-            android:alpha="0.25"
-            app:layout_constraintStart_toStartOf="@id/ag_valorar"
-            app:layout_constraintTop_toBottomOf="@id/ag_valorar"/>
-        <ImageView
-            android:id="@+id/star2"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_grade_black_24dp"
-            android:alpha="0.25"
-            app:layout_constraintStart_toEndOf="@id/star1"
-            app:layout_constraintTop_toTopOf="@id/star1"/>
-        <ImageView
-            android:id="@+id/star3"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_grade_black_24dp"
-            android:alpha="0.25"
-            app:layout_constraintStart_toEndOf="@id/star2"
-            app:layout_constraintTop_toTopOf="@id/star1" />
-        <ImageView
-            android:id="@+id/star4"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_grade_black_24dp"
-            android:alpha="0.25"
-            app:layout_constraintStart_toEndOf="@id/star3"
-            app:layout_constraintTop_toTopOf="@id/star1"/>
-        <ImageView
-            android:id="@+id/star5"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_grade_black_24dp"
-            android:alpha="0.25"
-            app:layout_constraintStart_toEndOf="@id/star4"
-            app:layout_constraintTop_toTopOf="@id/star1" />-->
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/dislike_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:sparkbutton_activeImage="@drawable/ic_thumb_down_active"
+            app:sparkbutton_inActiveImage="@drawable/ic_thumb_down_inactive"
+            app:sparkbutton_iconSize="30dp"
+            app:sparkbutton_primaryColor="@color/redThumbDown"
+            app:sparkbutton_secondaryColor="@color/redThumbDownLight"
+            app:layout_constraintTop_toBottomOf="@id/ag_puntuar"
+            app:layout_constraintStart_toEndOf="@id/like_button"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            />
+
 
         <ImageView
             android:id="@+id/det_descripcion_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="24dp"
             android:src="@drawable/ic_description_black_24dp"
-            app:layout_constraintTop_toBottomOf="@id/ag_puntuar" />
+            android:tint="@color/secondary_text"
+            app:layout_constraintTop_toBottomOf="@id/like_button" />
 
         <TextView
             android:id="@+id/det_description_title"
@@ -150,14 +132,7 @@
             android:text="No hay opiniones. Sé el primero en escribir una!"
             app:layout_constraintTop_toBottomOf="@id/det_description_title" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Esto es para rellenar y que se vea el scroll.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc bibendum metus consectetur ex rutrum, in viverra nunc fermentum. Sed vitae consectetur lectus. Integer aliquam ullamcorper mattis. In ut metus nibh. Vestibulum ipsum sapien, congue vel risus at, cursus consectetur elit. Ut a lacinia leo. Proin id nibh at dui condimentum aliquet. Nulla auctor dapibus varius. Ut semper mattis nisl id tristique. Phasellus vitae mollis lectus. Quisque dignissim sapien non felis facilisis euismod."
-            app:layout_constraintTop_toBottomOf="@+id/box_opiniones" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>
