@@ -165,12 +165,14 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     @Override
     public void onRegisterInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener) {
         final Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     startActivity(intent);
                     finish();
+                } else {
+
                 }
             }
         });
