@@ -77,7 +77,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         tvUbi = findViewById(R.id.det_ubicacion);
         tvPhone = findViewById(R.id.det_num_phone);
 
-        geoDataClient = Places.getGeoDataClient(this, null);
+        geoDataClient = Places.getGeoDataClient(this);
         likeButton = findViewById(R.id.like_button);
         dislikeButton = findViewById(R.id.dislike_button);
 
@@ -130,7 +130,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     this,
                     TapTarget.forView(mFab,"Quieres añadir tu experiencia?","Pulsa este botón para añadir una reseña!")
                     // All options below are optional
-                    //.outerCircleColor(R.color.red)      // Specify a color for the outer circle
+                    .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
                     //.outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
                     //.targetCircleColor(R.color.white)   // Specify a color for the target circle
                     //.titleTextSize(20)                  // Specify the size (in sp) of the title text
@@ -144,7 +144,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     //.cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
                     //.tintTarget(true)                   // Whether to tint the target view's color
                     //.transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-                    //.icon(Drawable)                     // Specify a custom drawable to draw as the target
+                    .icon(getDrawable(R.drawable.ic_rate_review_black_24dp))// Specify a custom drawable to draw as the target
                     //.targetRadius(60),                  // Specify the target radius (in dp)
                     ,
                     new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
