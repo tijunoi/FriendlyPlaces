@@ -2,6 +2,7 @@ package com.friendlyplaces.friendlyapp.activities;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +24,9 @@ import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
+import com.friendlyplaces.friendlyapp.utilities.SharedPrefUtil;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -72,6 +76,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         tvUbi = findViewById(R.id.det_ubicacion);
         tvPhone = findViewById(R.id.det_num_phone);
+
         geoDataClient = Places.getGeoDataClient(this, null);
         likeButton = findViewById(R.id.like_button);
         dislikeButton = findViewById(R.id.dislike_button);
@@ -117,6 +122,41 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(this);
+
+        //TODO: Esto irá en un delay para que se muestre unos segundos depués de abrir la activity
+        //Está comentado para ir testeando
+        //if (!SharedPrefUtil.hasCompletedDetailedPlaceTutorial(this)) {
+            TapTargetView.showFor(
+                    this,
+                    TapTarget.forView(mFab,"Quieres añadir tu experiencia?","Pulsa este botón para añadir una reseña!")
+                    // All options below are optional
+                    //.outerCircleColor(R.color.red)      // Specify a color for the outer circle
+                    //.outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                    //.targetCircleColor(R.color.white)   // Specify a color for the target circle
+                    //.titleTextSize(20)                  // Specify the size (in sp) of the title text
+                    //.titleTextColor(R.color.white)      // Specify the color of the title text
+                    //.descriptionTextSize(10)            // Specify the size (in sp) of the description text
+                    //.descriptionTextColor(android.R.color.red)  // Specify the color of the description text
+                    //.textColor(android.R.color.blue)            // Specify a color for both the title and description text
+                    //.textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+                    //.dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                    //.drawShadow(true)                   // Whether to draw a drop shadow or not
+                    //.cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                    //.tintTarget(true)                   // Whether to tint the target view's color
+                    //.transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+                    //.icon(Drawable)                     // Specify a custom drawable to draw as the target
+                    //.targetRadius(60),                  // Specify the target radius (in dp)
+                    ,
+                    new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);      // This call is optional
+                            Snackbar.make(mFab, "Has pulsat! Enorabona pel retraso", Snackbar.LENGTH_LONG).show();
+                            SharedPrefUtil.setDetailedPlaceTutorialCompleted(DetailedPlaceActivity.this);
+                        }
+                    });
+        //}
+
 
     }
 
