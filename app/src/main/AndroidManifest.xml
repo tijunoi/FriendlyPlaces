@@ -76,6 +76,7 @@
             android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.review.ReviewActivity"></activity>
     </application>
 
 </manifest>
