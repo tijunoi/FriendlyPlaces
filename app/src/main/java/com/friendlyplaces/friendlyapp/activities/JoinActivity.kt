@@ -70,11 +70,16 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         imageJoin.setOnClickListener(this)
         et_name.setText(FirebaseAuth.getInstance().currentUser?.displayName)
 
-        Picasso.get().load(FirebaseAuth.getInstance().currentUser?.photoUrl).into(imageJoin)
 
         val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
         sp_sex_orientation.adapter = orienAdapter
         sp_sex_orientation.onItemSelectedListener = this
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Picasso.get().load(FirebaseAuth.getInstance().currentUser?.photoUrl).into(imageJoin)
 
     }
 
