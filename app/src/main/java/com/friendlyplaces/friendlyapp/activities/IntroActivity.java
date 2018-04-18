@@ -22,10 +22,13 @@ public class IntroActivity extends AppIntro  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addSlide(AppIntro2Fragment.newInstance("Bienvenido a Friendly Places", "Continua para aprender como funciona la app", R.drawable.ic_arrow_forward_white, getResources().getColor(R.color.colorAccent)));
-        addSlide(AppIntro2Fragment.newInstance("Slide 2", "Continua para aprender como funciona la app", R.drawable.ic_arrow_forward_white, getResources().getColor(android.R.color.holo_blue_dark)));
+        addSlide(AppIntro2Fragment.newInstance("Bienvenido a Friendly Places", "Continua para aprender como funciona la app", R.drawable.definitiu, getResources().getColor(R.color.colorAccent)));
+        addSlide(AppIntro2Fragment.newInstance("Paso 1", "Elige un sitio", R.drawable.ff_slide2, getResources().getColor(android.R.color.holo_blue_dark)));
         addSlide(AppIntro2Fragment.newInstance("Slide 3", "Awui se te pedirá tu ubicacion", R.drawable.ic_arrow_forward_white, getResources().getColor(android.R.color.holo_green_dark)));
 
+        //paso 2 captura del layout de la review
+        //paso 3 vota!
+        //paso 4 escribe tu reseña y ea ggwp
     }
 
 
