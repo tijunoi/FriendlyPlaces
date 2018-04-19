@@ -16,7 +16,7 @@ public class Review {
     private String placeId;
     private String comment;
     private Vote mVote;
-    private Date date;
+    private long timestamp;
 
     public enum Vote {
         POSITIVO(1), NEGATIVO(-1);
@@ -33,20 +33,23 @@ public class Review {
     }
 
 
-    public Review(String uid, String placeId, String comment, Vote vote, Date date) {
+    public Review() {
+    }
+
+    public Review(String uid, String placeId, String comment, Vote vote, long timestamp) {
         this.uid = uid;
         this.placeId = placeId;
         this.comment = comment;
         mVote = vote;
-        this.date = date;
+        this.timestamp = timestamp;
     }
 
-    public Date getDate() {
-        return date;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getUid() {
