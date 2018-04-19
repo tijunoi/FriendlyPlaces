@@ -131,4 +131,12 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="fabTransition">fabTransition</string>
+    <string name="slide1_title">Bienvenido a Friendly Places</string>
+    <string name="slide1_description">Continua para aprender como funciona la app</string>
+    <string name="slide2_title">Paso 1</string>
+    <string name="slide2_description">Elige un sitio</string>
+    <string name="slide3_title">Paso 2</string>
+    <string name="slide3_description">Dale al botón azul</string>
+    <string name="slide4_title">Paso 3</string>
+    <string name="slide4_description">Puntúa y sigue descubriendo nuevo sitios</string>
 </resources>

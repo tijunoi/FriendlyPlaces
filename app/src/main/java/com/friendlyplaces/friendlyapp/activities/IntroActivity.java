@@ -22,10 +22,10 @@ public class IntroActivity extends AppIntro  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addSlide(AppIntro2Fragment.newInstance("Bienvenido a Friendly Places", "Continua para aprender como funciona la app", R.drawable.definitiu, getResources().getColor(R.color.colorAccent)));
-        addSlide(AppIntro2Fragment.newInstance("Paso 1", "Elige un sitio", R.drawable.ff_slide2, getResources().getColor(android.R.color.holo_blue_dark)));
-        addSlide(AppIntro2Fragment.newInstance("Paso 2", "Dale al botón azul", R.drawable.ff_slide3, getResources().getColor(android.R.color.holo_green_dark)));
-        addSlide(AppIntro2Fragment.newInstance("Paso 3", "Puntúa y sigue descubriendo nuevo sitios", R.drawable.ic_pin_drop_black_24dp, getResources().getColor(android.R.color.holo_orange_dark)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide1_title), getString(R.string.slide1_description), R.drawable.definitiu, getResources().getColor(R.color.colorAccent)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide2_title), getString(R.string.slide2_description), R.drawable.ff_slide2, getResources().getColor(android.R.color.holo_blue_dark)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide3_title), getString(R.string.slide3_description), R.drawable.ff_slide3, getResources().getColor(android.R.color.holo_green_dark)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide4_title), getString(R.string.slide4_description), R.drawable.ic_pin_drop_black_24dp, getResources().getColor(android.R.color.holo_orange_dark)));
 
         //paso 2 captura del layout de la review
         //paso 3 vota!
