@@ -11,6 +11,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
@@ -36,12 +37,17 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
 import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.varunest.sparkbutton.SparkButton;
 
-public class DetailedPlaceActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailedPlaceActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
     private CharSequence placeUbication, placePhone;
     private Float placeRate;
@@ -55,6 +61,11 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     private FriendlyPlace friendlyPlace;
 
     private SparkButton likeButton, dislikeButton;
+
+
+    //------ MAP FRAGMENT PROPERTIES
+    GoogleMap mMap;
+    SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +115,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     tvUbi.setText(placeUbication);
                     tvPhone.setText(placePhone);
 
-
+                    setUpMap();
 
                     Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
                 } else {
@@ -161,6 +172,11 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private void setUpMap() {
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detailed_place_map_fragment);
+        mapFragment.getMapAsync(this);
+    }
+
     private void getPhotos() {
         final Task<PlacePhotoMetadataResponse> photoMetadataResponse = geoDataClient.getPlacePhotos(id);
         photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
@@ -213,5 +229,15 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setAllGesturesEnabled(false);
+        mMap.getUiSettings().setCompassEnabled(false);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(friendlyPlace.getLatLng(),17.0f));
+        mMap.addMarker(new MarkerOptions().position(friendlyPlace.getLatLng()));
     }
 }
