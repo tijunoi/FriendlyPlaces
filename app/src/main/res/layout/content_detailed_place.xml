@@ -132,7 +132,14 @@
             android:text="No hay opiniones. Sé el primero en escribir una!"
             app:layout_constraintTop_toBottomOf="@id/det_description_title" />
 
-
+        <fragment
+            app:layout_constraintTop_toBottomOf="@id/box_opiniones"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/detailed_place_map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            tools:context="com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>

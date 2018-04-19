@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment implements
 
     GoogleMap mMap;
     Fragment mapFragment;
-    FragmentManager fmanager;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
 
