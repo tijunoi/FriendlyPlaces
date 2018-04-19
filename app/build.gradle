@@ -58,7 +58,7 @@ dependencies {
         transitive = true
     }
     implementation 'com.github.apl-devs:appintro:v4.2.3'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.40"
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
