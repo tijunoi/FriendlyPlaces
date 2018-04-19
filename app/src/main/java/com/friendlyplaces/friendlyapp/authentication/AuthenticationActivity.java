@@ -3,6 +3,7 @@ package com.friendlyplaces.friendlyapp.authentication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -21,6 +22,7 @@ import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.JoinActivity;
 import com.friendlyplaces.friendlyapp.activities.MainActivity;
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +41,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
     public static final int RC_GOOGLE_SIGN_IN = 3736;
     private FirebaseAuth mAuth;
+    private SpinKitView spinKit;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -85,6 +88,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        spinKit = findViewById(R.id.spin_kit_authentication);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -111,6 +115,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     @Override
     public void onLoginWithGoogleButtonPressed() {
         @SuppressLint("RestrictedApi") Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        spinKit.setVisibility(View.VISIBLE);
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
     }
 
@@ -153,6 +158,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("FBaseGoogleLoginError", "signInWithCredential:failure", task.getException());
+                            spinKit.setVisibility(View.GONE);
                             Snackbar.make(findViewById(R.id.main_content), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -189,8 +195,10 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                                           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                               if (task.isSuccessful()) {
                                                   if (task.getResult().exists()) {
+                                                      spinKit.setVisibility(View.GONE);
                                                       sendToHomescreen();
                                                   } else {
+                                                      spinKit.setVisibility(View.GONE);
                                                       sendToJoinActivity();
                                                   }
                                               }
@@ -202,11 +210,19 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     private void sendToHomescreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void sendToJoinActivity() {
         Intent intent = new Intent(this, JoinActivity.class);
         startActivity(intent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1000);
     }
 
     /**

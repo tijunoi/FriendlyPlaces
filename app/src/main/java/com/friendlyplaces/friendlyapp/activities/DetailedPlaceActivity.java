@@ -1,6 +1,7 @@
 package com.friendlyplaces.friendlyapp.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.activities.review.ReviewActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -164,13 +166,15 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-        db.collection("FriendlyPlaces").document(friendlyPlace.pid).set(friendlyPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
+       /* db.collection("FriendlyPlaces").document(friendlyPlace.pid).set(friendlyPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Snackbar.make(mFab, "Se ha subido los datos del sitio a Firebase", Snackbar.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
+
+       startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
     }
 }

@@ -52,6 +52,28 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit_authentication"
+            style="@style/SpinKitView.Large.FadingCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:SpinKit_Color="@color/colorAccent"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginBottom="70dp"
+
+            />
+    </LinearLayout>
+
+
+
 </android.support.design.widget.CoordinatorLayout>
 
     <!--app:layout_scrollFlags="scroll|enterAlways"-->

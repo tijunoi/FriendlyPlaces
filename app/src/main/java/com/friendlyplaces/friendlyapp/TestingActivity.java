@@ -28,19 +28,19 @@ public class TestingActivity extends AppCompatActivity {
 
         mButton = findViewById(R.id.button2);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        /*mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postReview();
             }
-        });
+        });*/
     }
 
-    private void postReview() {
+    /*private void postReview() {
         int rating = new Random().nextInt(((5 - 1) + 1) + 1);
 
 
-        Review review = new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), "ChIJkemk1oGYpBIRctBUxnisr4o", rating, "Mola mugullo");
+        //Review review = new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), "ChIJkemk1oGYpBIRctBUxnisr4o", rating, "Mola mugullo");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -55,5 +55,5 @@ public class TestingActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 }
