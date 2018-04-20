@@ -1,5 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("placeId", place.getId());
                 intent.putExtra("placeName", place.getName());
 
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
         }
     }
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 OnTryingPickingAPlace();
                 break;
             case R.id.linearProfile:
-                startActivity(new Intent(this, ProfileActivity.class));
+                startActivity(new Intent(this, ProfileActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
         }
     }

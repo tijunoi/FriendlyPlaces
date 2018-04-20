@@ -1,6 +1,5 @@
 package com.friendlyplaces.friendlyapp.activities.detailed_place;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,17 +11,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.review.ReviewActivity;
@@ -50,7 +46,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.storage.FirebaseStorage;
 import com.varunest.sparkbutton.SparkButton;
 
 import butterknife.BindView;
@@ -292,7 +287,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         switch (id) {
             case android.R.id.home:
-                finish();
+                finishAfterTransition();
                 break;
         }
 

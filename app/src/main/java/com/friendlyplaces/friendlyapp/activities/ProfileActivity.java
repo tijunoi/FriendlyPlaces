@@ -2,11 +2,13 @@ package com.friendlyplaces.friendlyapp.activities;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Spinner;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
@@ -33,7 +35,12 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setContentView(R.layout.activity_profile);
+        Slide slideTransition = new Slide(Gravity.START);
+        slideTransition.setDuration(250);
+        getWindow().setEnterTransition(slideTransition);
 
         android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbarProfile);
         setSupportActionBar(appbar);
@@ -79,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         switch (id) {
             case android.R.id.home:
-                finish();
+                finishAfterTransition();
                 break;
         }
 
