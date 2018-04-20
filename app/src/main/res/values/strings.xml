@@ -54,4 +54,6 @@
     <string name="Step1_tabTitle">Puntúa</string>
     <string name="Step2_tabTitle">Deja un comentario</string>
     <string name="Step3_tabTable">Tu valoración</string>
+    <string name="opiniones_detailed_title">Opiniones</string>
+    <string name="no_opinion">No hay opiniones. Sé el primero en escribir una!</string>
 </resources>

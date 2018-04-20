@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -67,6 +68,8 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.like_button) SparkButton likeButton;
     @BindView(R.id.dislike_button) SparkButton dislikeButton;
     @BindView(R.id.box_opiniones) TextView tvOpiniones;
+    @BindView(R.id.voteLike) TextView numLike;
+    @BindView(R.id.voteDislike) TextView numDislike;
 
     //------ Properties varias
     private CharSequence placeUbication;
@@ -92,14 +95,15 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ButterKnife.bind(this);
         model = ViewModelProviders.of(this).get(DetailedPlaceViewModel.class);
 
         //GET DATA FROM INTENT
         name = getIntent().getStringExtra("placeName");
         id = getIntent().getStringExtra("placeId");
-
-
 
         geoDataClient = Places.getGeoDataClient(this);
         getPhotos();
@@ -108,6 +112,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
+
 
         mFab.setOnClickListener(this);
 
@@ -211,7 +216,12 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     private void updateUI() {
         System.out.println(model.getFriendlyPlace().address);
         tvUbi.setText(model.getFriendlyPlace().address);
-
+        likeButton.setChecked(false);
+        likeButton.setEnabled(false);
+        dislikeButton.setChecked(false);
+        dislikeButton.setEnabled(false);
+        numLike.setText(String.valueOf(model.getFriendlyPlace().positiveVotes));
+        numDislike.setText(String.valueOf(model.getFriendlyPlace().negativeVotes));
         tvOpiniones.setText("Hay " + String.valueOf(model.getFriendlyPlace().reviewCount) + " opiniones.");
     }
 
@@ -219,6 +229,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detailed_place_map_fragment);
         mapFragment.getMapAsync(this);
     }
+
 
     private void getPhotos() {
         final Task<PlacePhotoMetadataResponse> photoMetadataResponse = geoDataClient.getPlacePhotos(id);
@@ -272,5 +283,19 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setCompassEnabled(false);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(),17.0f));
         mMap.addMarker(new MarkerOptions().position(model.getFriendlyPlace().getLatLng()));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
