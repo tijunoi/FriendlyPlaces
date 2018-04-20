@@ -55,4 +55,5 @@
     <string name="Step2_tabTitle">Deja un comentario</string>
     <string name="Step3_tabTable">Tu valoración</string>
     <string name="sign_up_button_text">CREAR CUENTA</string>
+    <string name="fragment_login_button_text">INICIAR SESIÓN</string>
 </resources>
