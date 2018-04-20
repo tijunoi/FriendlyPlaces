@@ -2,6 +2,7 @@ package com.friendlyplaces.friendlyapp.fragments;
 
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -130,6 +132,7 @@ public class HomeFragment extends Fragment implements
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         // mMap.setOnPoiClickListener(this);
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         if (mMap.isMyLocationEnabled()) {
@@ -207,7 +210,7 @@ public class HomeFragment extends Fragment implements
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                            .zoom(17)
+                            .zoom(16)
                             .tilt(0)
                             .build();                   // Creates a CameraPosition from the builder
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -282,8 +285,7 @@ public class HomeFragment extends Fragment implements
         //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
         intent.putExtra("placeId", friendlyPlace.pid);
         intent.putExtra("placeName", friendlyPlace.name);
-
-        startActivity(intent);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
 
