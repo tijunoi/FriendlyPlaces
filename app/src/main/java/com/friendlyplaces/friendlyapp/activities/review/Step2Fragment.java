@@ -42,14 +42,16 @@ public class Step2Fragment extends Fragment implements BlockingStep{
 
         ButterKnife.bind(this, v);
 
+
+
         return v;
     }
 
     @Nullable
     @Override
     public VerificationError verifyStep() {
-        if (addReview.getText().toString().trim().length() < 50){
-            new VerificationError("Debes escribir una reseña de 50 caracteres como mínimo");
+        if (addReview.getText().toString().trim().length() < 40){
+            return new VerificationError("Debes escribir una reseña de 40 caracteres como mínimo");
         }
         return null;
     }
@@ -61,11 +63,13 @@ public class Step2Fragment extends Fragment implements BlockingStep{
 
     @Override
     public void onError(@NonNull VerificationError error) {
-        Snackbar.make(addReview.getRootView(), error.getErrorMessage(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), error.getErrorMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+
+
         AddReviewViewModel model = ViewModelProviders.of(getActivity()).get(AddReviewViewModel.class);
 
         model.getReview().setComment(addReview.getText().toString().trim());

@@ -40,6 +40,7 @@ public class ReviewActivity extends AppCompatActivity implements StepperLayout.S
     @Override
     public void onStepSelected(int newStepPosition) {
 
+
     }
 
     @Override
