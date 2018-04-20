@@ -17,8 +17,6 @@ public class FriendlyPlace implements ClusterItem {
     public int negativeVotes;
     public int reviewCount;
     public String address;
-
-
     public GeoPoint location;
 
     public FriendlyPlace() {

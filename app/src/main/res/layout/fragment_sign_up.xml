@@ -71,22 +71,21 @@
             <FrameLayout
                 android:id="@+id/frame_button_register"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="46dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/login_fancy_button"
                 android:clickable="true"
                 android:elevation="4dp"
                 android:focusable="true"
-                android:layout_marginBottom="6dp"
-                android:foreground="?selectableItemBackground">
+                android:layout_marginBottom="6dp">
 
                 <TextView
                     android:id="@+id/register_frame_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="CREAR CUENTA"
+                    android:text="@string/sign_up_button_text"
                     android:textColor="#ffffff" />
 
                 <ProgressBar
@@ -96,6 +95,7 @@
                     android:layout_gravity="center"
                     android:visibility="invisible" />
             </FrameLayout>
+
         </LinearLayout>
     </ScrollView>
 

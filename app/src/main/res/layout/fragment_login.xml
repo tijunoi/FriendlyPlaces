@@ -90,15 +90,14 @@
                 android:background="@drawable/login_fancy_button"
                 android:clickable="true"
                 android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground">
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/login_frame_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="INICIAR SESIÓN"
+                    android:text="@string/fragment_login_button_text"
                     android:textColor="#ffffff" />
 
                 <ProgressBar
