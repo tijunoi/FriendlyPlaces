@@ -105,15 +105,14 @@
                 android:background="@drawable/login_fancy_button"
                 android:clickable="true"
                 android:elevation="4dp"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground">
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/register_frame_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="CREAR CUENTA"
+                    android:text="@string/sign_up_button_text"
                     android:textColor="#ffffff" />
 
                 <ProgressBar
@@ -123,18 +122,6 @@
                     android:layout_gravity="center"
                     android:visibility="invisible" />
             </FrameLayout>
-            <!--<Button
-                android:id="@+id/bt_register_crear_cuenta"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="40dp"
-                android:background="#7C4DFF"
-                android:outlineProvider="bounds"
-                android:text="crear cuenta"
-                android:textColor="#fff" />-->
-
 
         </LinearLayout>
     </ScrollView>
