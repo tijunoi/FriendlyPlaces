@@ -88,10 +88,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        // Inflate the layout for this fragment
-        //login_button = (Button) v.findViewById(R.id.bt_login_iniciar_sesion);
-        //login_button.setOnClickListener(this);
-
 
         loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
         loginWithGoogleButton.setOnClickListener(this);
@@ -168,31 +164,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-           /* case R.id.bt_login_iniciar_sesion:
-                //todo: optimize, check conditions in a method
-
-                boolean requiredConditions = true;
-                if (et_password.getText().toString().equals("")) {
-                    et_password.setError("La contraseña no puede estar vacía");
-                    et_password.requestFocus();
-                    requiredConditions = false;
-                }
-
-                if (!isEmailValid(et_email.getText().toString())) {
-                    et_email.setError("Introduce un email válido");
-                    et_email.requestFocus();
-                    requiredConditions = false;
-                }
-                if (et_email.getText().toString().trim().isEmpty()) {
-                    et_email.setError("Introduce tu email");
-                    et_email.requestFocus();
-                    requiredConditions = false;
-                }
-
-                if (requiredConditions && mListener != null) {
-                    //mListener.onLoginInteraction(et_email.getText().toString().trim(), et_password.getText().toString(), );
-                }
-                break;*/
             case R.id.bt_login_login_google:
                 mListener.onLoginWithGoogleButtonPressed();
                 break;

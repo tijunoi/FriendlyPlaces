@@ -37,13 +37,8 @@ import com.google.firebase.auth.AuthResult;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
 
     private EditText inputEmail, inputPassword, inputConfirmedPass;
-    private Button btSignUp, btResetPass;
     private String email, password, confirmedPass;
 
     //Fancy button vars
@@ -52,9 +47,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     ProgressBar mProgressBar;
     View reveal;
 
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
 
     private OnSignUpFragmentInteractionListener mListener;
 
@@ -62,13 +54,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        // fragment.setArguments(args);
         return fragment;
     }
 
@@ -76,12 +64,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    // TODO: HEM DE CREAR UN CAMP USERNAME, OSEA LLENARLO AQUI QUE YATA EN EL LAYOUT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,9 +82,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         registerFramebuttonTextview = v.findViewById(R.id.register_frame_textview);
         mProgressBar = v.findViewById(R.id.register_progressbar);
         registerButtonFrame.setOnClickListener(this);
-        //inputUsername = (EditText)
-        // Button btSignUp = (Button) v.findViewById(R.id.bt_register_crear_cuenta);
-        //btSignUp.setOnClickListener(this);
+
 
         return v;
     }
