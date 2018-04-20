@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -44,7 +43,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.ui.IconGenerator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -290,8 +288,6 @@ public class HomeFragment extends Fragment implements
 
 
     public class FriendlyPlaceClusterItemRenderer extends DefaultClusterRenderer<FriendlyPlace> {
-        private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
-
         @Override
         protected void onBeforeClusterItemRendered(FriendlyPlace item, MarkerOptions markerOptions) {
             BitmapDescriptor markerDescriptor = BitmapDescriptorFactory.defaultMarker(MarkerColorUtil.getColor(item));
