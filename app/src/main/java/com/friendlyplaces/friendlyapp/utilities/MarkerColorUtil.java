@@ -9,6 +9,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 public class MarkerColorUtil {
     public static float getColor(FriendlyPlace item) {
-        return (item.avgRating < 3) ? BitmapDescriptorFactory.HUE_ORANGE : BitmapDescriptorFactory.HUE_GREEN;
+        return (item.positiveVotes < item.negativeVotes) ? BitmapDescriptorFactory.HUE_ORANGE : BitmapDescriptorFactory.HUE_GREEN;
     }
 }

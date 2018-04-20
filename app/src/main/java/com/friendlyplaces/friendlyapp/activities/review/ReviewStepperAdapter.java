@@ -29,7 +29,7 @@ public class ReviewStepperAdapter extends AbstractFragmentStepAdapter {
                 final Step2Fragment step2 = new Step2Fragment();
                 return step2;
             case 2:
-                final Step1Fragment step3 = new Step1Fragment();
+                final Step3Fragment step3 = new Step3Fragment();
                 return step3;
             default:
                 return null;
@@ -49,15 +49,15 @@ public class ReviewStepperAdapter extends AbstractFragmentStepAdapter {
         switch (position) {
             case 0:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Titul 1") //can be a CharSequence instead
+                        .setTitle(R.string.Step1_tabTitle) //can be a CharSequence instead
                         .create();
             case 1:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Titul 2") //can be a CharSequence instead
+                        .setTitle(R.string.Step2_tabTitle) //can be a CharSequence instead
                         .create();
             case 2:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Titul 3") //can be a CharSequence instead
+                        .setTitle(R.string.Step3_tabTable) //can be a CharSequence instead
                         .create();
             default:
                 return new StepViewModel.Builder(context)

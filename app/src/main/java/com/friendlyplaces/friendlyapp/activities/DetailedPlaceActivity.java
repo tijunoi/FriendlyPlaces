@@ -107,7 +107,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     @SuppressLint("RestrictedApi") Place myPlace = places.get(0);
                     mPlace = myPlace;
 
-                    friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
+                    //friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
 
 
                     placeUbication = myPlace.getAddress();
@@ -241,7 +241,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(friendlyPlace.getLatLng(),17.0f));
-        mMap.addMarker(new MarkerOptions().position(friendlyPlace.getLatLng()));
+       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(friendlyPlace.getLatLng(),17.0f));
+       // mMap.addMarker(new MarkerOptions().position(friendlyPlace.getLatLng()));
     }
 }

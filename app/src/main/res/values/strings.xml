@@ -139,4 +139,7 @@
     <string name="slide3_description">Dale al botón azul</string>
     <string name="slide4_title">Paso 3</string>
     <string name="slide4_description">Puntúa y sigue descubriendo nuevo sitios</string>
+    <string name="Step1_tabTitle">Puntúa</string>
+    <string name="Step2_tabTitle">Deja un comentario</string>
+    <string name="Step3_tabTable">Resumen</string>
 </resources>

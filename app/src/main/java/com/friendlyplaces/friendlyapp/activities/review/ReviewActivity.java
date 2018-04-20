@@ -22,6 +22,7 @@ public class ReviewActivity extends AppCompatActivity implements StepperLayout.S
 
         //aixo es com el findbyid
         ButterKnife.bind(this);
+        stepperLayout.setShowErrorStateEnabled(true);
         stepperLayout.setAdapter(new ReviewStepperAdapter(getSupportFragmentManager(), this));
 
     }

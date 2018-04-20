@@ -19,7 +19,7 @@ public class Review {
     private long timestamp;
 
     public enum Vote {
-        POSITIVO(1), NEGATIVO(-1);
+        POSITIVO(1), NEGATIVO(1);
 
         int voto;
 
