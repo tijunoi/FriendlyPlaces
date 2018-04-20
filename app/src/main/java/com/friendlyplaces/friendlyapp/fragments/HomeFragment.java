@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.friendlyplaces.friendlyapp.R;
-import com.friendlyplaces.friendlyapp.activities.DetailedPlaceActivity;
+import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.friendlyplaces.friendlyapp.utilities.MarkerColorUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;

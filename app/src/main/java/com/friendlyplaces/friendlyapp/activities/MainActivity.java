@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.TestingActivity;
+import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
 import com.friendlyplaces.friendlyapp.fragments.NegativeFragment;
