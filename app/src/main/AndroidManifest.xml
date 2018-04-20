@@ -52,7 +52,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.DetailedPlaceActivity"
+            android:name=".activities.detailed_place.DetailedPlaceActivity"
             android:label="@string/title_activity_detailed_place"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SlideUpTransition" />

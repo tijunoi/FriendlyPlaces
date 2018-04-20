@@ -1,33 +1,32 @@
-package com.friendlyplaces.friendlyapp.activities;
+package com.friendlyplaces.friendlyapp.activities.detailed_place;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
-import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.review.ReviewActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
 import com.friendlyplaces.friendlyapp.utilities.SharedPrefUtil;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
@@ -45,25 +44,35 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
 import com.varunest.sparkbutton.SparkButton;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailedPlaceActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
-    private CharSequence placeUbication, placePhone;
-    private Float placeRate;
-    private TextView tvUbi, tvPhone;
+    //VIEWMODEL
+    DetailedPlaceViewModel model;
+
+    //Views
+    @BindView(R.id.det_ubicacion) TextView tvUbi;
+    @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.like_button) SparkButton likeButton;
+    @BindView(R.id.dislike_button) SparkButton dislikeButton;
+    @BindView(R.id.box_opiniones) TextView tvOpiniones;
+
+    //------ Properties varias
+    private CharSequence placeUbication;
     private GeoDataClient geoDataClient;
-    private PlacePhotoMetadataResponse mPlacePhotoMetadataResponse;
-    private String name, id;
-    private AppBarLayout appBarLayout;
-    private FloatingActionButton mFab;
-    private Place mPlace;
-    private FriendlyPlace friendlyPlace;
-
-    private SparkButton likeButton, dislikeButton;
-
+    private String name;
+    private String id;
 
     //------ MAP FRAGMENT PROPERTIES
     GoogleMap mMap;
@@ -83,95 +92,124 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ButterKnife.bind(this);
+        model = ViewModelProviders.of(this).get(DetailedPlaceViewModel.class);
+
+        //GET DATA FROM INTENT
         name = getIntent().getStringExtra("placeName");
         id = getIntent().getStringExtra("placeId");
 
-        Toast.makeText(this, name, Toast.LENGTH_LONG).show();
 
-        tvUbi = findViewById(R.id.det_ubicacion);
-        tvPhone = findViewById(R.id.det_num_phone);
 
         geoDataClient = Places.getGeoDataClient(this);
-        likeButton = findViewById(R.id.like_button);
-        dislikeButton = findViewById(R.id.dislike_button);
+        getPhotos();
+        checkIfPlaceExistsInFirestore();
 
-        Place place;
-
-        //con el id hago una query a la api de google places i seteo las cosis
-        Task<PlaceBufferResponse> placeById = geoDataClient.getPlaceById(id).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                if (task.isSuccessful()) {
-                    PlaceBufferResponse places = task.getResult();
-                    @SuppressLint("RestrictedApi") Place myPlace = places.get(0);
-                    mPlace = myPlace;
-
-                    //friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
-
-
-                    placeUbication = myPlace.getAddress();
-                    placePhone = myPlace.getPhoneNumber();
-                    placeRate = myPlace.getRating();
-
-                    tvUbi.setText(placeUbication);
-                    tvPhone.setText(placePhone);
-
-                    setUpMap();
-
-                    Log.i("TAGAGAPLACES", "Place found: " + myPlace.getName());
-                } else {
-                    Log.e("TAGAGAGPLACE", "Place no encontrada");
-                }
-                task.getResult().release();
-            }
-        });
-
-
-
-        appBarLayout = findViewById(R.id.app_bar);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
 
-        mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(this);
 
-        //TODO: Esto irá en un delay para que se muestre unos segundos depués de abrir la activity
-        //Está comentado para ir testeando
-        //if (!SharedPrefUtil.hasCompletedDetailedPlaceTutorial(this)) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showReviewTutorial();
+            }
+        },3000);
+
+    }
+
+    private void showReviewTutorial() {
+        if (!SharedPrefUtil.hasCompletedDetailedPlaceTutorial(this)) {
             TapTargetView.showFor(
                     this,
                     TapTarget.forView(mFab,"Quieres añadir tu experiencia?","Pulsa este botón para añadir una reseña!")
-                    // All options below are optional
-                    .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
-                    //.outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-                    //.targetCircleColor(R.color.white)   // Specify a color for the target circle
-                    //.titleTextSize(20)                  // Specify the size (in sp) of the title text
-                    //.titleTextColor(R.color.white)      // Specify the color of the title text
-                    //.descriptionTextSize(10)            // Specify the size (in sp) of the description text
-                    //.descriptionTextColor(android.R.color.red)  // Specify the color of the description text
-                    //.textColor(android.R.color.blue)            // Specify a color for both the title and description text
-                    //.textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-                    //.dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-                    .drawShadow(true)                   // Whether to draw a drop shadow or not
-                    //.cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-                    //.tintTarget(true)                   // Whether to tint the target view's color
-                    //.transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-                    .icon(getDrawable(R.drawable.ic_rate_review_black_24dp))// Specify a custom drawable to draw as the target
-                    //.targetRadius(60),                  // Specify the target radius (in dp)
+                            .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
+                            .dimColor(android.R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                            .drawShadow(true)                   // Whether to draw a drop shadow or not
+                            .icon(getDrawable(R.drawable.ic_rate_review_black_24dp))// Specify a custom drawable to draw as the target
                     ,
                     new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
                         @Override
                         public void onTargetClick(TapTargetView view) {
                             super.onTargetClick(view);      // This call is optional
-                            Snackbar.make(mFab, "Has pulsat! Enorabona pel retraso", Snackbar.LENGTH_LONG).show();
                             SharedPrefUtil.setDetailedPlaceTutorialCompleted(DetailedPlaceActivity.this);
                         }
                     });
-        //}
+        }
+    }
 
+    private void checkIfPlaceExistsInFirestore() {
+        FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES).document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    FriendlyPlace aux =  documentSnapshot.toObject(FriendlyPlace.class);
+                    model.getFriendlyPlace().pid = aux.pid;
+                    model.getFriendlyPlace().location = aux.location;
+                    model.getFriendlyPlace().name = aux.name;
+                    model.getFriendlyPlace().negativeVotes = aux.negativeVotes;
+                    model.getFriendlyPlace().positiveVotes = aux.positiveVotes;
+                    model.getFriendlyPlace().reviewCount = aux.reviewCount;
+                    updateUI();
+                    setUpMap();
+                } else {
+                    //getear de google maps y subirlo a firestore
+                    getPlaceFromGoogleMaps();
+                }
+            }
+        });
+    }
 
+    private void getPlaceFromGoogleMaps() {
+        //con el id hago una query a la api de google places i seteo las cosis
+        Task<PlaceBufferResponse> placeById = geoDataClient.getPlaceById(id).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                if (task.isSuccessful()) {
+                    PlaceBufferResponse places = task.getResult();
+                    Place myPlace = places.get(0);
+
+                    //friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
+                    model.getFriendlyPlace().name = String.valueOf(myPlace.getName());
+                    model.getFriendlyPlace().location = new GeoPoint(myPlace.getLatLng().latitude,myPlace.getLatLng().longitude);
+                    model.getFriendlyPlace().pid = myPlace.getId();
+                    model.getFriendlyPlace().reviewCount = 0;
+                    model.getFriendlyPlace().positiveVotes = 0;
+                    model.getFriendlyPlace().negativeVotes = 0;
+                    model.getFriendlyPlace().address = String.valueOf(myPlace.getAddress());
+
+                    updateUI();
+                    uploadPlaceDataToFirestore();
+
+                    //LOGS
+                    Log.i(DetailedPlaceActivity.class.getName(),"Place obtained from Google Places API");
+                    Log.i(DetailedPlaceActivity.class.getName(), "Place found: " + myPlace.getName());
+                } else {
+                    Log.e("DetailedPlaceERROR", "Place no encontrada");
+                }
+                task.getResult().release();
+            }
+        });
+    }
+
+    private void uploadPlaceDataToFirestore() {
+        FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES)
+                .document(model.getFriendlyPlace().pid)
+                .set(model.getFriendlyPlace())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) Log.i("DetailedPlaceAcitivty","Se ha subido el Place a Firestore");
+                        else Log.e("DetailedPlaceActivity","Error al subir el place a Firebase");
+                    }
+                });
+    }
+
+    private void updateUI() {
+        tvUbi.setText(model.getFriendlyPlace().address);
+        tvOpiniones.setText("Hay " + String.valueOf(model.getFriendlyPlace().reviewCount) + " opiniones.");
     }
 
     private void setUpMap() {
@@ -220,18 +258,6 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-       /* db.collection("FriendlyPlaces").document(friendlyPlace.pid).set(friendlyPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Snackbar.make(mFab, "Se ha subido los datos del sitio a Firebase", Snackbar.LENGTH_LONG).show();
-                }
-            }
-        });*/
-
        startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
     }
 
@@ -241,7 +267,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
-       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(friendlyPlace.getLatLng(),17.0f));
-       // mMap.addMarker(new MarkerOptions().position(friendlyPlace.getLatLng()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(),17.0f));
+        mMap.addMarker(new MarkerOptions().position(model.getFriendlyPlace().getLatLng()));
     }
 }

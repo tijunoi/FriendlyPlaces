@@ -5,4 +5,5 @@ package com.friendlyplaces.friendlyapp.utilities;
  */
 public class FirestoreConstants {
     public static final String COLLECTION_USERS = "users";
+    public static final String COLLECTION_FRIENDLYPLACES = "FriendlyPlaces";
 }
