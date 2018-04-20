@@ -26,32 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="4dp"
-            android:text="Ubicación"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/det_placeholder"
             app:layout_constraintTop_toTopOf="@id/det_placeholder" />
-
-
-        <ImageView
-            android:id="@+id/det_phone_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/ic_phone_black_24dp"
-            android:tint="@color/secondary_text"
-            app:layout_constraintTop_toBottomOf="@id/det_placeholder" />
-
-        <TextView
-            android:id="@+id/det_num_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="4dp"
-            android:text="823475"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/det_phone_icon"
-            app:layout_constraintTop_toTopOf="@id/det_phone_icon" />
-
 
         <ImageView
             android:id="@+id/ag_puntuar"
@@ -60,7 +37,7 @@
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_assessment_black_24dp"
             android:tint="@color/secondary_text"
-            app:layout_constraintTop_toBottomOf="@id/det_phone_icon" />
+            app:layout_constraintTop_toBottomOf="@id/det_ubicacion" />
 
         <TextView
             android:id="@+id/ag_valorar"
@@ -139,6 +116,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_marginTop="24dp"
             tools:context="com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity" />
     </android.support.constraint.ConstraintLayout>
 

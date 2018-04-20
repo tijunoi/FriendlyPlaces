@@ -152,6 +152,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     model.getFriendlyPlace().negativeVotes = aux.negativeVotes;
                     model.getFriendlyPlace().positiveVotes = aux.positiveVotes;
                     model.getFriendlyPlace().reviewCount = aux.reviewCount;
+                    model.getFriendlyPlace().address = aux.address;
                     updateUI();
                     setUpMap();
                 } else {
@@ -208,7 +209,9 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateUI() {
+        System.out.println(model.getFriendlyPlace().address);
         tvUbi.setText(model.getFriendlyPlace().address);
+
         tvOpiniones.setText("Hay " + String.valueOf(model.getFriendlyPlace().reviewCount) + " opiniones.");
     }
 
