@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -278,6 +279,12 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setCompassEnabled(false);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(),17.0f));
         mMap.addMarker(new MarkerOptions().position(model.getFriendlyPlace().getLatLng()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detailed_place,menu);
+        return true;
     }
 
     @Override
