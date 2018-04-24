@@ -215,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, DetailedPlaceActivity.class);
                 intent.putExtra("placeId", place.getId());
                 intent.putExtra("placeName", place.getName());
-
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                startActivity(intent);
+               // startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
         }
     }

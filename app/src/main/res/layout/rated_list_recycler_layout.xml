@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/like_recycler"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        app:sparkbutton_activeImage="@drawable/ic_thumb_up_active"
+        app:sparkbutton_iconSize="30dp"
+        app:sparkbutton_inActiveImage="@drawable/ic_thumb_up_inactive"
+        app:sparkbutton_primaryColor="@color/colorPrimary"
+        app:sparkbutton_secondaryColor="@color/colorPrimaryDark" />
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/dislike_recycler"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@color/redThumbDown"
+        app:sparkbutton_activeImage="@drawable/ic_thumb_down_active"
+        app:sparkbutton_iconSize="30dp"
+        app:sparkbutton_inActiveImage="@drawable/ic_thumb_down_inactive"
+        app:sparkbutton_primaryColor="@color/redThumbDown"
+        app:sparkbutton_secondaryColor="@color/redThumbDownLight" />
+
+    <TextView
+        android:id="@+id/namePlace_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:text="Nom Place"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
