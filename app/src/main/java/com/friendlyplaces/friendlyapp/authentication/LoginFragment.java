@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.utilities.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -163,6 +164,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Utils.preventTwoClick(v);
         switch (v.getId()){
             case R.id.bt_login_login_google:
                 mListener.onLoginWithGoogleButtonPressed();

@@ -25,6 +25,7 @@ import com.friendlyplaces.friendlyapp.activities.review.ReviewActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
 import com.friendlyplaces.friendlyapp.utilities.SharedPrefUtil;
+import com.friendlyplaces.friendlyapp.utilities.Utils;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -57,14 +58,22 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     DetailedPlaceViewModel model;
 
     //Views
-    @BindView(R.id.det_ubicacion) TextView tvUbi;
-    @BindView(R.id.app_bar) AppBarLayout appBarLayout;
-    @BindView(R.id.fab) FloatingActionButton mFab;
-    @BindView(R.id.like_button) SparkButton likeButton;
-    @BindView(R.id.dislike_button) SparkButton dislikeButton;
-    @BindView(R.id.box_opiniones) TextView tvOpiniones;
-    @BindView(R.id.voteLike) TextView numLike;
-    @BindView(R.id.voteDislike) TextView numDislike;
+    @BindView(R.id.det_ubicacion)
+    TextView tvUbi;
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+    @BindView(R.id.like_button)
+    SparkButton likeButton;
+    @BindView(R.id.dislike_button)
+    SparkButton dislikeButton;
+    @BindView(R.id.box_opiniones)
+    TextView tvOpiniones;
+    @BindView(R.id.voteLike)
+    TextView numLike;
+    @BindView(R.id.voteDislike)
+    TextView numDislike;
 
     //------ Properties varias
     private CharSequence placeUbication;
@@ -116,7 +125,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             public void run() {
                 showReviewTutorial();
             }
-        },3000);
+        }, 3000);
 
     }
 
@@ -124,7 +133,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         if (!SharedPrefUtil.hasCompletedDetailedPlaceTutorial(this)) {
             TapTargetView.showFor(
                     this,
-                    TapTarget.forView(mFab,"Quieres añadir tu experiencia?","Pulsa este botón para añadir una reseña!")
+                    TapTarget.forView(mFab, "Quieres añadir tu experiencia?", "Pulsa este botón para añadir una reseña!")
                             .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
                             .dimColor(android.R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
                             .drawShadow(true)                   // Whether to draw a drop shadow or not
@@ -144,8 +153,8 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES).document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    FriendlyPlace aux =  documentSnapshot.toObject(FriendlyPlace.class);
+                if (documentSnapshot.exists()) {
+                    FriendlyPlace aux = documentSnapshot.toObject(FriendlyPlace.class);
                     model.getFriendlyPlace().pid = aux.pid;
                     model.getFriendlyPlace().location = aux.location;
                     model.getFriendlyPlace().name = aux.name;
@@ -174,7 +183,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
                     //friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
                     model.getFriendlyPlace().name = String.valueOf(myPlace.getName());
-                    model.getFriendlyPlace().location = new GeoPoint(myPlace.getLatLng().latitude,myPlace.getLatLng().longitude);
+                    model.getFriendlyPlace().location = new GeoPoint(myPlace.getLatLng().latitude, myPlace.getLatLng().longitude);
                     model.getFriendlyPlace().pid = myPlace.getId();
                     model.getFriendlyPlace().reviewCount = 0;
                     model.getFriendlyPlace().positiveVotes = 0;
@@ -185,7 +194,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     uploadPlaceDataToFirestore();
 
                     //LOGS
-                    Log.i(DetailedPlaceActivity.class.getName(),"Place obtained from Google Places API");
+                    Log.i(DetailedPlaceActivity.class.getName(), "Place obtained from Google Places API");
                     Log.i(DetailedPlaceActivity.class.getName(), "Place found: " + myPlace.getName());
                 } else {
                     Log.e("DetailedPlaceERROR", "Place no encontrada");
@@ -202,8 +211,9 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) Log.i("DetailedPlaceAcitivty","Se ha subido el Place a Firestore");
-                        else Log.e("DetailedPlaceActivity","Error al subir el place a Firebase");
+                        if (task.isSuccessful())
+                            Log.i("DetailedPlaceAcitivty", "Se ha subido el Place a Firestore");
+                        else Log.e("DetailedPlaceActivity", "Error al subir el place a Firebase");
                     }
                 });
     }
@@ -260,14 +270,16 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-    public void setBackgroundImage(Bitmap bitmap){
+
+    public void setBackgroundImage(Bitmap bitmap) {
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         appBarLayout.setBackground(drawable);
     }
 
     @Override
     public void onClick(View view) {
-       startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
+        Utils.preventTwoClick(view);
+        startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
     }
 
     @Override
@@ -276,7 +288,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(),17.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(), 17.0f));
         mMap.addMarker(new MarkerOptions().position(model.getFriendlyPlace().getLatLng()));
     }
 

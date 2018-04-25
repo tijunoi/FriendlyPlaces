@@ -28,6 +28,7 @@ import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
 import com.friendlyplaces.friendlyapp.fragments.NegativeFragment;
 import com.friendlyplaces.friendlyapp.fragments.PositiveFragment;
 import com.friendlyplaces.friendlyapp.fragments.RatedPlacesFragment;
+import com.friendlyplaces.friendlyapp.utilities.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -232,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        Utils.preventTwoClick(v);
         switch (v.getId()) {
             case R.id.clickable_appbar:
                 v.setAnimation(buttonClick);

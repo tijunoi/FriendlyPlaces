@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -23,8 +24,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.friendlyplaces.friendlyapp.R
+import com.friendlyplaces.friendlyapp.R.id.spin_kit_join
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
+import com.friendlyplaces.friendlyapp.utilities.Utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -122,11 +125,28 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     //IMPLEMENTED METHODS FROM INTERFACES
 
     override fun onClick(view: View?) {
+        Utils.preventTwoClick(view)
         when (view?.getId()) {
             R.id.register_button -> {
+                spin_kit_join.setVisibility(View.VISIBLE)
                 if (checkearDatosNotEmpty()) {
                     (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
                     setProfileValuesToUser(friendlyUser)
+                }else{
+                    spin_kit_join.setVisibility(View.GONE)
+                    Snackbar.make(view, "Faltan campos por rellenar", Snackbar.LENGTH_LONG)
+                            .setAction("OK", View.OnClickListener {
+                            }).show()
+
+                    /*
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                     */
+
                 }
             }
             R.id.imageJoin -> {
@@ -232,10 +252,15 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                         .document(user.uid)
                         .set(user)
                         .addOnCompleteListener({
-                            if (it.isSuccessful) goToHomescreen()
+                            if (it.isSuccessful) {
+                                goToHomescreen()
+                                spinGone()
+                            }
                             else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                            spinGone()
                         })
-            }
+            }else{
+                spinGone()            }
         })
     }
 
@@ -245,6 +270,9 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         finish()
     }
 
+    private fun spinGone(){
+        spin_kit_join.visibility = View.GONE
+    }
     //UTIL METHODS
 
     private fun checkPermisionCamera() {
