@@ -95,7 +95,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         getWindow().setEnterTransition(slideTransition);
         //getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
