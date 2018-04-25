@@ -196,6 +196,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     model.getFriendlyPlace().address = String.valueOf(myPlace.getAddress());
 
                     updateUI();
+                    setUpMap();
                     uploadPlaceDataToFirestore();
 
                     //LOGS
