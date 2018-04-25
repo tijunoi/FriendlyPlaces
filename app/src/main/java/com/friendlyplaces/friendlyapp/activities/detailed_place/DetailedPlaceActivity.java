@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -44,10 +45,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.varunest.sparkbutton.SparkButton;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +66,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     //Views
     @BindView(R.id.det_ubicacion) TextView tvUbi;
     @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.like_button) SparkButton likeButton;
     @BindView(R.id.dislike_button) SparkButton dislikeButton;
@@ -105,7 +112,6 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         getPhotos();
         checkIfPlaceExistsInFirestore();
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
 
@@ -210,7 +216,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateUI() {
-        System.out.println(model.getFriendlyPlace().address);
+        collapsingToolbarLayout.setTitle(model.getFriendlyPlace().name);
         tvUbi.setText(model.getFriendlyPlace().address);
         likeButton.setChecked(false);
         likeButton.setEnabled(false);
@@ -296,8 +302,36 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             case android.R.id.home:
                 finishAfterTransition();
                 break;
+            case R.id.action_share:
+                createSharingURL();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createSharingURL() {
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://friendly-places-3ea3c.firebaseapp.com/" + model.getFriendlyPlace().pid))
+                .setDynamicLinkDomain("a7fz8.app.goo.gl")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink().addOnCompleteListener(new OnCompleteListener<ShortDynamicLink>() {
+            @Override
+            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                if (task.isSuccessful()){
+                    shareFriendlyPlace(task.getResult().getShortLink());
+                } else Objects.requireNonNull(task.getException()).printStackTrace();
+            }
+        });
+
+    }
+
+    private void shareFriendlyPlace(Uri link) {
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Chequea " + model.getFriendlyPlace().name + " en FriendlyPlaces! " + link.toString());
+        intent.setType("text/plain");
+        startActivity(intent);
     }
 }
