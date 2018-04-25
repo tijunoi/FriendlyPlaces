@@ -7,6 +7,7 @@ import android.transition.Explode;
 import android.view.Window;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.stepstone.stepper.StepperLayout;
 
 import butterknife.BindView;
@@ -21,7 +22,8 @@ public class ReviewActivity extends AppCompatActivity {
 
     private AddReviewViewModel model;
 
-    @BindView(R.id.stepperLayout) StepperLayout stepperLayout;
+    @BindView(R.id.stepperLayout)
+    StepperLayout stepperLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class ReviewActivity extends AppCompatActivity {
         model.setPlaceId(placeId);
         model.setPlaceName(placeName);
         model.getReview().setPlaceId(placeId);
+        model.getReview().setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         ButterKnife.bind(this);
         stepperLayout.setShowErrorStateEnabled(true);
