@@ -58,4 +58,5 @@
     <string name="no_opinion">No hay opiniones. Sé el primero en escribir una!</string>
     <string name="sign_up_button_text">CREAR CUENTA</string>
     <string name="fragment_login_button_text">INICIAR SESIÓN</string>
+    <string name="detailed_place_opinions_textview_text">Hay %1$d opiniones</string>
 </resources>

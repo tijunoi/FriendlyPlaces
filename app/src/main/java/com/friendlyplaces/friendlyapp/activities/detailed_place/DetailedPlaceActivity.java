@@ -224,7 +224,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         dislikeButton.setEnabled(false);
         numLike.setText(String.valueOf(model.getFriendlyPlace().positiveVotes));
         numDislike.setText(String.valueOf(model.getFriendlyPlace().negativeVotes));
-        tvOpiniones.setText("Hay " + String.valueOf(model.getFriendlyPlace().reviewCount) + " opiniones.");
+        tvOpiniones.setText(getString(R.string.detailed_place_opinions_textview_text,model.getFriendlyPlace().reviewCount));
     }
 
     private void setUpMap() {
