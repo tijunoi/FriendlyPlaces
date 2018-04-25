@@ -48,6 +48,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.friendlyplaces.friendlyapp.utilities.FirestoreConstants.COLLECTION_FRIENDLYPLACES;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,8 +121,28 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        if (mMap != null && mClusterManager != null) {
+            reloadFriendlyPlaces();
+        }
+    }
+
+    private void reloadFriendlyPlaces() {
+        FirebaseFirestore.getInstance().collection(COLLECTION_FRIENDLYPLACES).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    mClusterManager.clearItems();
+                    for (DocumentSnapshot document :
+                            task.getResult()) {
+                        FriendlyPlace place = document.toObject(FriendlyPlace.class);
+                        mClusterManager.addItem(place);
+                    }
+                    mClusterManager.cluster();
+                }
+            }
+        });
     }
 
     @Override
@@ -155,6 +177,7 @@ public class HomeFragment extends Fragment implements
              * OBVIAMENT no sera aixi en real, es només per que et facis idea de Firebase
              */
 
+
             db.collection("FriendlyPlaces")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -174,6 +197,7 @@ public class HomeFragment extends Fragment implements
                                     //marker.showInfoWindow();
 
                                 }
+                                mClusterManager.cluster();
                             } else {
                                 Log.d("Firestore", "Error getting documents: ", task.getException());
                             }
