@@ -1,5 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities.detailed_place;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -113,7 +114,6 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         geoDataClient = Places.getGeoDataClient(this);
         getPhotos();
-        checkIfPlaceExistsInFirestore();
 
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
@@ -128,6 +128,12 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             }
         },3000);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkIfPlaceExistsInFirestore();
     }
 
     private void showReviewTutorial() {
@@ -277,7 +283,10 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-       startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
+       Intent intent =  new Intent(DetailedPlaceActivity.this, ReviewActivity.class);
+       intent.putExtra("placeId",model.getFriendlyPlace().pid);
+       intent.putExtra("placeName",model.getFriendlyPlace().name);
+       startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
     @Override
