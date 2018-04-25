@@ -102,6 +102,9 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
+        //Para que no aparezca "DetailedPlaceActivity" en el título cuando se abre desde deepLink. No he encontrado la toolbar donde
+        //se setea ese nombre, así que lo seteo a vacío manualmente.
+        collapsingToolbarLayout.setTitle("");
         model = ViewModelProviders.of(this).get(DetailedPlaceViewModel.class);
 
         //GET DATA FROM INTENT
