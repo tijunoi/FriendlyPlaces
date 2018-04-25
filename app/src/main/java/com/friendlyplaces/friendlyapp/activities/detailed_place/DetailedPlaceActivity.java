@@ -1,10 +1,12 @@
 package com.friendlyplaces.friendlyapp.activities.detailed_place;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -44,10 +47,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.varunest.sparkbutton.SparkButton;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,22 +66,15 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     DetailedPlaceViewModel model;
 
     //Views
-    @BindView(R.id.det_ubicacion)
-    TextView tvUbi;
-    @BindView(R.id.app_bar)
-    AppBarLayout appBarLayout;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
-    @BindView(R.id.like_button)
-    SparkButton likeButton;
-    @BindView(R.id.dislike_button)
-    SparkButton dislikeButton;
-    @BindView(R.id.box_opiniones)
-    TextView tvOpiniones;
-    @BindView(R.id.voteLike)
-    TextView numLike;
-    @BindView(R.id.voteDislike)
-    TextView numDislike;
+    @BindView(R.id.det_ubicacion) TextView tvUbi;
+    @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.like_button) SparkButton likeButton;
+    @BindView(R.id.dislike_button) SparkButton dislikeButton;
+    @BindView(R.id.box_opiniones) TextView tvOpiniones;
+    @BindView(R.id.voteLike) TextView numLike;
+    @BindView(R.id.voteDislike) TextView numDislike;
 
     //------ Properties varias
     private CharSequence placeUbication;
@@ -96,7 +97,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         getWindow().setEnterTransition(slideTransition);
         //getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -111,9 +112,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
         geoDataClient = Places.getGeoDataClient(this);
         getPhotos();
-        checkIfPlaceExistsInFirestore();
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
 
@@ -125,15 +124,21 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             public void run() {
                 showReviewTutorial();
             }
-        }, 3000);
+        },3000);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkIfPlaceExistsInFirestore();
     }
 
     private void showReviewTutorial() {
         if (!SharedPrefUtil.hasCompletedDetailedPlaceTutorial(this)) {
             TapTargetView.showFor(
                     this,
-                    TapTarget.forView(mFab, "Quieres añadir tu experiencia?", "Pulsa este botón para añadir una reseña!")
+                    TapTarget.forView(mFab,"Quieres añadir tu experiencia?","Pulsa este botón para añadir una reseña!")
                             .outerCircleColor(R.color.colorAccent)      // Specify a color for the outer circle
                             .dimColor(android.R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
                             .drawShadow(true)                   // Whether to draw a drop shadow or not
@@ -153,8 +158,8 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES).document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    FriendlyPlace aux = documentSnapshot.toObject(FriendlyPlace.class);
+                if (documentSnapshot.exists()){
+                    FriendlyPlace aux =  documentSnapshot.toObject(FriendlyPlace.class);
                     model.getFriendlyPlace().pid = aux.pid;
                     model.getFriendlyPlace().location = aux.location;
                     model.getFriendlyPlace().name = aux.name;
@@ -183,7 +188,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
                     //friendlyPlace = new FriendlyPlace(mPlace.getId(), mPlace.getRating(), String.valueOf(mPlace.getName()), 1, mPlace.getLatLng());
                     model.getFriendlyPlace().name = String.valueOf(myPlace.getName());
-                    model.getFriendlyPlace().location = new GeoPoint(myPlace.getLatLng().latitude, myPlace.getLatLng().longitude);
+                    model.getFriendlyPlace().location = new GeoPoint(myPlace.getLatLng().latitude,myPlace.getLatLng().longitude);
                     model.getFriendlyPlace().pid = myPlace.getId();
                     model.getFriendlyPlace().reviewCount = 0;
                     model.getFriendlyPlace().positiveVotes = 0;
@@ -194,7 +199,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                     uploadPlaceDataToFirestore();
 
                     //LOGS
-                    Log.i(DetailedPlaceActivity.class.getName(), "Place obtained from Google Places API");
+                    Log.i(DetailedPlaceActivity.class.getName(),"Place obtained from Google Places API");
                     Log.i(DetailedPlaceActivity.class.getName(), "Place found: " + myPlace.getName());
                 } else {
                     Log.e("DetailedPlaceERROR", "Place no encontrada");
@@ -211,15 +216,14 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            Log.i("DetailedPlaceAcitivty", "Se ha subido el Place a Firestore");
-                        else Log.e("DetailedPlaceActivity", "Error al subir el place a Firebase");
+                        if (task.isSuccessful()) Log.i("DetailedPlaceAcitivty","Se ha subido el Place a Firestore");
+                        else Log.e("DetailedPlaceActivity","Error al subir el place a Firebase");
                     }
                 });
     }
 
     private void updateUI() {
-        System.out.println(model.getFriendlyPlace().address);
+        collapsingToolbarLayout.setTitle(model.getFriendlyPlace().name);
         tvUbi.setText(model.getFriendlyPlace().address);
         likeButton.setChecked(false);
         likeButton.setEnabled(false);
@@ -227,7 +231,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         dislikeButton.setEnabled(false);
         numLike.setText(String.valueOf(model.getFriendlyPlace().positiveVotes));
         numDislike.setText(String.valueOf(model.getFriendlyPlace().negativeVotes));
-        tvOpiniones.setText("Hay " + String.valueOf(model.getFriendlyPlace().reviewCount) + " opiniones.");
+        tvOpiniones.setText(getString(R.string.detailed_place_opinions_textview_text,model.getFriendlyPlace().reviewCount));
     }
 
     private void setUpMap() {
@@ -270,8 +274,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-
-    public void setBackgroundImage(Bitmap bitmap) {
+    public void setBackgroundImage(Bitmap bitmap){
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         appBarLayout.setBackground(drawable);
     }
@@ -279,7 +282,10 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         Utils.preventTwoClick(view);
-        startActivity(new Intent(DetailedPlaceActivity.this, ReviewActivity.class));
+       Intent intent =  new Intent(DetailedPlaceActivity.this, ReviewActivity.class);
+       intent.putExtra("placeId",model.getFriendlyPlace().pid);
+       intent.putExtra("placeName",model.getFriendlyPlace().name);
+       startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 
     @Override
@@ -288,8 +294,14 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(), 17.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(model.getFriendlyPlace().getLatLng(),17.0f));
         mMap.addMarker(new MarkerOptions().position(model.getFriendlyPlace().getLatLng()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detailed_place,menu);
+        return true;
     }
 
     @Override
@@ -301,8 +313,36 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
             case android.R.id.home:
                 finishAfterTransition();
                 break;
+            case R.id.action_share:
+                createSharingURL();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createSharingURL() {
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://friendly-places-3ea3c.firebaseapp.com/" + model.getFriendlyPlace().pid))
+                .setDynamicLinkDomain("a7fz8.app.goo.gl")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink().addOnCompleteListener(new OnCompleteListener<ShortDynamicLink>() {
+            @Override
+            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                if (task.isSuccessful()){
+                    shareFriendlyPlace(task.getResult().getShortLink());
+                } else Objects.requireNonNull(task.getException()).printStackTrace();
+            }
+        });
+
+    }
+
+    private void shareFriendlyPlace(Uri link) {
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Chequea " + model.getFriendlyPlace().name + " en FriendlyPlaces! " + link.toString());
+        intent.setType("text/plain");
+        startActivity(intent);
     }
 }

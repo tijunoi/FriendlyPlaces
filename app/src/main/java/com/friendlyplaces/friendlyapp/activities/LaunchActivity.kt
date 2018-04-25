@@ -1,13 +1,17 @@
 package com.friendlyplaces.friendlyapp.activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.friendlyplaces.friendlyapp.R
+import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
 
 /**
@@ -65,6 +69,21 @@ class LaunchActivity : AppCompatActivity() {
     }
 
     private fun handleDeepLinking() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        FirebaseAuth.getInstance().currentUser?.let {
+            FirebaseDynamicLinks.getInstance()
+                    .getDynamicLink(intent)
+                    .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                        // Get deep link from result (may be null if no link is found)
+                        if (pendingDynamicLinkData != null) {
+                            val deepLink: Uri = pendingDynamicLinkData.link
+                            //Deberia ser el placeid
+                            val placeId = deepLink.lastPathSegment
+                            val intent = Intent(this,DetailedPlaceActivity::class.java)
+                            intent.putExtra("placeId", placeId)
+                            startActivity(intent)
+                        }
+                    }
+                    .addOnFailureListener(this) { e -> Log.w("LaunchActivity", "getDynamicLink:onFailure", e) }
+        }
     }
 }
