@@ -46,16 +46,12 @@ import java.io.IOException
 class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     //FIELDS
-
-    val GET_FROM_GALLERY = 3
-    val GET_FROM_CAMERA = 4
     lateinit var friendlyUser: FriendlyUser
     var bitmap: Bitmap? = null
 
 
     var imageString: String? = null
-
-    private val sexOrientArray = arrayOf("Cuál es tu orientación sexual?", "Gay", "Lesbiana", "Bisexual", "Transexual", "Pansexual", "Heterosexual", "Otros")
+    private lateinit var sexOrientArray: Array<String>
 
     private var userHasChosenNewImage: Boolean = false
 
@@ -65,12 +61,10 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
-
         register_button.setOnClickListener(this)
         imageJoin.setOnClickListener(this)
         et_name.setText(FirebaseAuth.getInstance().currentUser?.displayName)
-
-
+        sexOrientArray = resources.getStringArray(R.array.sexual_orientation)
         val orienAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sexOrientArray)
         sp_sex_orientation.adapter = orienAdapter
         sp_sex_orientation.onItemSelectedListener = this
@@ -124,14 +118,14 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     override fun onClick(view: View?) {
         Utils.preventTwoClick(view)
-        when (view?.getId()) {
+        when (view?.id) {
             R.id.register_button -> {
-                spin_kit_join.setVisibility(View.VISIBLE)
+                spin_kit_join.visibility = View.VISIBLE
                 if (checkearDatosNotEmpty()) {
                     (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
                     setProfileValuesToUser(friendlyUser)
                 }else{
-                    spin_kit_join.setVisibility(View.GONE)
+                    spin_kit_join.visibility = View.GONE
                     Snackbar.make(view, "Faltan campos por rellenar", Snackbar.LENGTH_LONG)
                             .setAction("OK", {
                             }).show()
@@ -146,7 +140,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (view?.getId()) {
+        when (view?.id) {
             R.id.sp_sex_orientation -> {
                 sp_sex_orientation.setSelection(position)
 
@@ -194,21 +188,18 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     }
 
     fun checkearDatosNotEmpty(): Boolean {
-        //todo: faltan els spinners
         val trimName = et_name.text.toString().trim { it <= ' ' }
         val trimDescription = et_description.text.toString().trim({ it <= ' ' })
-        //PODRÍA posar que el primer objecte del array fos select orientation i aixi si es 0 doncss es que no esta inicialitzat
-        //chekear el spinner
 
         var requiredConditions = true
 
         if (trimName.isEmpty()) {
-            et_name.error = "Campo obligatorio"
+            et_name.error = getString(R.string.mandatory_field_error_text)
             et_name.requestFocus()
             requiredConditions = false
         }
         if (trimDescription.isEmpty()) {
-            et_description.setError("Campo obligatorio")
+            et_description.error = getString(R.string.mandatory_field_error_text)
             et_description.requestFocus()
             requiredConditions = false
         }
@@ -291,15 +282,15 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         pictureDialog.show()
     }
 
-    fun choosePhotoFromGallery() {
+    private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, GET_FROM_GALLERY)
+        startActivityForResult(galleryIntent, Companion.GET_FROM_GALLERY)
     }
 
 
     private fun takePhotoFromCamera() {
         val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, GET_FROM_CAMERA)
+        startActivityForResult(intent, Companion.GET_FROM_CAMERA)
     }
 
     private fun getStringImage(bmp: Bitmap): String {
@@ -307,6 +298,11 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageBytes = baos.toByteArray()
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+
+    companion object {
+        const val GET_FROM_GALLERY = 3
+        const val GET_FROM_CAMERA = 4
     }
 
 }

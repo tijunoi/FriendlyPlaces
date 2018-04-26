@@ -18,18 +18,17 @@
         completions."
     </string>
     <string name="cerrar_sesion">Cerrar sesión</string>
-
     <string name="sexOrientation_prompt">Cuál es tu orientación sexual?</string>
     <string-array name="sexual_orientation">
+        <item>Cual es tu orientación sexual?</item>
         <item>Gay</item>
-        <item>Lesbian</item>
+        <item>Lesbiana</item>
         <item>Bisexual</item>
         <item>Pansexual</item>
-        <item>Transgender</item>
+        <item>Transexual</item>
         <item>Heterosexual</item>
-        <item>Others</item>
+        <item>Otros</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_authentication">Friendly Places</string>
@@ -59,4 +58,9 @@
     <string name="sign_up_button_text">CREAR CUENTA</string>
     <string name="fragment_login_button_text">INICIAR SESIÓN</string>
     <string name="detailed_place_opinions_textview_text">Hay %1$d opiniones</string>
+    <string name="mandatory_field_error_text">Campo obligatorio</string>
+    <string name="activity_join_name_label">Nombre</string>
+    <string name="activity_join_description_label">Cuenta algo sobre ti</string>
+    <string name="activity_join_sexual_orientation_label">Orientación sexual</string>
+    <string name="activity_join_register_button_text">registrarse</string>
 </resources>
