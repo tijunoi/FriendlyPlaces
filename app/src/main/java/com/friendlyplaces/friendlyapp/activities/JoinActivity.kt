@@ -1,12 +1,10 @@
 package com.friendlyplaces.friendlyapp.activities
 
 import android.Manifest
-
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -24,7 +22,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.friendlyplaces.friendlyapp.R
-import com.friendlyplaces.friendlyapp.R.id.spin_kit_join
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
 import com.friendlyplaces.friendlyapp.utilities.Utils
@@ -37,6 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+
 /*
 0 gay
 1 lesb
@@ -82,8 +80,9 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     override fun onStart() {
         super.onStart()
-        Picasso.get().load(FirebaseAuth.getInstance().currentUser?.photoUrl).into(imageJoin)
-
+        FirebaseAuth.getInstance().currentUser?.photoUrl?.let {
+            Picasso.get().load(it).into(imageJoin)
+        }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
