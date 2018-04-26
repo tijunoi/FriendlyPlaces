@@ -23,7 +23,7 @@
                 android:layout_marginTop="70dp"
                 android:adjustViewBounds="true"
                 android:maxHeight="80dp"
-                android:src="@drawable/ICON_LG" />
+                android:src="@drawable/newicon_logo" />
 
             <EditText
                 android:id="@+id/et_login_email"
