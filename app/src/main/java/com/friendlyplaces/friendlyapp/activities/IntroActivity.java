@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntro2Fragment;
 
 public class IntroActivity extends AppIntro  {
@@ -48,6 +47,7 @@ public class IntroActivity extends AppIntro  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
         } else {
+            finish();
             startActivity(new Intent(IntroActivity.this, AuthenticationActivity.class));
         }
 
@@ -65,8 +65,8 @@ public class IntroActivity extends AppIntro  {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_CODE){
+            finish();
             startActivity(new Intent(IntroActivity.this, AuthenticationActivity.class));
-
         }
     }
 }
