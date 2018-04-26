@@ -87,7 +87,10 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if (resultCode == RESULT_OK) {
+        if (requestCode == 999) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+                showPictureDialog()
+        } else if (resultCode == RESULT_OK) {
 
             userHasChosenNewImage = true
             when (requestCode) {
@@ -114,8 +117,6 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                         uploadPhotoToFirebase()
                     }
 
-
-                    //photoRequestMethod()
                 }
             }
         }
@@ -134,17 +135,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 }else{
                     spin_kit_join.setVisibility(View.GONE)
                     Snackbar.make(view, "Faltan campos por rellenar", Snackbar.LENGTH_LONG)
-                            .setAction("OK", View.OnClickListener {
+                            .setAction("OK", {
                             }).show()
-
-                    /*
-                    .setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    }).show();
-                     */
 
                 }
             }
