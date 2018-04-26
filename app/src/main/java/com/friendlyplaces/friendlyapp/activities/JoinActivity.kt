@@ -171,11 +171,9 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     //IMAGEN PROCESS METHODS
 
     fun uploadPhotoToFirebase() {
-
+        spin_kit_join.setVisibility(View.VISIBLE);
         val storage = FirebaseStorage.getInstance()
-
         val imageReference = storage.reference.child("profilePictures/" + FirebaseAuth.getInstance().currentUser?.uid + ".jpg")
-
 
         val baos = ByteArrayOutputStream()
         bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -200,6 +198,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             if (it.isSuccessful) {
                 Log.i("FirebaseAuth UserUpdate", "Updatejat correctament")
                 Picasso.get().load(FirebaseAuth.getInstance().currentUser!!.photoUrl).into(imageJoin)
+                spin_kit_join.setVisibility(View.GONE)
             }
         })
     }
