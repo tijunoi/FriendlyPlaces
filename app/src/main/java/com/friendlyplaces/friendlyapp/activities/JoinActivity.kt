@@ -30,7 +30,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -113,7 +112,6 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                     bitmap = data!!.extras!!.get("data") as Bitmap
                     bitmap?.let {
                         imageString = getStringImage(it)
-                        val imageview = findViewById<CircleImageView>(R.id.imageJoin)
                         uploadPhotoToFirebase()
                     }
 
