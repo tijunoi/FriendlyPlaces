@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -170,7 +171,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 mListener.onLoginWithGoogleButtonPressed();
                 break;
             case R.id.frame_button_login_login:
+                InputMethodManager inputManager = (InputMethodManager)
+                        getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 boolean requiredConditions2 = true;
                 if (et_password.getText().toString().trim().isEmpty()) {
                     et_password.setError("La contraseña no puede estar vacía");
