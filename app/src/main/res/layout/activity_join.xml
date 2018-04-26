@@ -45,7 +45,8 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/profile_image_circular_shape"
                 android:padding="4dp"
-                android:src="@drawable/ic_person_add_black_24dp" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_image_add_button" />
 
             <TextView
                 android:id="@+id/name"
