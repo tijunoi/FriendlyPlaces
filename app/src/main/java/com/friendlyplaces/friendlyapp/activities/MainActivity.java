@@ -26,7 +26,6 @@ import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceAct
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
 import com.friendlyplaces.friendlyapp.fragments.NegativeFragment;
-import com.friendlyplaces.friendlyapp.fragments.PositiveFragment;
 import com.friendlyplaces.friendlyapp.fragments.RatedPlacesFragment;
 import com.friendlyplaces.friendlyapp.utilities.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -127,10 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             case R.id.op_home:
                                 fragment = new HomeFragment();
                                 fragmentTransaction = true;
+                                menuItem.setChecked(true);
                                 break;
                             case R.id.op_pos_rated:
-                                fragment = new PositiveFragment();
-                                fragmentTransaction = true;
+                                startActivity(new Intent(MainActivity.this, PlaceListActivity.class));
                                 break;
                             case R.id.op_neg_rated:
                                 fragment = new NegativeFragment();
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     .replace(R.id.content_frame, fragment)
                                     .commit();
 
-                            menuItem.setChecked(true);
                             //aixo es per mostrar el titul de cada opcio del menu
                             //pero es super feo asi que lo quitaré seguro
                             getSupportActionBar().setTitle(menuItem.getTitle());
