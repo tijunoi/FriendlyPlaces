@@ -42,7 +42,7 @@ class PlaceListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES).addSnapshotListener({ snapshots, e ->
+        FirebaseFirestore.getInstance().collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES).addSnapshotListener { snapshots, e ->
             places.clear()
             if (e != null) {
                 Log.w("PlaceListActivity", "listen:error", e)
@@ -54,7 +54,7 @@ class PlaceListActivity : AppCompatActivity() {
                 }
             }
             (place_listview.adapter as PlacesAdapter).notifyDataSetChanged()
-        })
+        }
 
         place_listview.adapter = PlacesAdapter(this, places)
     }
