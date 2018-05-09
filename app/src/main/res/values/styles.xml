@@ -26,6 +26,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="UpBackArrowIconWhite" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorControlNormal">@color/icons</item>
+    </style>
+
     <style name="SpinnerWhite" parent="Base.Widget.AppCompat.Spinner.Underlined">
         <item name="android:textColor">@color/icons</item>
     </style>

@@ -91,7 +91,8 @@
         <activity
             android:name=".activities.review.ReviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.PlaceListActivity"></activity>
+        <activity android:name=".activities.PlaceListActivity" />
+        <activity android:name=".activities.EditProfileActivity"></activity>
     </application>
 
 </manifest>

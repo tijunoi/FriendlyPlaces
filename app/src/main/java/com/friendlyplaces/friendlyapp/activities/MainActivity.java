@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 OnTryingPickingAPlace();
                 break;
             case R.id.linearProfile:
-                startActivity(new Intent(this, ProfileActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                startActivity(new Intent(this, EditProfileActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
         }
     }
