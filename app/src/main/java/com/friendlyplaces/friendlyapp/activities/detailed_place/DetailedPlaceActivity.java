@@ -237,7 +237,9 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
 
     private void setUpMap() {
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detailed_place_map_fragment);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
 
