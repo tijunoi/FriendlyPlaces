@@ -12,6 +12,7 @@ import android.view.Window
 import com.friendlyplaces.friendlyapp.R
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
+import com.google.android.gms.tasks.OnCanceledListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
@@ -44,7 +45,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val sexOrientation = profile_sex_orientation.text.toString()
         if (sexOrientation.isNotBlank()) {
             friendlyUser.sexualOrientation = sexOrientation
-        } else requiredConditions
+        } else requiredConditions = false
 
         if (requiredConditions)
             postDataToFirebase(shouldChangeName = shouldChangeName)
@@ -52,7 +53,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun postDataToFirebase(shouldChangeName: Boolean) {
-
+        profileSave_button.isEnabled = false
         val user = friendlyUser
 
         thread(true) {
@@ -69,17 +70,29 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                                             runOnUiThread {
                                                 spin_kit_profile.visibility = View.GONE
                                                 Snackbar.make(profileSave_button, "Se ha guardado el perfil", Snackbar.LENGTH_LONG).show()
+                                                profileSave_button.isEnabled = true
                                             }
+                                        } else {
+                                            onCancelledListener.onCanceled()
                                         }
                                     }
+                        } else {
+                            onCancelledListener.onCanceled()
                         }
-                    }
+                    }.addOnCanceledListener(onCancelledListener)
         }
     }
 
 
     lateinit var usersCollection: CollectionReference
     lateinit var friendlyUser: FriendlyUser
+
+    //listener para activar el boton y esconder el progressbar
+    val onCancelledListener: OnCanceledListener = OnCanceledListener {
+        spin_kit_profile.visibility = View.GONE
+        Snackbar.make(profileSave_button, "Ha habido un error al actualizar el perfil", Snackbar.LENGTH_LONG).show()
+        profileSave_button.isEnabled = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
