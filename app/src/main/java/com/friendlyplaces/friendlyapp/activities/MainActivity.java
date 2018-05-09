@@ -21,12 +21,9 @@ import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
-import com.friendlyplaces.friendlyapp.TestingActivity;
 import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
-import com.friendlyplaces.friendlyapp.fragments.NegativeFragment;
-import com.friendlyplaces.friendlyapp.fragments.RatedPlacesFragment;
 import com.friendlyplaces.friendlyapp.utilities.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -95,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar_main);
         setSupportActionBar(appbar);
-
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,26 +125,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 menuItem.setChecked(true);
                                 break;
                             case R.id.op_pos_rated:
-                                startActivity(new Intent(MainActivity.this, PlaceListActivity.class));
+                                Intent intent = new Intent(MainActivity.this, PlaceListActivity.class);
+                                intent.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.POSITIVE_PLACES);
+                                startActivity(intent);
                                 break;
                             case R.id.op_neg_rated:
-                                fragment = new NegativeFragment();
-                                fragmentTransaction = true;
+                                Intent intent2 = new Intent(MainActivity.this, PlaceListActivity.class);
+                                intent2.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.NEGATIVE_PLACES);
+                                startActivity(intent2);
                                 break;
                             case R.id.op_rated_places:
-                                fragment = new RatedPlacesFragment();
-                                fragmentTransaction = true;
+                                Intent intent3 = new Intent(MainActivity.this, PlaceListActivity.class);
+                                intent3.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.OWN_VOTED_PLACES);
+                                startActivity(intent3);
                                 break;
                             case R.id.op_logoff:
                                 FirebaseAuth.getInstance().signOut();
                                 finish();
-                                //aqui s'haurà de cambiar aixo i ficar un popup que
-                                //et digui "Quieres cerrar sesión?" SI/NO o algo aixi
                                 Log.i("NavigationView", "Pulsado cerrar sesión");
                                 break;
-                            case R.id.op_testing_button:
-                                Intent intent = new Intent(getApplicationContext(), TestingActivity.class);
-                                startActivity(intent);
                         }
                         if (fragmentTransaction) {
                             getSupportFragmentManager().beginTransaction()

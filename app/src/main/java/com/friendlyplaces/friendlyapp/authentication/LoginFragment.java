@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
 public class LoginFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_QUERY_TYPE = "param1";
     //private static final String ARG_PARAM2 = "param2";
 
     private EditText et_email, et_password;
@@ -70,7 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_QUERY_TYPE, param1);
         //args.putString(ARG_PARAM2, param2);
         //fragment.setArguments(args);
         return fragment;
@@ -81,7 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            //mParam1 = getArguments().getString(ARG_PARAM1);
+            //mParam1 = getArguments().getString(ARG_QUERY_TYPE);
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }

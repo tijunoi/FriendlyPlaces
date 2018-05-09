@@ -167,16 +167,7 @@ public class HomeFragment extends Fragment implements
             mClusterManager.setOnClusterItemInfoWindowClickListener(this);
             mClusterManager.setRenderer(new FriendlyPlaceClusterItemRenderer(getContext(), mMap, mClusterManager));
 
-            //Agafo la instancia de la Database Firestore. Normalment no l'agafes per el mig del codi.
-            // L'agafes al principi del onCreate, o fas servir FirebaseFirestore.getInstance() directament
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-            /*
-             * En aquesta demo agafo tots els places que hi ha a la database i faig un marker per cada un
-             * OBVIAMENT no sera aixi en real, es només per que et facis idea de Firebase
-             */
-
 
             db.collection("FriendlyPlaces")
                     .get()
