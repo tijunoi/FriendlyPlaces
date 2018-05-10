@@ -110,9 +110,9 @@
             android:layout_marginTop="16dp"
             android:src="@drawable/ic_description_black_24dp"
             android:tint="@color/secondary_text"
-            app:layout_constraintTop_toBottomOf="@id/like_button"
+            app:layout_constraintEnd_toEndOf="@id/det_placeholder"
             app:layout_constraintStart_toStartOf="@id/det_placeholder"
-            app:layout_constraintEnd_toEndOf="@id/det_placeholder"/>
+            app:layout_constraintTop_toBottomOf="@id/like_button" />
 
         <TextView
             android:id="@+id/det_description_title"
@@ -125,14 +125,25 @@
             app:layout_constraintStart_toEndOf="@id/det_descripcion_icon"
             app:layout_constraintTop_toTopOf="@id/det_descripcion_icon" />
 
+        <Button
+            android:id="@+id/vermas_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VER MÁS"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            app:layout_constraintBottom_toTopOf="@id/box_opiniones"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="4dp"
+            />
+
         <TextView
             android:id="@+id/box_opiniones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/no_opinion"
-            app:layout_constraintTop_toBottomOf="@id/det_description_title"
-            app:layout_constraintStart_toStartOf="@id/det_descripcion_icon"/>
+            app:layout_constraintStart_toStartOf="@id/det_descripcion_icon"
+            app:layout_constraintTop_toBottomOf="@id/det_description_title" />
 
         <fragment
             android:id="@+id/detailed_place_map_fragment"
