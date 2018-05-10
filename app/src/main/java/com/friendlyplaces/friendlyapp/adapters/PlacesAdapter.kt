@@ -1,6 +1,7 @@
 package com.friendlyplaces.friendlyapp.adapters
 
 import android.content.Context
+import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class PlacesAdapter(private val context: Context,
 
         val miView = inflater.inflate(R.layout.rated_list_recycler_layout, parent, false)
 
+        val cardView: CardView = miView.findViewById(R.id.place_cardview)
         val likeButton: SparkButton = miView.findViewById(R.id.like_recycler)
         val dislikeButton: SparkButton = miView.findViewById(R.id.dislike_recycler)
         val votes: TextView = miView.findViewById(R.id.votes_recycler)

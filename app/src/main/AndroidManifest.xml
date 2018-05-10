@@ -96,6 +96,7 @@
             android:name=".activities.EditProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.detailed_place.reviews.ReviewsListActivity"></activity>
     </application>
 
 </manifest>
