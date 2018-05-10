@@ -46,11 +46,11 @@ class PlaceListActivity : AppCompatActivity() {
             intent.putExtra("placeName", places[position].name)
             startActivity(intent)
         })
+
+        startLoadingData()
     }
 
-    override fun onResume() {
-        super.onResume()
-
+    private fun startLoadingData() {
         if (queryType == OWN_VOTED_PLACES) {
             runBackgroundQuery()
         } else {
@@ -70,7 +70,6 @@ class PlaceListActivity : AppCompatActivity() {
 
         }
         place_listview.adapter = PlacesAdapter(this, places)
-
     }
 
     private fun runBackgroundQuery() {
