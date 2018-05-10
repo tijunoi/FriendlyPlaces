@@ -21,9 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
+import com.friendlyplaces.friendlyapp.activities.detailed_place.reviews.ReviewsListActivity;
+import com.friendlyplaces.friendlyapp.activities.detailed_place.reviews.ReviewsListActivityKt;
 import com.friendlyplaces.friendlyapp.activities.review.ReviewActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
@@ -75,6 +78,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
     @BindView(R.id.box_opiniones) TextView tvOpiniones;
     @BindView(R.id.voteLike) TextView numLike;
     @BindView(R.id.voteDislike) TextView numDislike;
+    @BindView(R.id.vermas_button) Button seeMoreButton;
 
     //------ Properties varias
     private CharSequence placeUbication;
@@ -116,6 +120,15 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
         collapsingToolbarLayout.setTitle(name);
         getPhotos();
 
+        seeMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.preventTwoClick(view);
+                Intent intent = new Intent(DetailedPlaceActivity.this, ReviewsListActivity.class);
+                intent.putExtra(ReviewsListActivityKt.PLACE_ID_KEY, model.getFriendlyPlace().pid);
+                startActivity(intent);
+            }
+        });
 
         mFab.setOnClickListener(this);
 
