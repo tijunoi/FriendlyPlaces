@@ -3,7 +3,6 @@ package com.friendlyplaces.friendlyapp.activities.detailed_place.reviews
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.LinearLayout
 import com.friendlyplaces.friendlyapp.R
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.model.Review
@@ -11,11 +10,11 @@ import com.friendlyplaces.friendlyapp.model.ReviewWithUser
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_reviews_list.*
-import java.security.AccessController.getContext
 import kotlin.concurrent.thread
 
 
 const val PLACE_ID_KEY = "PLEISAIDI"
+const val PLACE_NAME_KEY = "PLACE_NAME"
 
 class
 ReviewsListActivity : AppCompatActivity() {
@@ -28,7 +27,7 @@ ReviewsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reviews_list)
-
+        setupToolbar()
         dataSource = mutableListOf()
 
         activity_reviews_list_recyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -37,7 +36,17 @@ ReviewsListActivity : AppCompatActivity() {
         placeId = intent.getStringExtra(PLACE_ID_KEY)
 
         runBackgroundQuery()
+    }
 
+    private fun setupToolbar() {
+        setSupportActionBar(activity_reviews_list_toolbar)
+
+        val name = intent.getStringExtra(PLACE_NAME_KEY)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.reviews_list_title).format(name)
+        }
     }
 
 

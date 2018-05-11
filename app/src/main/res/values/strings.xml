@@ -63,4 +63,5 @@
     <string name="activity_join_description_label">Cuenta algo sobre ti</string>
     <string name="activity_join_sexual_orientation_label">Orientación sexual</string>
     <string name="activity_join_register_button_text">registrarse</string>
+    <string name="reviews_list_title">Reseñas de %1$s</string>
 </resources>

@@ -126,6 +126,7 @@ public class DetailedPlaceActivity extends AppCompatActivity implements View.OnC
                 Utils.preventTwoClick(view);
                 Intent intent = new Intent(DetailedPlaceActivity.this, ReviewsListActivity.class);
                 intent.putExtra(ReviewsListActivityKt.PLACE_ID_KEY, model.getFriendlyPlace().pid);
+                intent.putExtra(ReviewsListActivityKt.PLACE_NAME_KEY, model.getFriendlyPlace().name);
                 startActivity(intent);
             }
         });
