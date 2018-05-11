@@ -1,9 +1,7 @@
 package com.friendlyplaces.friendlyapp.activities.detailed_place.reviews
 
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -48,7 +46,9 @@ class ReviewsRecycleViewAdapter(private val dataSource: MutableList<ReviewWithUs
         holder.dislikeButton.isEnabled = false
         FirebaseStorage.getInstance().getReference("profilePictures/${item.friendlyUser.uid}.jpg").downloadUrl.addOnCompleteListener{
             if (it.isSuccessful){
-                Picasso.get().load(it.result).into(holder.ivProfileImage)
+                Picasso.get().load(it.result)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(holder.ivProfileImage)
             }
         }
         when (item.review.vote!!) {
