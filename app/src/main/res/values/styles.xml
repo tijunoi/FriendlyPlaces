@@ -28,6 +28,7 @@
 
     <style name="UpBackArrowIconWhite" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:colorControlNormal">@color/icons</item>
+        <item name="android:titleTextColor">@color/icons</item>
     </style>
 
     <style name="SpinnerWhite" parent="Base.Widget.AppCompat.Spinner.Underlined">

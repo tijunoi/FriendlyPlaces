@@ -11,12 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent"
         android:minHeight="?attr/actionBarSize"
-        style="@style/UpBackArrowIconWhite"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/Theme.AppCompat.Light"
+        android:theme="@style/UpBackArrowIconWhite"
+        app:titleTextColor="@color/icons"
         android:fitsSystemWindows="true">
 
     </android.support.v7.widget.Toolbar>

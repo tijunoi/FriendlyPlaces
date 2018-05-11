@@ -3,6 +3,7 @@ package com.friendlyplaces.friendlyapp.activities.detailed_place.reviews
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import com.friendlyplaces.friendlyapp.R
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.model.Review
@@ -79,6 +80,13 @@ ReviewsListActivity : AppCompatActivity() {
                     }
 
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
