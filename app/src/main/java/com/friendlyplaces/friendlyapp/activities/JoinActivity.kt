@@ -24,7 +24,7 @@ import android.widget.Toast
 import com.friendlyplaces.friendlyapp.R
 import com.friendlyplaces.friendlyapp.model.FriendlyUser
 import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants
-import com.friendlyplaces.friendlyapp.utilities.Utils
+import com.friendlyplaces.friendlyapp.utilities.preventTwoClick
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -117,7 +117,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     //IMPLEMENTED METHODS FROM INTERFACES
 
     override fun onClick(view: View?) {
-        Utils.preventTwoClick(view)
+        view?.preventTwoClick()
         when (view?.id) {
             R.id.register_button -> {
                 spin_kit_join.visibility = View.VISIBLE
