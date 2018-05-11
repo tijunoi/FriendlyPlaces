@@ -172,7 +172,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
 
                                     ViewGroup parent = (ViewGroup) registerButtonFrame.getParent();
-                                    Snackbar.make(parent, "Ya existe una cuenta con este email o no hay internet", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(parent, "Ya existe una cuenta con este email o no hay internet", Snackbar.LENGTH_LONG).setAction("OK", null).show();
                                     int index = parent.indexOfChild(registerButtonFrame);
                                     View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false);
                                     View nouButoLogin = v.findViewById(R.id.frame_button_register);

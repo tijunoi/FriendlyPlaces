@@ -159,7 +159,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                             // If sign in fails, display a message to the user.
                             Log.w("FBaseGoogleLoginError", "signInWithCredential:failure", task.getException());
                             spinKit.setVisibility(View.GONE);
-                            Snackbar.make(findViewById(R.id.main_content), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(R.id.main_content), "Authentication Failed.", Snackbar.LENGTH_SHORT).setAction("OK", null).show();
                             //updateUI(null);
                         }
 

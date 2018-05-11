@@ -227,7 +227,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
                                 ViewGroup parent = (ViewGroup) loginButtonFrame.getParent();
-                                Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).setAction("OK", null).show();
                                 int index = parent.indexOfChild(loginButtonFrame);
                                 View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false);
                                 View nouButoLogin = v.findViewById(R.id.frame_button_login_login);

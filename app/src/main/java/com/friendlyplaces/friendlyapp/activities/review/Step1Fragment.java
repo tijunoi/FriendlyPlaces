@@ -113,7 +113,7 @@ public class Step1Fragment extends Fragment implements BlockingStep{
 
     @Override
     public void onError(@NonNull VerificationError error) {
-        Snackbar.make(getView(), error.getErrorMessage(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), error.getErrorMessage(), Snackbar.LENGTH_LONG).setAction("OK", null).show();
     }
 
     @Override

@@ -235,7 +235,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                                 goToHomescreen()
                                 spinGone()
                             }
-                            else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                            else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG)
+                                    .setAction("OK", null).show()
                             spinGone()
                         })
             }else{

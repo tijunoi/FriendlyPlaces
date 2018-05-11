@@ -49,7 +49,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         if (requiredConditions)
             postDataToFirebase(shouldChangeName = shouldChangeName)
-        else Snackbar.make(profileSave_button, "Los campos no pueden estar vacios", Snackbar.LENGTH_LONG).show()
+        else Snackbar.make(profileSave_button, "Los campos no pueden estar vacios", Snackbar.LENGTH_LONG).setAction("OK", null).show()
     }
 
     private fun postDataToFirebase(shouldChangeName: Boolean) {
@@ -69,7 +69,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                                         if (it.isSuccessful) {
                                             runOnUiThread {
                                                 spin_kit_profile.visibility = View.GONE
-                                                Snackbar.make(profileSave_button, "Se ha guardado el perfil", Snackbar.LENGTH_LONG).show()
+                                                Snackbar.make(profileSave_button, "Se ha guardado el perfil", Snackbar.LENGTH_LONG).setAction("OK", null).show()
                                                 profileSave_button.isEnabled = true
                                             }
                                         } else {
@@ -90,7 +90,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     //listener para activar el boton y esconder el progressbar
     val onCancelledListener: OnCanceledListener = OnCanceledListener {
         spin_kit_profile.visibility = View.GONE
-        Snackbar.make(profileSave_button, "Ha habido un error al actualizar el perfil", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(profileSave_button, "Ha habido un error al actualizar el perfil", Snackbar.LENGTH_LONG).setAction("OK", null).show()
         profileSave_button.isEnabled = true
     }
 

@@ -210,7 +210,7 @@ public class HomeFragment extends Fragment implements
 
         //Si no te els permisos de ubicacio els demana el botó no fa res i ja esta
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).setAction("OK", null).show();
             return;
         }
         enableMyLocation();
@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment implements
                             .build();                   // Creates a CameraPosition from the builder
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } else {
-                    Snackbar.make(mapFragment.getView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mapFragment.getView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).setAction("OK", null).show();
                 }
             }
         });
