@@ -127,16 +127,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             case R.id.op_pos_rated:
                                 Intent intent = new Intent(MainActivity.this, PlaceListActivity.class);
                                 intent.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.POSITIVE_PLACES);
+                                intent.putExtra(PlaceListActivity.TITLE_KEY, menuItem.getTitle());
                                 startActivity(intent);
                                 break;
                             case R.id.op_neg_rated:
                                 Intent intent2 = new Intent(MainActivity.this, PlaceListActivity.class);
                                 intent2.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.NEGATIVE_PLACES);
+                                intent2.putExtra(PlaceListActivity.TITLE_KEY, menuItem.getTitle());
                                 startActivity(intent2);
                                 break;
                             case R.id.op_rated_places:
                                 Intent intent3 = new Intent(MainActivity.this, PlaceListActivity.class);
                                 intent3.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.OWN_VOTED_PLACES);
+                                intent3.putExtra(PlaceListActivity.TITLE_KEY, menuItem.getTitle());
                                 startActivity(intent3);
                                 break;
                             case R.id.op_logoff:
