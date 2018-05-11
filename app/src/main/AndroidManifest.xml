@@ -55,7 +55,6 @@
             android:label="@string/title_activity_detailed_place"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SlideUpTransition" />
-        <activity android:name=".TestingActivity" />
         <activity
             android:name=".activities.IntroActivity"
             android:screenOrientation="portrait" />

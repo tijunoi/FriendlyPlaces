@@ -1,7 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities.review;
 
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,12 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.model.Review;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.varunest.sparkbutton.SparkButton;
@@ -42,8 +39,6 @@ public class Step1Fragment extends Fragment implements BlockingStep{
     public Step1Fragment() {
         // Required empty public constructor
     }
-
-
 
 
     @Override
@@ -92,6 +87,8 @@ public class Step1Fragment extends Fragment implements BlockingStep{
 
             }
         });
+
+
         return v;
     }
 

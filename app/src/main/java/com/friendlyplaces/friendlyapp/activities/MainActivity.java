@@ -19,7 +19,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.friendlyplaces.friendlyapp.BuildConfig;
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
@@ -101,9 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navView = (NavigationView) findViewById(R.id.navview);
         tv_appbar.setOnClickListener(this);
-        //Mostra el botó de testing en el menu
-        if (BuildConfig.FLAVOR.equals("dev"))
-            navView.getMenu().findItem(R.id.op_testing_button).setVisible(true);
 
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
