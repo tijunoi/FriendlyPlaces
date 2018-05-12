@@ -30,7 +30,6 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:text="Nombre de usuario"
         android:textColor="#fff"
         android:textStyle="bold" />
 

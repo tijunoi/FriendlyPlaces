@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity;
 import com.friendlyplaces.friendlyapp.fragments.HomeFragment;
 import com.friendlyplaces.friendlyapp.utilities.Utils;
@@ -35,9 +35,6 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    //Constants
-    public static final int RC_SIGN_IN = 1;
 
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        final android.support.v7.widget.Toolbar appbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appbar_main);
+        final android.support.v7.widget.Toolbar appbar = findViewById(R.id.appbar_main);
         setSupportActionBar(appbar);
         //afegim la hamburguesita a la toolbar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
@@ -97,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("");
 
         tv_appbar = findViewById(R.id.clickable_appbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navView = (NavigationView) findViewById(R.id.navview);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.navview);
         tv_appbar.setOnClickListener(this);
 
         View headerView = navView.getHeaderView(0); //obtenir la barra de menu
@@ -109,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                         boolean fragmentTransaction = false;
                         android.support.v4.app.Fragment fragment = null;
@@ -201,15 +198,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultCode == RESULT_OK) {
 
                 Place place = PlacePicker.getPlace(this, data);
-                String toastMsg = String.format("Place: %s", place.getName());
-                System.out.println(place.getId());
-
-
                 Intent intent = new Intent(this, DetailedPlaceActivity.class);
                 intent.putExtra("placeId", place.getId());
                 intent.putExtra("placeName", place.getName());
                 startActivity(intent);
-               // startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
         }
     }

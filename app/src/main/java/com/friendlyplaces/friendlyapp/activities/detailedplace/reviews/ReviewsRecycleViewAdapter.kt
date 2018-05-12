@@ -1,4 +1,4 @@
-package com.friendlyplaces.friendlyapp.activities.detailed_place.reviews
+package com.friendlyplaces.friendlyapp.activities.detailedplace.reviews
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -20,11 +20,11 @@ class ReviewsRecycleViewAdapter(private val dataSource: MutableList<ReviewWithUs
 
 
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvReview = itemView.findViewById<TextView>(R.id.reviewPlace_recycler)
-        var tvNameUser = itemView.findViewById<TextView>(R.id.userName_recycler)
-        var ivProfileImage = itemView.findViewById<CircleImageView>(R.id.profileImage_recycler)
-        var likeButton = itemView.findViewById<SparkButton>(R.id.like_recycler)
-        var dislikeButton = itemView.findViewById<SparkButton>(R.id.dislike_recycler)
+        var tvReview: TextView = itemView.findViewById(R.id.reviewPlace_recycler)
+        var tvNameUser: TextView = itemView.findViewById(R.id.userName_recycler)
+        var ivProfileImage: CircleImageView = itemView.findViewById(R.id.profileImage_recycler)
+        var likeButton: SparkButton = itemView.findViewById(R.id.like_recycler)
+        var dislikeButton: SparkButton = itemView.findViewById(R.id.dislike_recycler)
 
     }
 
@@ -40,12 +40,12 @@ class ReviewsRecycleViewAdapter(private val dataSource: MutableList<ReviewWithUs
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         val item = dataSource[position]
-        holder.tvReview.setText(item.review.comment)
-        holder.tvNameUser.setText(item.friendlyUser.username)
+        holder.tvReview.text = item.review.comment
+        holder.tvNameUser.text = item.friendlyUser.username
         holder.likeButton.isEnabled = false
         holder.dislikeButton.isEnabled = false
-        FirebaseStorage.getInstance().getReference("profilePictures/${item.friendlyUser.uid}.jpg").downloadUrl.addOnCompleteListener{
-            if (it.isSuccessful){
+        FirebaseStorage.getInstance().getReference("profilePictures/${item.friendlyUser.uid}.jpg").downloadUrl.addOnCompleteListener {
+            if (it.isSuccessful) {
                 Picasso.get().load(it.result)
                         .placeholder(R.mipmap.ic_launcher)
                         .into(holder.ivProfileImage)

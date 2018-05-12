@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.AdapterView
 import com.friendlyplaces.friendlyapp.R
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity
 import com.friendlyplaces.friendlyapp.adapters.PlacesAdapter
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace
 import com.friendlyplaces.friendlyapp.model.Review

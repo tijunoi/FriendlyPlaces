@@ -3,24 +3,22 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/op_home"
-            android:title="Home"
+            android:title="@string/menu_nav_view_home"
             android:icon="@drawable/ic_home_black_24dp"/>
         <item
             android:id="@+id/op_pos_rated"
-            android:title="Sitios a visitar"
+            android:title="@string/menu_nav_view_positive_places"
             android:icon="@drawable/ic_thumb_up_black_24dp"/>
         <item
             android:id="@+id/op_neg_rated"
-            android:title="Sitios a evitar"
+            android:title="@string/menu_nav_view_negative_places"
             android:icon="@drawable/ic_thumb_down_black_24dp"/>
         <item
             android:id="@+id/op_rated_places"
-            android:title="Mis sitios puntuados"
+            android:title="@string/menu_nav_view_rated_places"
             android:icon="@drawable/ic_pin_drop_black_24dp"/>
     </group>
-    <item
-        android:id="@+id/nav_logoff"
-        android:title="Opciones de usuario">
+    <item android:title="@string/menu_nav_view_group_user_settings">
         <menu>
             <item
                 android:id="@+id/op_logoff"

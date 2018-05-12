@@ -14,7 +14,6 @@ import android.widget.EditText;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -35,7 +34,7 @@ public class Step2Fragment extends Fragment implements BlockingStep{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_step2, container, false);

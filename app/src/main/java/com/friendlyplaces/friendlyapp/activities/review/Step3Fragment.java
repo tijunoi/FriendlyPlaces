@@ -54,7 +54,7 @@ public class Step3Fragment extends Fragment implements BlockingStep {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_step3, container, false);
         ButterKnife.bind(this, v);

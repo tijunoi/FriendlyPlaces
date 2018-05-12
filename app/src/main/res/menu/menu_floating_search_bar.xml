@@ -4,7 +4,7 @@
     tools:context="com.friendlyplaces.friendlyapp.activities.MainActivity">
     <item
         android:id="@+id/action_search"
-        android:title="Search"
+        android:title="@string/menu_main_search"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_search_black_24dp"/>
 

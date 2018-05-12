@@ -61,12 +61,11 @@
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Nombre"
+                android:text="@string/activity_join_name_label"
                 android:textColor="@color/colorPrimary" />
 
             <EditText
@@ -85,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Descripción"
+                android:text="@string/activity_join_description_label"
                 android:textColor="@color/colorPrimary" />
 
             <EditText
@@ -98,12 +97,11 @@
                 android:inputType="text" />
 
             <TextView
-                android:id="@+id/sex_orientation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Orientación sexual"
+                android:text="@string/activity_join_sexual_orientation_label"
                 android:textColor="@color/colorPrimary" />
 
             <EditText
@@ -123,7 +121,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="GUARDAR"
+                android:text="@string/save_button_uppercase"
                 android:textColor="@color/icons" />
 
 

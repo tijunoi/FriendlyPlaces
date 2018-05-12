@@ -12,9 +12,6 @@
         <item name="android:windowEnterTransition">@android:transition/slide_bottom</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-    </style>
 
     <style name="AppTheme.Translucent"
         parent="AppTheme">

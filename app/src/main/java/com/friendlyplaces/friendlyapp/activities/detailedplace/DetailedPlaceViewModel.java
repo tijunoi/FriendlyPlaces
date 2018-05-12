@@ -1,4 +1,4 @@
-package com.friendlyplaces.friendlyapp.activities.detailed_place;
+package com.friendlyplaces.friendlyapp.activities.detailedplace;
 
 import android.arch.lifecycle.ViewModel;
 

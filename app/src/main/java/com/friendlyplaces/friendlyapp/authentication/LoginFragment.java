@@ -3,12 +3,12 @@ package com.friendlyplaces.friendlyapp.authentication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -66,36 +66,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        //args.putString(ARG_QUERY_TYPE, param1);
-        //args.putString(ARG_PARAM2, param2);
-        //fragment.setArguments(args);
-        return fragment;
+        return new LoginFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-            //mParam1 = getArguments().getString(ARG_QUERY_TYPE);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
         loginWithGoogleButton.setOnClickListener(this);
 
-        et_email = (EditText) v.findViewById(R.id.et_login_email);
-        et_password = (EditText) v.findViewById(R.id.et_login_password);
+        et_email = v.findViewById(R.id.et_login_email);
+        et_password = v.findViewById(R.id.et_login_password);
 
         loginButtonFrame = v.findViewById(R.id.frame_button_login_login);
         loginFramebuttonTextview = v.findViewById(R.id.login_frame_textview);
@@ -139,11 +124,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         });
 
         return v;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -229,7 +209,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 ViewGroup parent = (ViewGroup) loginButtonFrame.getParent();
                                 Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).show();
                                 int index = parent.indexOfChild(loginButtonFrame);
-                                View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false);
+                                @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false); //Supress lint because this is the desired behaviour
                                 View nouButoLogin = v.findViewById(R.id.frame_button_login_login);
                                 parent.removeView(loginButtonFrame);
                                 loginButtonFrame = (FrameLayout) nouButoLogin;
@@ -285,13 +265,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return pattern.matcher(email).matches();
     }
 
-    public void load(View view) {
-        animateButtonWidth();
-    }
-
-    private void animateButtonWidth() {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
