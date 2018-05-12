@@ -14,13 +14,14 @@ import com.varunest.sparkbutton.SparkButton
 /**
  * Created by Nil Ordoñez on 26/4/18.
  */
-class PlacesAdapter(private val context: Context,
+class PlacesAdapter(context: Context,
                     private val dataSource: MutableList<FriendlyPlace>) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val friendlyPlace: FriendlyPlace = dataSource[position]
+
 
         val miView = inflater.inflate(R.layout.rated_list_recycler_layout, parent, false)
 

@@ -61,7 +61,7 @@
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Confirmar contraseña"
+                android:hint="@string/signup_confirm_password_edittext_hint"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:minLines="1"

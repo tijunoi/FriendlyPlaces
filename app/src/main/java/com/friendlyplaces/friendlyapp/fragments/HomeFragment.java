@@ -20,8 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.friendlyplaces.friendlyapp.R;
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
 import com.friendlyplaces.friendlyapp.utilities.MarkerColorUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,9 +34,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,11 +54,9 @@ import static com.friendlyplaces.friendlyapp.utilities.FirestoreConstants.COLLEC
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements
-        GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        GoogleMap.OnPoiClickListener,
-        GoogleMap.OnInfoWindowClickListener, ClusterManager.OnClusterItemInfoWindowClickListener<FriendlyPlace> {
+        ClusterManager.OnClusterItemInfoWindowClickListener<FriendlyPlace> {
 
     GoogleMap mMap;
     Fragment mapFragment;
@@ -77,7 +74,7 @@ public class HomeFragment extends Fragment implements
 
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+    public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         super.onCreateView(layoutInflater, viewGroup, bundle);
         View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
         //floatingActionButton = v.findViewById(R.id.quick_button);
@@ -97,11 +94,6 @@ public class HomeFragment extends Fragment implements
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
-    /**
-     * Referencia del marker visualizandose actualmente. Se guarda para poder borrarlo luego, ya que GoogleMap no tiene el método
-     */
-    Marker currentMarker;
-    PointOfInterest currentPointOfInterest; //para comparar el place id
 
     /**
      * Request code for location permission request.
@@ -151,9 +143,7 @@ public class HomeFragment extends Fragment implements
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        // mMap.setOnPoiClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
-        mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         if (mMap.isMyLocationEnabled()) {
 
@@ -169,23 +159,18 @@ public class HomeFragment extends Fragment implements
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            db.collection("FriendlyPlaces")
+            db.collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                //La queri retorna un array de DocumentSnapshots (task.getResult() es la array) per aixo es fa un foreach
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Log.d("Firestore", document.getId() + " => ");
 
-                                    //Firebase AUTOPARSEJA, aixi que ja tens el objecte creat i parsejat
-                                    FriendlyPlace lloc = document.toObject(FriendlyPlace.class); //Obviament si lo que et retorna la query no te els atribut que te el Objecte peta
+                                    FriendlyPlace lloc = document.toObject(FriendlyPlace.class);
 
                                     mClusterManager.addItem(lloc);
-
-                                    //Marker marker = mMap.addMarker(new MarkerOptions().position(lloc.getLatLng()).title("Nom del lloc").snippet("Rating: " + lloc.avgRating));
-                                    //marker.showInfoWindow();
 
                                 }
                                 mClusterManager.cluster();
@@ -197,11 +182,6 @@ public class HomeFragment extends Fragment implements
 
 
         }
-
-        // Add a marker in Sydney and move the camera
-       /* LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     @OnClick(R.id.home_fragment_center_map_fab)
@@ -243,53 +223,6 @@ public class HomeFragment extends Fragment implements
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
         }
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-
-    }
-
-
-    @Override
-    public void onPoiClick(PointOfInterest pointOfInterest) {
-        if (currentMarker != null) {
-            if (pointOfInterest.placeId.equals(currentPointOfInterest.placeId)) {
-                //do nothing
-            } else {
-                currentMarker.remove();
-                currentMarker = mMap.addMarker(new MarkerOptions()
-                        .position(pointOfInterest.latLng)
-                        .title(pointOfInterest.name)
-                        .snippet("Pulsa para ver los detalles"));
-                currentMarker.setTag(pointOfInterest);
-                currentPointOfInterest = pointOfInterest;
-            }
-        } else {
-            currentMarker = mMap.addMarker(new MarkerOptions()
-                    .position(pointOfInterest.latLng)
-                    .title(pointOfInterest.name)
-                    .snippet("Pulsa para ver los detalles"));
-            currentMarker.setTag(pointOfInterest);
-            currentPointOfInterest = pointOfInterest;
-        }
-    }
-
-
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        PointOfInterest poi = (PointOfInterest) marker.getTag();
-
-        Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
-        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
-        if (poi != null) {
-            intent.putExtra("placeId", poi.placeId);
-            intent.putExtra("placeName", poi.name);
-            startActivity(intent);
-        }
-
-
     }
 
     @Override

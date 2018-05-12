@@ -29,7 +29,7 @@
             android:id="@+id/clickable_appbar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Buscar"
+            android:text="@string/main_content_search_textview"
             android:textColor="@color/secondary_text"
             android:gravity="center_vertical" />
 

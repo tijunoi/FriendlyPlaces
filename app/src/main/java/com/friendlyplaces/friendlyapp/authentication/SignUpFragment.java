@@ -3,6 +3,7 @@ package com.friendlyplaces.friendlyapp.authentication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -56,26 +57,17 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     }
 
     public static SignUpFragment newInstance() {
-        SignUpFragment fragment = new SignUpFragment();
-        Bundle args = new Bundle();
-        return fragment;
+        return new SignUpFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        inputEmail = (EditText) v.findViewById(R.id.et_register_email);
-        inputPassword = (EditText) v.findViewById(R.id.et_register_password);
+        inputEmail = v.findViewById(R.id.et_register_email);
+        inputPassword = v.findViewById(R.id.et_register_password);
         inputConfirmedPass = v.findViewById(R.id.et_register_confirm_password);
         reveal = v.findViewById(R.id.reveal_register_view);
 
@@ -168,13 +160,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                                     });
                                     revealAnimator.start();
                                 } else {
-                                    //TODO: organizar y hacer legible (ask Nil)
-
-
                                     ViewGroup parent = (ViewGroup) registerButtonFrame.getParent();
                                     Snackbar.make(parent, "Ya existe una cuenta con este email o no hay internet", Snackbar.LENGTH_LONG).show();
                                     int index = parent.indexOfChild(registerButtonFrame);
-                                    View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false);
+                                    @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false); //Supress lint because this is the desired behaviour
                                     View nouButoLogin = v.findViewById(R.id.frame_button_register);
                                     parent.removeView(registerButtonFrame);
                                     registerButtonFrame = (FrameLayout) nouButoLogin;
@@ -279,7 +268,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSignUpFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onRegisterInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener);
     }
 

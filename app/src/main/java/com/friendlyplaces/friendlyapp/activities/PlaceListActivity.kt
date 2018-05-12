@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.AdapterView
 import com.friendlyplaces.friendlyapp.R
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity
 import com.friendlyplaces.friendlyapp.adapters.PlacesAdapter
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace
 import com.friendlyplaces.friendlyapp.model.Review
@@ -22,6 +22,7 @@ class PlaceListActivity : AppCompatActivity() {
 
     companion object {
         const val QUERY_TYPE_KEY = "QueryType"
+        const val TITLE_KEY = "title_key"
         const val POSITIVE_PLACES = 0
         const val NEGATIVE_PLACES = 1
         const val OWN_VOTED_PLACES = 2
@@ -33,10 +34,10 @@ class PlaceListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_list)
-        setSupportActionBar(place_list_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         queryType = intent.getIntExtra(QUERY_TYPE_KEY, 0)
+
+        setupToolbar()
 
         places = mutableListOf()
 
@@ -48,6 +49,17 @@ class PlaceListActivity : AppCompatActivity() {
         })
 
         startLoadingData()
+    }
+
+    private fun setupToolbar() {
+        val titleName = intent.getStringExtra(TITLE_KEY)
+
+        place_list_toolbar.setTitleTextColor(getColor(R.color.icons))
+        setSupportActionBar(place_list_toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = titleName
+        }
     }
 
     private fun startLoadingData() {

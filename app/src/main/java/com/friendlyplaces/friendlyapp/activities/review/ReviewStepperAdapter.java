@@ -1,7 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities.review;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +12,6 @@ import com.stepstone.stepper.viewmodel.StepViewModel;
 
 public class ReviewStepperAdapter extends AbstractFragmentStepAdapter {
 
-    private static String CURRENT_STEP_POSITION_KEY = "CURRENT_STEP_POSITION_KEY";
-
     public ReviewStepperAdapter(FragmentManager fm, Context context) {
         super(fm, context);
     }
@@ -23,14 +20,11 @@ public class ReviewStepperAdapter extends AbstractFragmentStepAdapter {
     public Step createStep(int position) {
         switch (position) {
             case 0:
-                final Step1Fragment step = new Step1Fragment();
-                return step;
+                return new Step1Fragment();
             case 1:
-                final Step2Fragment step2 = new Step2Fragment();
-                return step2;
+                return new Step2Fragment();
             case 2:
-                final Step3Fragment step3 = new Step3Fragment();
-                return step3;
+                return new Step3Fragment();
             default:
                 return null;
         }
@@ -61,7 +55,7 @@ public class ReviewStepperAdapter extends AbstractFragmentStepAdapter {
                         .create();
             default:
                 return new StepViewModel.Builder(context)
-                        .setTitle("Titul per defecte") //can be a CharSequence instead
+                        .setTitle("This will never happen but Java forces us to have a default") //can be a CharSequence instead
                         .create();
 
         }

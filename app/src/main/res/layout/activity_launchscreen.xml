@@ -8,7 +8,6 @@
     tools:context="com.friendlyplaces.friendlyapp.activities.LaunchActivity">
 
     <ImageView
-        android:id="@+id/logotip"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="32dp"

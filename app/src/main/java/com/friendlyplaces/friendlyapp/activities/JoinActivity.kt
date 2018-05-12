@@ -90,7 +90,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 GET_FROM_GALLERY -> if (data != null) {
                     val contentURI = data.data
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI)
+                        bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                         bitmap?.let {
                             imageString = getStringImage(it)
                         }
@@ -122,7 +122,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             R.id.register_button -> {
                 spin_kit_join.visibility = View.VISIBLE
                 if (checkearDatosNotEmpty()) {
-                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
+                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken, 0)
                     setProfileValuesToUser(friendlyUser)
                 }else{
                     spin_kit_join.visibility = View.GONE
@@ -155,7 +155,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     //IMAGEN PROCESS METHODS
 
     fun uploadPhotoToFirebase() {
-        spin_kit_join.setVisibility(View.VISIBLE);
+        spin_kit_join.visibility = View.VISIBLE
         val storage = FirebaseStorage.getInstance()
         val imageReference = storage.reference.child("profilePictures/" + FirebaseAuth.getInstance().currentUser?.uid + ".jpg")
 
@@ -182,7 +182,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             if (it.isSuccessful) {
                 Log.i("FirebaseAuth UserUpdate", "Updatejat correctament")
                 Picasso.get().load(FirebaseAuth.getInstance().currentUser!!.photoUrl).into(imageJoin)
-                spin_kit_join.setVisibility(View.GONE)
+                spin_kit_join.visibility = View.GONE
             }
         })
     }
@@ -284,13 +284,13 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, Companion.GET_FROM_GALLERY)
+        startActivityForResult(galleryIntent, GET_FROM_GALLERY)
     }
 
 
     private fun takePhotoFromCamera() {
         val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, Companion.GET_FROM_CAMERA)
+        startActivityForResult(intent, GET_FROM_CAMERA)
     }
 
     private fun getStringImage(bmp: Bitmap): String {

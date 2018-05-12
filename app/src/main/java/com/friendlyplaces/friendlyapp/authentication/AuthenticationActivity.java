@@ -13,10 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.activities.JoinActivity;
@@ -90,10 +87,10 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
         spinKit = findViewById(R.id.spin_kit_authentication);
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -140,7 +137,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d("FBaseGoogleLogin", "firebaseAuthWithGoogle:" + acct.getId());
 
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -177,8 +173,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                 if (task.isSuccessful()){
                     startActivity(intent);
                     finish();
-                } else {
-
                 }
             }
         });
@@ -223,41 +217,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                 finish();
             }
         }, 1000);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_authentication, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
     }
 
     /**
