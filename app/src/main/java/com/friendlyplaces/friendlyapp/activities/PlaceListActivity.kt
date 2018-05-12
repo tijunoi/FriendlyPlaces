@@ -54,6 +54,7 @@ class PlaceListActivity : AppCompatActivity() {
     private fun setupToolbar() {
         val titleName = intent.getStringExtra(TITLE_KEY)
 
+        place_list_toolbar.setTitleTextColor(getColor(R.color.icons))
         setSupportActionBar(place_list_toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
