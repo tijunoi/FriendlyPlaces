@@ -73,12 +73,10 @@ class LaunchActivity : AppCompatActivity() {
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(intent)
                     .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                        // Get deep link from result (may be null if no link is found)
                         if (pendingDynamicLinkData != null) {
                             val deepLink: Uri = pendingDynamicLinkData.link
-                            //Deberia ser el placeid
                             val placeId = deepLink.lastPathSegment
-                            val intent = Intent(this,DetailedPlaceActivity::class.java)
+                            val intent = Intent(this, DetailedPlaceActivity::class.java)
                             intent.putExtra("placeId", placeId)
                             startActivity(intent)
                         }

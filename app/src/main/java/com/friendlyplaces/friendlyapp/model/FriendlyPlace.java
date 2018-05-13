@@ -68,7 +68,7 @@ public class FriendlyPlace implements ClusterItem {
         return "Puntuación: " + String.valueOf(getPuntuation());
     }
 
-    public int getPuntuation(){
+    public int getPuntuation() {
         return positiveVotes - negativeVotes;
     }
 }

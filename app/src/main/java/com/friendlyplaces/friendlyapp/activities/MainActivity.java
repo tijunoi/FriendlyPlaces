@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             case R.id.op_logoff:
                                 FirebaseAuth.getInstance().signOut();
                                 finish();
-                                Log.i("NavigationView", "Pulsado cerrar sesión");
                                 break;
                         }
                         menuItem.setChecked(false);

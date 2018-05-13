@@ -127,14 +127,13 @@
 
         <Button
             android:id="@+id/vermas_button"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detailed_place_see_all_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            app:layout_constraintBottom_toTopOf="@id/box_opiniones"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="4dp"
-            />
+            android:text="@string/detailed_place_see_all_button"
+            app:layout_constraintBottom_toTopOf="@id/box_opiniones"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/box_opiniones"

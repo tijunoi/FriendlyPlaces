@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Step2Fragment extends Fragment implements BlockingStep{
+public class Step2Fragment extends Fragment implements BlockingStep {
 
     @BindView(R.id.et_addReview_step2)
     EditText addReview;
@@ -67,7 +67,7 @@ public class Step2Fragment extends Fragment implements BlockingStep{
     @Nullable
     @Override
     public VerificationError verifyStep() {
-        if (addReview.getText().toString().trim().length() < 40){
+        if (addReview.getText().toString().trim().length() < 40) {
             return new VerificationError("Debes escribir una reseña de 40 caracteres como mínimo");
         }
         return null;

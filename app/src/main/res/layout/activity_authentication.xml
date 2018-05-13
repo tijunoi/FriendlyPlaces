@@ -14,17 +14,6 @@
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <!--<android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_weight="1"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
-
-        </android.support.v7.widget.Toolbar>-->
-
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
@@ -51,26 +40,24 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
         <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/spin_kit_authentication"
             style="@style/SpinKitView.Large.FadingCircle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:SpinKit_Color="@color/colorAccent"
-            android:visibility="gone"
             android:layout_gravity="center"
             android:layout_marginBottom="70dp"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/colorAccent"
 
             />
     </LinearLayout>
 
 
-
 </android.support.design.widget.CoordinatorLayout>
 
-    <!--app:layout_scrollFlags="scroll|enterAlways"-->

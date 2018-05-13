@@ -7,9 +7,9 @@
     <android.support.v7.widget.CardView
         android:id="@+id/place_cardview"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:padding="10dp"
-        android:layout_height="match_parent">
+        android:padding="10dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -19,8 +19,8 @@
                 android:id="@+id/like_recycler"
                 android:layout_width="56dp"
                 android:layout_height="80dp"
-                android:visibility="gone"
                 android:background="@color/colorPrimary"
+                android:visibility="gone"
                 app:sparkbutton_activeImage="@drawable/ic_thumb_up_active"
                 app:sparkbutton_iconSize="30dp"
                 app:sparkbutton_inActiveImage="@drawable/ic_thumb_up_inactive"
@@ -31,8 +31,8 @@
                 android:id="@+id/dislike_recycler"
                 android:layout_width="56dp"
                 android:layout_height="80dp"
-                android:visibility="gone"
                 android:background="@color/redThumbDown"
+                android:visibility="gone"
                 app:sparkbutton_activeImage="@drawable/ic_thumb_down_active"
                 app:sparkbutton_iconSize="30dp"
                 app:sparkbutton_inActiveImage="@drawable/ic_thumb_down_inactive"

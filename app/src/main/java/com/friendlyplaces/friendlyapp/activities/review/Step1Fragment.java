@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Step1Fragment extends Fragment implements BlockingStep{
+public class Step1Fragment extends Fragment implements BlockingStep {
 
     @BindView(R.id.like_button_step1)
     SparkButton likeButton;
@@ -52,7 +52,7 @@ public class Step1Fragment extends Fragment implements BlockingStep{
         likeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                if (buttonState){
+                if (buttonState) {
                     dislikeButton.setChecked(false);
 
                 }
@@ -72,7 +72,7 @@ public class Step1Fragment extends Fragment implements BlockingStep{
         dislikeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                if (buttonState){
+                if (buttonState) {
                     likeButton.setChecked(false);
                 }
             }
@@ -116,10 +116,10 @@ public class Step1Fragment extends Fragment implements BlockingStep{
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
         AddReviewViewModel model = ViewModelProviders.of(getActivity()).get(AddReviewViewModel.class);
-        if (likeButton.isChecked()){
+        if (likeButton.isChecked()) {
             model.getReview().setVote(Review.Vote.POSITIVO);
             callback.goToNextStep();
-        }else{
+        } else {
             model.getReview().setVote(Review.Vote.NEGATIVO);
             callback.goToNextStep();
         }

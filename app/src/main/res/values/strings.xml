@@ -17,6 +17,10 @@
         <item>Heterosexual</item>
         <item>Otros</item>
     </string-array>
+    <string-array name="picture_dialog_options">
+        <item>Hacer una foto</item>
+        <item>Elegir una foto de tu galería</item>
+    </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_authentication">Friendly Places</string>
     <string name="action_share">Compartir</string>
@@ -66,4 +70,16 @@
     <string name="review_add_step_1_description">Puntúa este sitio!</string>
     <string name="review_add_step_2_description">Escribe una reseña</string>
     <string name="menu_main_search">Search</string>
+    <string name="missing_field_snackbar_message">Faltan campos por rellenar</string>
+    <string name="issue_on_register">Ha habido un problema al realizar la inscripción</string>
+    <string name="picture_dialog_title">Selecciona una opción</string>
+    <string name="user_password_failed">Usuario o contraseña incorrectos</string>
+    <string name="email_required">Debes introducir un email</string>
+    <string name="password_required">Debes introducir una contraseña</string>
+    <string name="password_complexity_requirements">La contraseña debe contener más de 6 caracteres</string>
+    <string name="passwords_not_match">Las contraseñas no coinciden</string>
+    <string name="account_already_exists">Ya existe una cuenta con este email o no hay internet</string>
+    <string name="check_location">No se puede detectar la ubicacion, comprueba los ajustes de tu telefono</string>
+    <string name="review_thanks">Gracias por tu reseña!</string>
+    <string name="back_snackbar">VOLVER</string>
 </resources>
