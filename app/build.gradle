@@ -7,8 +7,8 @@ android {
         applicationId "com.friendlyplaces.friendlyapp"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,14 +21,14 @@ android {
     productFlavors {
         dev {
             applicationId "com.friendlyplaces.friendlyapp"
-            versionCode 1
-            versionName "1.0"
+            versionCode 2
+            versionName "1.2"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
         production {
             applicationId "com.friendlyplaces.friendlyapp"
-            versionCode 1
-            versionName "1.0"
+            versionCode 2
+            versionName "1.2"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         }
     }
@@ -38,9 +38,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    //he afegit aixo pq no anava el navigationdraweer
     implementation 'com.android.support:support-v4:27.1.1'
-    //google apis,  ultima versió
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
