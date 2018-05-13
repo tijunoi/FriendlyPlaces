@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_appbar;
     private LinearLayout linearProfile;
 
-    //Firebase Instance variables
-    //Totes les que necessitem guardar. De moment segueixo tutorial Udacity
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -52,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_floating_search_bar, menu);
         return true;
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_search:
-                //al on click de abajo hacer lo mismo
                 OnTryingPickingAPlace();
                 return true;
         }
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final android.support.v7.widget.Toolbar appbar = findViewById(R.id.appbar_main);
         setSupportActionBar(appbar);
-        //afegim la hamburguesita a la toolbar
+
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navView = findViewById(R.id.navview);
         tv_appbar.setOnClickListener(this);
 
-        View headerView = navView.getHeaderView(0); //obtenir la barra de menu
+        View headerView = navView.getHeaderView(0);
         emailDrawerTextview = headerView.findViewById(R.id.user_email_drawer_textview);
         profilePictureCircleImageView = headerView.findViewById(R.id.profile_picture_navigation_drawer);
         linearProfile = headerView.findViewById(R.id.linearProfile);
@@ -115,13 +111,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             case R.id.op_home:
                                 fragment = new HomeFragment();
                                 fragmentTransaction = true;
-                                menuItem.setChecked(true);
                                 break;
                             case R.id.op_pos_rated:
                                 Intent intent = new Intent(MainActivity.this, PlaceListActivity.class);
                                 intent.putExtra(PlaceListActivity.QUERY_TYPE_KEY, PlaceListActivity.POSITIVE_PLACES);
                                 intent.putExtra(PlaceListActivity.TITLE_KEY, menuItem.getTitle());
                                 startActivity(intent);
+
                                 break;
                             case R.id.op_neg_rated:
                                 Intent intent2 = new Intent(MainActivity.this, PlaceListActivity.class);
@@ -141,17 +137,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Log.i("NavigationView", "Pulsado cerrar sesión");
                                 break;
                         }
+                        menuItem.setChecked(false);
+
                         if (fragmentTransaction) {
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.content_frame, fragment)
                                     .commit();
 
-                            //aixo es per mostrar el titul de cada opcio del menu
-                            //pero es super feo asi que lo quitaré seguro
                             getSupportActionBar().setTitle(menuItem.getTitle());
                         }
 
-                        //amb aquest metode al clicar la opció es tanca el menú
+
                         drawerLayout.closeDrawers();
 
                         return true;

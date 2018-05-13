@@ -31,6 +31,8 @@ class PlacesAdapter(context: Context,
         val votes: TextView = miView.findViewById(R.id.votes_recycler)
         val namePlace: TextView = miView.findViewById(R.id.namePlace_recycler)
 
+        likeButton.isEnabled = false
+        dislikeButton.isEnabled = false
         //Visibility is INVISIBLE instead of GONE because textview constrain is attached to the like button
         if (friendlyPlace.negativeVotes <= friendlyPlace.positiveVotes) {
             likeButton.visibility = View.VISIBLE

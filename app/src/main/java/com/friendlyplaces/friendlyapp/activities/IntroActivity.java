@@ -23,7 +23,7 @@ public class IntroActivity extends AppIntro  {
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide1_title), getString(R.string.slide1_description), R.mipmap.ic_launcher, getResources().getColor(R.color.colorAccent, null)));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide2_title), getString(R.string.slide2_description), R.drawable.ff_slide2, getResources().getColor(android.R.color.holo_blue_dark, null)));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide3_title), getString(R.string.slide3_description), R.drawable.ff_slide3, getResources().getColor(android.R.color.holo_green_dark, null)));
-        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide4_title), getString(R.string.slide4_description), R.mipmap.ic_launcher, getResources().getColor(android.R.color.holo_orange_dark, null)));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.slide4_title), getString(R.string.slide4_description), R.drawable.valoracion_fp, getResources().getColor(android.R.color.holo_orange_dark, null)));
 
         //paso 2 captura del layout de la review
         //paso 3 vota!
