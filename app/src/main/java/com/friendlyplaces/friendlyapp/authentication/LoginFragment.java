@@ -42,23 +42,16 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_QUERY_TYPE = "param1";
-    //private static final String ARG_PARAM2 = "param2";
+
 
     private EditText et_email, et_password;
     private Button login_button, loginWithGoogleButton;
 
-    //Fancy button vars
     FrameLayout loginButtonFrame;
     TextView loginFramebuttonTextview;
     ProgressBar mProgressBar;
     View reveal;
 
-    // TODO: Rename and change types of parameters
-    // private String mParam1;
-    //private String mParam2;
 
     private OnLoginFragmentInteractionListener mListener;
 
@@ -88,7 +81,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginButtonFrame.setOnClickListener(this);
         reveal = v.findViewById(R.id.reveal_login_view);
 
-        //Inicialitzo TextWatchers per clear errors quan usuari escrigui bé
         et_email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,7 +138,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Utils.preventTwoClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bt_login_login_google:
                 mListener.onLoginWithGoogleButtonPressed();
                 break;
@@ -203,11 +195,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 });
                                 revealAnimator.start();
                             } else {
-                                //TODO: organizar y hacer legible (ask Nil)
-
 
                                 ViewGroup parent = (ViewGroup) loginButtonFrame.getParent();
-                                Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(parent, R.string.user_password_failed, Snackbar.LENGTH_LONG).show();
                                 int index = parent.indexOfChild(loginButtonFrame);
                                 @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false); //Supress lint because this is the desired behaviour
                                 View nouButoLogin = v.findViewById(R.id.frame_button_login_login);

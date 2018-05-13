@@ -61,15 +61,10 @@ public class HomeFragment extends Fragment implements
     GoogleMap mMap;
     Fragment mapFragment;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
-
-    //
-    //
     @BindView(R.id.home_fragment_center_map_fab)
     FloatingActionButton centerLocationFab;
     public static final int PLACE_PICKER_REQUEST = 1;
 
-    // Declare a variable for the cluster manager.
     private ClusterManager<FriendlyPlace> mClusterManager;
 
 
@@ -77,9 +72,6 @@ public class HomeFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         super.onCreateView(layoutInflater, viewGroup, bundle);
         View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
-        //floatingActionButton = v.findViewById(R.id.quick_button);
-        //floatingActionButton.setTransitionName(getString(R.string.fabTransition));
-        //floatingActionButton.setOnClickListener(this);
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
         SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
         supportmapfragment.getMapAsync(this);
@@ -101,12 +93,6 @@ public class HomeFragment extends Fragment implements
      * @see #onRequestPermissionsResult(int, String[], int[])
      */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
-    /**
-     * Flag indicating whether a requested permission has been denied after returning in
-     * {@link #onRequestPermissionsResult(int, String[], int[])}.
-     */
-    private boolean mPermissionDenied = false;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -148,8 +134,6 @@ public class HomeFragment extends Fragment implements
         if (mMap.isMyLocationEnabled()) {
 
             centerMapToUserLocation();
-            // Initialize the manager with the context and the map.
-            // (Activity extends context, so we can pass 'this' in the constructor.)
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
             mMap.setOnInfoWindowClickListener(mClusterManager);
             mMap.setOnCameraIdleListener(mClusterManager);
@@ -166,7 +150,6 @@ public class HomeFragment extends Fragment implements
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (DocumentSnapshot document : task.getResult()) {
-                                    Log.d("Firestore", document.getId() + " => ");
 
                                     FriendlyPlace lloc = document.toObject(FriendlyPlace.class);
 
@@ -174,8 +157,6 @@ public class HomeFragment extends Fragment implements
 
                                 }
                                 mClusterManager.cluster();
-                            } else {
-                                Log.d("Firestore", "Error getting documents: ", task.getException());
                             }
                         }
                     });
@@ -185,12 +166,10 @@ public class HomeFragment extends Fragment implements
     }
 
     @OnClick(R.id.home_fragment_center_map_fab)
-    //El metode seria privat, pero per utilitzar ButterKnife,
     public void centerMapToUserLocation() {
 
-        //Si no te els permisos de ubicacio els demana el botó no fa res i ja esta
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(centerLocationFab.getRootView(), R.string.check_location, Snackbar.LENGTH_LONG).show();
             return;
         }
         enableMyLocation();
@@ -202,13 +181,13 @@ public class HomeFragment extends Fragment implements
                 if (location != null) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
                             .zoom(16)
                             .tilt(0)
-                            .build();                   // Creates a CameraPosition from the builder
+                            .build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } else {
-                    Snackbar.make(mapFragment.getView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mapFragment.getView(), R.string.check_location, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -217,10 +196,8 @@ public class HomeFragment extends Fragment implements
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else if (mMap != null) {
-            // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
         }
     }
@@ -228,7 +205,6 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onClusterItemInfoWindowClick(FriendlyPlace friendlyPlace) {
         Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
-        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
         intent.putExtra("placeId", friendlyPlace.pid);
         intent.putExtra("placeName", friendlyPlace.name);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());

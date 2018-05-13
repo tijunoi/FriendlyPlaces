@@ -34,7 +34,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AuthenticationActivity extends AppCompatActivity implements LoginFragment.OnLoginFragmentInteractionListener, SignUpFragment.OnSignUpFragmentInteractionListener{
+public class AuthenticationActivity extends AppCompatActivity implements LoginFragment.OnLoginFragmentInteractionListener, SignUpFragment.OnSignUpFragmentInteractionListener {
 
     public static final int RC_GOOGLE_SIGN_IN = 3736;
     private FirebaseAuth mAuth;
@@ -64,12 +64,10 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                 .requestEmail()
                 .build();
 
-        // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
 
-        //objecte d'instancia de FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -77,16 +75,9 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
             finish();
         }
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         spinKit = findViewById(R.id.spin_kit_authentication);
-        // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -102,7 +93,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     checkIfUserHasAlreadyCompletedProfile();
                 }
             }
@@ -123,13 +114,10 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
             case RC_GOOGLE_SIGN_IN:
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try {
-                    // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     firebaseAuthWithGoogle(account);
                 } catch (ApiException e) {
-                    // Google Sign In failed, update UI appropriately
-                    Log.w("LGoogleError", "Google sign in failed", e);
-                    // ...
+
                 }
         }
     }
@@ -143,23 +131,14 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("FBaseGoogleLogin", "signInWithCredential:success");
-                            //todo: HOLA AQUI VA LA CARD FP-46
-                            //si el mail ya ha sido registrado en firebase se startea la main activity
-                            //sino se redirige a la joinActivity
                             checkIfUserHasAlreadyCompletedProfile();
 
-                            //updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w("FBaseGoogleLoginError", "signInWithCredential:failure", task.getException());
                             spinKit.setVisibility(View.GONE);
                             Snackbar.make(findViewById(R.id.main_content), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
 
-                        // ...
                     }
                 });
     }
@@ -170,7 +149,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     startActivity(intent);
                     finish();
                 }
@@ -231,7 +210,7 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return LoginFragment.newInstance();
                 case 1:
@@ -242,7 +221,6 @@ public class AuthenticationActivity extends AppCompatActivity implements LoginFr
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
             return 2;
         }
     }
