@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PlaceListActivity">
+    tools:context=".activities.detailedplace.reviews.ReviewsListActivity">
 
-    <!--Toolbar-->
     <android.support.v7.widget.Toolbar
-        android:id="@+id/place_list_toolbar"
+        android:id="@+id/activity_reviews_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/UpBackArrowIconWhite"
-        app:popupTheme="@style/Theme.AppCompat.Light"
-        android:fitsSystemWindows="true">
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/icons">
 
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/place_listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/activity_reviews_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:divider="@color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/place_list_toolbar" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_reviews_list_toolbar">
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

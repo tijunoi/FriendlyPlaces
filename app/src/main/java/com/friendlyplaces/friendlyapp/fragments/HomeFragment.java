@@ -20,8 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.friendlyplaces.friendlyapp.R;
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity;
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity;
 import com.friendlyplaces.friendlyapp.model.FriendlyPlace;
+import com.friendlyplaces.friendlyapp.utilities.FirestoreConstants;
 import com.friendlyplaces.friendlyapp.utilities.MarkerColorUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,9 +34,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,34 +54,24 @@ import static com.friendlyplaces.friendlyapp.utilities.FirestoreConstants.COLLEC
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements
-        GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        GoogleMap.OnPoiClickListener,
-        GoogleMap.OnInfoWindowClickListener, ClusterManager.OnClusterItemInfoWindowClickListener<FriendlyPlace> {
+        ClusterManager.OnClusterItemInfoWindowClickListener<FriendlyPlace> {
 
     GoogleMap mMap;
     Fragment mapFragment;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
-
-    //
-    //
     @BindView(R.id.home_fragment_center_map_fab)
     FloatingActionButton centerLocationFab;
     public static final int PLACE_PICKER_REQUEST = 1;
 
-    // Declare a variable for the cluster manager.
     private ClusterManager<FriendlyPlace> mClusterManager;
 
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+    public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         super.onCreateView(layoutInflater, viewGroup, bundle);
         View v = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
-        //floatingActionButton = v.findViewById(R.id.quick_button);
-        //floatingActionButton.setTransitionName(getString(R.string.fabTransition));
-        //floatingActionButton.setOnClickListener(this);
         mapFragment = getChildFragmentManager().findFragmentById(R.id.map);
         SupportMapFragment supportmapfragment = (SupportMapFragment) mapFragment;
         supportmapfragment.getMapAsync(this);
@@ -97,11 +86,6 @@ public class HomeFragment extends Fragment implements
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
-    /**
-     * Referencia del marker visualizandose actualmente. Se guarda para poder borrarlo luego, ya que GoogleMap no tiene el método
-     */
-    Marker currentMarker;
-    PointOfInterest currentPointOfInterest; //para comparar el place id
 
     /**
      * Request code for location permission request.
@@ -109,12 +93,6 @@ public class HomeFragment extends Fragment implements
      * @see #onRequestPermissionsResult(int, String[], int[])
      */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
-    /**
-     * Flag indicating whether a requested permission has been denied after returning in
-     * {@link #onRequestPermissionsResult(int, String[], int[])}.
-     */
-    private boolean mPermissionDenied = false;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -151,15 +129,11 @@ public class HomeFragment extends Fragment implements
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        // mMap.setOnPoiClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(10f));
-        mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         if (mMap.isMyLocationEnabled()) {
 
             centerMapToUserLocation();
-            // Initialize the manager with the context and the map.
-            // (Activity extends context, so we can pass 'this' in the constructor.)
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
             mMap.setOnInfoWindowClickListener(mClusterManager);
             mMap.setOnCameraIdleListener(mClusterManager);
@@ -167,59 +141,35 @@ public class HomeFragment extends Fragment implements
             mClusterManager.setOnClusterItemInfoWindowClickListener(this);
             mClusterManager.setRenderer(new FriendlyPlaceClusterItemRenderer(getContext(), mMap, mClusterManager));
 
-            //Agafo la instancia de la Database Firestore. Normalment no l'agafes per el mig del codi.
-            // L'agafes al principi del onCreate, o fas servir FirebaseFirestore.getInstance() directament
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-            /*
-             * En aquesta demo agafo tots els places que hi ha a la database i faig un marker per cada un
-             * OBVIAMENT no sera aixi en real, es només per que et facis idea de Firebase
-             */
-
-
-            db.collection("FriendlyPlaces")
+            db.collection(FirestoreConstants.COLLECTION_FRIENDLYPLACES)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                //La queri retorna un array de DocumentSnapshots (task.getResult() es la array) per aixo es fa un foreach
                                 for (DocumentSnapshot document : task.getResult()) {
-                                    Log.d("Firestore", document.getId() + " => ");
 
-                                    //Firebase AUTOPARSEJA, aixi que ja tens el objecte creat i parsejat
-                                    FriendlyPlace lloc = document.toObject(FriendlyPlace.class); //Obviament si lo que et retorna la query no te els atribut que te el Objecte peta
+                                    FriendlyPlace lloc = document.toObject(FriendlyPlace.class);
 
                                     mClusterManager.addItem(lloc);
 
-                                    //Marker marker = mMap.addMarker(new MarkerOptions().position(lloc.getLatLng()).title("Nom del lloc").snippet("Rating: " + lloc.avgRating));
-                                    //marker.showInfoWindow();
-
                                 }
                                 mClusterManager.cluster();
-                            } else {
-                                Log.d("Firestore", "Error getting documents: ", task.getException());
                             }
                         }
                     });
 
 
         }
-
-        // Add a marker in Sydney and move the camera
-       /* LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     @OnClick(R.id.home_fragment_center_map_fab)
-    //El metode seria privat, pero per utilitzar ButterKnife,
     public void centerMapToUserLocation() {
 
-        //Si no te els permisos de ubicacio els demana el botó no fa res i ja esta
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(centerLocationFab.getRootView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(centerLocationFab.getRootView(), R.string.check_location, Snackbar.LENGTH_LONG).show();
             return;
         }
         enableMyLocation();
@@ -231,13 +181,13 @@ public class HomeFragment extends Fragment implements
                 if (location != null) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
                             .zoom(16)
                             .tilt(0)
-                            .build();                   // Creates a CameraPosition from the builder
+                            .build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 } else {
-                    Snackbar.make(mapFragment.getView(), "No se puede detectar la ubicacion, comprueba los ajustes de tu telefono", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mapFragment.getView(), R.string.check_location, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -246,65 +196,15 @@ public class HomeFragment extends Fragment implements
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else if (mMap != null) {
-            // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
         }
     }
 
     @Override
-    public void onMyLocationClick(@NonNull Location location) {
-
-    }
-
-
-    @Override
-    public void onPoiClick(PointOfInterest pointOfInterest) {
-        if (currentMarker != null) {
-            if (pointOfInterest.placeId.equals(currentPointOfInterest.placeId)) {
-                //do nothing
-            } else {
-                currentMarker.remove();
-                currentMarker = mMap.addMarker(new MarkerOptions()
-                        .position(pointOfInterest.latLng)
-                        .title(pointOfInterest.name)
-                        .snippet("Pulsa para ver los detalles"));
-                currentMarker.setTag(pointOfInterest);
-                currentPointOfInterest = pointOfInterest;
-            }
-        } else {
-            currentMarker = mMap.addMarker(new MarkerOptions()
-                    .position(pointOfInterest.latLng)
-                    .title(pointOfInterest.name)
-                    .snippet("Pulsa para ver los detalles"));
-            currentMarker.setTag(pointOfInterest);
-            currentPointOfInterest = pointOfInterest;
-        }
-    }
-
-
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        PointOfInterest poi = (PointOfInterest) marker.getTag();
-
-        Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
-        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
-        if (poi != null) {
-            intent.putExtra("placeId", poi.placeId);
-            intent.putExtra("placeName", poi.name);
-            startActivity(intent);
-        }
-
-
-    }
-
-    @Override
     public void onClusterItemInfoWindowClick(FriendlyPlace friendlyPlace) {
         Intent intent = new Intent(getContext(), DetailedPlaceActivity.class);
-        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), floatingActionButton, getString(R.string.fabTransition));
         intent.putExtra("placeId", friendlyPlace.pid);
         intent.putExtra("placeName", friendlyPlace.name);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());

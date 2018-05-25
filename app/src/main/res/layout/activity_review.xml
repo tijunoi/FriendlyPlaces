@@ -12,7 +12,7 @@
         android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ms_stepperType="tabs"
-        app:ms_stepperFeedbackType="tabs|content_progress|disabled_bottom_navigation|content_fade"/>
+        app:ms_stepperFeedbackType="tabs|content_progress|disabled_bottom_navigation|content_fade"
+        app:ms_stepperType="tabs" />
 
 </android.support.constraint.ConstraintLayout>

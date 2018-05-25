@@ -1,22 +1,10 @@
 <resources>
     <string name="app_name">Friendly Places</string>
-    <string name="title_activity_login">Sign in</string>
     <string name="web_google_id_client">471499484372-n88eo1qqadb7a6brv78t7bo8j2uo3dt0.apps.googleusercontent.com</string>
     <!-- Strings related to login -->
     <string name="correo_electronico">Dirección de correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="forgotten_pass">Has olvidado tu contraseña?</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="sexOrientation_prompt">Cuál es tu orientación sexual?</string>
     <string-array name="sexual_orientation">
@@ -29,19 +17,17 @@
         <item>Heterosexual</item>
         <item>Otros</item>
     </string-array>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="picture_dialog_options">
+        <item>Hacer una foto</item>
+        <item>Elegir una foto de tu galería</item>
+    </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_authentication">Friendly Places</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
     <string name="action_share">Compartir</string>
-    <string name="section_format">Hello World from section: %1$d</string>
     <string name="login_tab_text">iniciar sesión</string>
     <string name="signup_tab_text">regístrate</string>
     <string name="title_activity_detailed_place">DetailedPlaceActivity</string>
 
-    <string name="fabTransition">fabTransition</string>
     <string name="slide1_title">Bienvenido a Friendly Places</string>
     <string name="slide1_description">Continua para aprender como funciona la app</string>
     <string name="slide2_title">Paso 1</string>
@@ -57,10 +43,43 @@
     <string name="no_opinion">No hay opiniones. Sé el primero en escribir una!</string>
     <string name="sign_up_button_text">CREAR CUENTA</string>
     <string name="fragment_login_button_text">INICIAR SESIÓN</string>
-    <string name="detailed_place_opinions_textview_text">Hay %1$d opiniones</string>
+    <plurals name="detailed_place_opinions_textview_text">
+        <item quantity="zero">Hay %1$d opiniones</item>
+        <item quantity="one">Hay %1$d opinión</item>
+        <item quantity="two">Hay %1$d opiniones</item>
+        <item quantity="few">Hay %1$d opiniones</item>
+        <item quantity="many">Hay %1$d opiniones</item>
+        <item quantity="other">Hay %1$d opiniones</item>
+    </plurals>
     <string name="mandatory_field_error_text">Campo obligatorio</string>
     <string name="activity_join_name_label">Nombre</string>
     <string name="activity_join_description_label">Cuenta algo sobre ti</string>
     <string name="activity_join_sexual_orientation_label">Orientación sexual</string>
     <string name="activity_join_register_button_text">registrarse</string>
+    <string name="reviews_list_title">Reseñas de %1$s</string>
+    <string name="menu_nav_view_home">Home</string>
+    <string name="menu_nav_view_positive_places">Sitios a visitar</string>
+    <string name="menu_nav_view_negative_places">Sitios a evitar</string>
+    <string name="menu_nav_view_rated_places">Mis sitios puntuados</string>
+    <string name="menu_nav_view_group_user_settings">Opciones de usuario</string>
+    <string name="signup_confirm_password_edittext_hint">Confirmar contraseña</string>
+    <string name="detailed_place_rating_label">Valoración</string>
+    <string name="detailed_place_see_all_button">VER TODAS</string>
+    <string name="main_content_search_textview">Buscar</string>
+    <string name="save_button_uppercase">GUARDAR</string>
+    <string name="review_add_step_1_description">Puntúa este sitio!</string>
+    <string name="review_add_step_2_description">Escribe una reseña</string>
+    <string name="menu_main_search">Search</string>
+    <string name="missing_field_snackbar_message">Faltan campos por rellenar</string>
+    <string name="issue_on_register">Ha habido un problema al realizar la inscripción</string>
+    <string name="picture_dialog_title">Selecciona una opción</string>
+    <string name="user_password_failed">Usuario o contraseña incorrectos</string>
+    <string name="email_required">Debes introducir un email</string>
+    <string name="password_required">Debes introducir una contraseña</string>
+    <string name="password_complexity_requirements">La contraseña debe contener más de 6 caracteres</string>
+    <string name="passwords_not_match">Las contraseñas no coinciden</string>
+    <string name="account_already_exists">Ya existe una cuenta con este email o no hay internet</string>
+    <string name="check_location">No se puede detectar la ubicacion, comprueba los ajustes de tu telefono</string>
+    <string name="review_thanks">Gracias por tu reseña!</string>
+    <string name="back_snackbar">VOLVER</string>
 </resources>

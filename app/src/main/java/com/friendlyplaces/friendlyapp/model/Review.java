@@ -1,14 +1,8 @@
 package com.friendlyplaces.friendlyapp.model;
 
-/**
- * Created by Nil Ordoñez on 8/3/18.
- */
-
-import java.util.Date;
 
 /**
- * Clase que guarda els datos de una review. Model no definitiu.
- * De moment guardo ejemplo perque ho vegis
+ * Clase que guarda els datos de una review.
  */
 public class Review {
 

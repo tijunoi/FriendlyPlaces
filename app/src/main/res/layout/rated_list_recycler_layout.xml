@@ -2,49 +2,67 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp">
 
-    <com.varunest.sparkbutton.SparkButton
-        android:id="@+id/like_recycler"
-        android:layout_width="56dp"
-        android:layout_height="80dp"
-        android:background="@color/colorPrimary"
-        app:sparkbutton_activeImage="@drawable/ic_thumb_up_active"
-        app:sparkbutton_iconSize="30dp"
-        app:sparkbutton_inActiveImage="@drawable/ic_thumb_up_inactive"
-        app:sparkbutton_primaryColor="@color/colorPrimary"
-        app:sparkbutton_secondaryColor="@color/colorPrimaryDark" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/place_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:padding="10dp">
 
-    <com.varunest.sparkbutton.SparkButton
-        android:id="@+id/dislike_recycler"
-        android:layout_width="56dp"
-        android:layout_height="80dp"
-        android:background="@color/redThumbDown"
-        app:sparkbutton_activeImage="@drawable/ic_thumb_down_active"
-        app:sparkbutton_iconSize="30dp"
-        app:sparkbutton_inActiveImage="@drawable/ic_thumb_down_inactive"
-        app:sparkbutton_primaryColor="@color/redThumbDown"
-        app:sparkbutton_secondaryColor="@color/redThumbDownLight" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/votes_recycler"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/ms_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/like_recycler"
-        app:layout_constraintEnd_toEndOf="@id/like_recycler"
-        android:layout_marginBottom="2dp" />
+            <com.varunest.sparkbutton.SparkButton
+                android:id="@+id/like_recycler"
+                android:layout_width="56dp"
+                android:layout_height="80dp"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                app:sparkbutton_activeImage="@drawable/ic_thumb_up_active"
+                app:sparkbutton_iconSize="30dp"
+                app:sparkbutton_inActiveImage="@drawable/ic_thumb_up_inactive"
+                app:sparkbutton_primaryColor="@color/colorPrimary"
+                app:sparkbutton_secondaryColor="@color/colorPrimaryDark" />
 
-    <TextView
-        android:id="@+id/namePlace_recycler"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:text="Nom Place"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <com.varunest.sparkbutton.SparkButton
+                android:id="@+id/dislike_recycler"
+                android:layout_width="56dp"
+                android:layout_height="80dp"
+                android:background="@color/redThumbDown"
+                android:visibility="gone"
+                app:sparkbutton_activeImage="@drawable/ic_thumb_down_active"
+                app:sparkbutton_iconSize="30dp"
+                app:sparkbutton_inActiveImage="@drawable/ic_thumb_down_inactive"
+                app:sparkbutton_primaryColor="@color/redThumbDown"
+                app:sparkbutton_secondaryColor="@color/redThumbDownLight" />
+
+            <TextView
+                android:id="@+id/votes_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/ms_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/like_recycler"
+                app:layout_constraintStart_toStartOf="@id/like_recycler" />
+
+            <TextView
+                android:id="@+id/namePlace_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="72dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

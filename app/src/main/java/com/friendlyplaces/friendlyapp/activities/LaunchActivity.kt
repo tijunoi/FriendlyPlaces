@@ -8,7 +8,7 @@ import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.friendlyplaces.friendlyapp.R
-import com.friendlyplaces.friendlyapp.activities.detailed_place.DetailedPlaceActivity
+import com.friendlyplaces.friendlyapp.activities.detailedplace.DetailedPlaceActivity
 import com.friendlyplaces.friendlyapp.authentication.AuthenticationActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
@@ -28,7 +28,7 @@ class LaunchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launchscreen)
 
-        val SPLASH_TIME_OUT = 2000
+        val splash_timeout = 1500
         Handler().postDelayed({
             val thread = Thread {
                 val firstRun = checkIfItsFirstRun()
@@ -41,7 +41,7 @@ class LaunchActivity : AppCompatActivity() {
             }
 
             thread.start()
-        }, SPLASH_TIME_OUT.toLong())
+        }, splash_timeout.toLong())
 
 
     }
@@ -73,12 +73,10 @@ class LaunchActivity : AppCompatActivity() {
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(intent)
                     .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                        // Get deep link from result (may be null if no link is found)
                         if (pendingDynamicLinkData != null) {
                             val deepLink: Uri = pendingDynamicLinkData.link
-                            //Deberia ser el placeid
                             val placeId = deepLink.lastPathSegment
-                            val intent = Intent(this,DetailedPlaceActivity::class.java)
+                            val intent = Intent(this, DetailedPlaceActivity::class.java)
                             intent.putExtra("placeId", placeId)
                             startActivity(intent)
                         }

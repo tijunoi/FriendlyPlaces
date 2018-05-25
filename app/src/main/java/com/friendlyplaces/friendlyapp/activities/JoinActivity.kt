@@ -34,15 +34,6 @@ import kotlinx.android.synthetic.main.activity_join.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-/*
-0 gay
-1 lesb
-2 bisex
-3 transgender
-4 pansex
-5 hetero
-6 othters
- */
 class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     //FIELDS
@@ -90,7 +81,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                 GET_FROM_GALLERY -> if (data != null) {
                     val contentURI = data.data
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI)
+                        bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                         bitmap?.let {
                             imageString = getStringImage(it)
                         }
@@ -98,7 +89,6 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
                     } catch (e: IOException) {
                         e.printStackTrace()
-                        Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -122,11 +112,11 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
             R.id.register_button -> {
                 spin_kit_join.visibility = View.VISIBLE
                 if (checkearDatosNotEmpty()) {
-                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0)
+                    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken, 0)
                     setProfileValuesToUser(friendlyUser)
-                }else{
+                } else {
                     spin_kit_join.visibility = View.GONE
-                    Snackbar.make(view, "Faltan campos por rellenar", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, getString(R.string.missing_field_snackbar_message), Snackbar.LENGTH_LONG)
                             .setAction("OK", {
                             }).show()
 
@@ -155,7 +145,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     //IMAGEN PROCESS METHODS
 
     fun uploadPhotoToFirebase() {
-        spin_kit_join.setVisibility(View.VISIBLE);
+        spin_kit_join.visibility = View.VISIBLE
         val storage = FirebaseStorage.getInstance()
         val imageReference = storage.reference.child("profilePictures/" + FirebaseAuth.getInstance().currentUser?.uid + ".jpg")
 
@@ -180,9 +170,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
         FirebaseAuth.getInstance().currentUser?.updateProfile(profileChangeRequest)?.addOnCompleteListener({
             if (it.isSuccessful) {
-                Log.i("FirebaseAuth UserUpdate", "Updatejat correctament")
                 Picasso.get().load(FirebaseAuth.getInstance().currentUser!!.photoUrl).into(imageJoin)
-                spin_kit_join.setVisibility(View.GONE)
+                spin_kit_join.visibility = View.GONE
             }
         })
     }
@@ -234,12 +223,12 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
                             if (it.isSuccessful) {
                                 goToHomescreen()
                                 spinGone()
-                            }
-                            else Snackbar.make(et_name.rootView, "Ha habido un problema al realizar la inscripción", Snackbar.LENGTH_LONG).show()
+                            } else Snackbar.make(et_name.rootView, getString(R.string.issue_on_register), Snackbar.LENGTH_LONG).show()
                             spinGone()
                         })
-            }else{
-                spinGone()            }
+            } else {
+                spinGone()
+            }
         })
     }
 
@@ -249,7 +238,7 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
         finish()
     }
 
-    private fun spinGone(){
+    private fun spinGone() {
         spin_kit_join.visibility = View.GONE
     }
     //UTIL METHODS
@@ -269,8 +258,8 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
     private fun showPictureDialog() {
 
         val pictureDialog = AlertDialog.Builder(this)
-        pictureDialog.setTitle("Selecciona una opción")
-        val pictureDialogItems = arrayOf("Hacer una foto", "Elegir una foto de tu galería")
+        pictureDialog.setTitle(getString(R.string.picture_dialog_title))
+        val pictureDialogItems = resources.getStringArray(R.array.picture_dialog_options)
 
         pictureDialog.setItems(pictureDialogItems) { _, which ->
             when (which) {
@@ -284,13 +273,13 @@ class JoinActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnIt
 
     private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, Companion.GET_FROM_GALLERY)
+        startActivityForResult(galleryIntent, GET_FROM_GALLERY)
     }
 
 
     private fun takePhotoFromCamera() {
         val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, Companion.GET_FROM_CAMERA)
+        startActivityForResult(intent, GET_FROM_CAMERA)
     }
 
     private fun getStringImage(bmp: Bitmap): String {

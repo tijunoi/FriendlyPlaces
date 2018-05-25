@@ -23,6 +23,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="80dp"
                 android:src="@drawable/newicon_logo" />
+
             <EditText
                 android:id="@+id/et_register_email"
                 android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                 android:alpha="0.5"
                 android:background="@drawable/editext_login_border_cuadrat"
                 android:gravity="center_horizontal"
-                android:hint="Confirmar contraseña"
+                android:hint="@string/signup_confirm_password_edittext_hint"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:minLines="1"
@@ -73,12 +74,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="6dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/login_fancy_button"
                 android:clickable="true"
                 android:elevation="4dp"
-                android:focusable="true"
-                android:layout_marginBottom="6dp">
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/register_frame_textview"

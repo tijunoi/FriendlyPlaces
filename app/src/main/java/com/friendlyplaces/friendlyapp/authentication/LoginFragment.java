@@ -3,12 +3,12 @@ package com.friendlyplaces.friendlyapp.authentication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -42,23 +42,16 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
+
 
     private EditText et_email, et_password;
     private Button login_button, loginWithGoogleButton;
 
-    //Fancy button vars
     FrameLayout loginButtonFrame;
     TextView loginFramebuttonTextview;
     ProgressBar mProgressBar;
     View reveal;
 
-    // TODO: Rename and change types of parameters
-    // private String mParam1;
-    //private String mParam2;
 
     private OnLoginFragmentInteractionListener mListener;
 
@@ -66,36 +59,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        //fragment.setArguments(args);
-        return fragment;
+        return new LoginFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         loginWithGoogleButton = v.findViewById(R.id.bt_login_login_google);
         loginWithGoogleButton.setOnClickListener(this);
 
-        et_email = (EditText) v.findViewById(R.id.et_login_email);
-        et_password = (EditText) v.findViewById(R.id.et_login_password);
+        et_email = v.findViewById(R.id.et_login_email);
+        et_password = v.findViewById(R.id.et_login_password);
 
         loginButtonFrame = v.findViewById(R.id.frame_button_login_login);
         loginFramebuttonTextview = v.findViewById(R.id.login_frame_textview);
@@ -103,7 +81,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginButtonFrame.setOnClickListener(this);
         reveal = v.findViewById(R.id.reveal_login_view);
 
-        //Inicialitzo TextWatchers per clear errors quan usuari escrigui bé
         et_email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -142,11 +119,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnLoginFragmentInteractionListener) {
@@ -166,7 +138,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Utils.preventTwoClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bt_login_login_google:
                 mListener.onLoginWithGoogleButtonPressed();
                 break;
@@ -223,13 +195,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 });
                                 revealAnimator.start();
                             } else {
-                                //TODO: organizar y hacer legible (ask Nil)
-
 
                                 ViewGroup parent = (ViewGroup) loginButtonFrame.getParent();
-                                Snackbar.make(parent, "Usuario o contraseña incorrectos", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(parent, R.string.user_password_failed, Snackbar.LENGTH_LONG).show();
                                 int index = parent.indexOfChild(loginButtonFrame);
-                                View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false);
+                                @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.fragment_login, null, false); //Supress lint because this is the desired behaviour
                                 View nouButoLogin = v.findViewById(R.id.frame_button_login_login);
                                 parent.removeView(loginButtonFrame);
                                 loginButtonFrame = (FrameLayout) nouButoLogin;
@@ -285,13 +255,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return pattern.matcher(email).matches();
     }
 
-    public void load(View view) {
-        animateButtonWidth();
-    }
-
-    private void animateButtonWidth() {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

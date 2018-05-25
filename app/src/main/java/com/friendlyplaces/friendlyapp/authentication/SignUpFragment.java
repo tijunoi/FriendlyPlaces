@@ -3,6 +3,7 @@ package com.friendlyplaces.friendlyapp.authentication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -29,6 +31,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
+import butterknife.BindColor;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -42,7 +47,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private EditText inputEmail, inputPassword, inputConfirmedPass;
     private String email, password, confirmedPass;
 
-    //Fancy button vars
     FrameLayout registerButtonFrame;
     TextView registerFramebuttonTextview;
     ProgressBar mProgressBar;
@@ -56,26 +60,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     }
 
     public static SignUpFragment newInstance() {
-        SignUpFragment fragment = new SignUpFragment();
-        Bundle args = new Bundle();
-        return fragment;
+        return new SignUpFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        inputEmail = (EditText) v.findViewById(R.id.et_register_email);
-        inputPassword = (EditText) v.findViewById(R.id.et_register_password);
+        inputEmail = v.findViewById(R.id.et_register_email);
+        inputPassword = v.findViewById(R.id.et_register_password);
         inputConfirmedPass = v.findViewById(R.id.et_register_confirm_password);
         reveal = v.findViewById(R.id.reveal_register_view);
 
@@ -109,9 +103,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Utils.preventTwoClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.frame_button_register:
-                if (mListener != null){
+                if (mListener != null) {
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -123,22 +117,22 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                     confirmedPass = inputConfirmedPass.getText().toString().trim();
 
                     boolean requiredConditions = true;
-                    if (TextUtils.isEmpty(email)){
+                    if (TextUtils.isEmpty(email)) {
                         requiredConditions = false;
-                        inputEmail.setError("Debes introducir un email");
+                        inputEmail.setError(getString(R.string.email_required));
                     }
-                    if (TextUtils.isEmpty(password)){
+                    if (TextUtils.isEmpty(password)) {
                         requiredConditions = false;
-                        inputPassword.setError("Debes introducir una contraseña");
+                        inputPassword.setError(getString(R.string.password_required));
                     }
-                    if (password.length() < 6){
+                    if (password.length() < 6) {
                         requiredConditions = false;
-                        inputPassword.setError("La contraseña debe contener más de 6 caracteres");
+                        inputPassword.setError(getString(R.string.password_complexity_requirements));
                     }
 
-                    if (!password.equals(confirmedPass)){
+                    if (!password.equals(confirmedPass)) {
                         requiredConditions = false;
-                        inputConfirmedPass.setError("Las contraseñas no coinciden");
+                        inputConfirmedPass.setError(getString(R.string.passwords_not_match));
                     }
 
                     if (requiredConditions && mListener != null) {
@@ -168,13 +162,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                                     });
                                     revealAnimator.start();
                                 } else {
-                                    //TODO: organizar y hacer legible (ask Nil)
-
-
                                     ViewGroup parent = (ViewGroup) registerButtonFrame.getParent();
-                                    Snackbar.make(parent, "Ya existe una cuenta con este email o no hay internet", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(parent, R.string.account_already_exists, Snackbar.LENGTH_LONG).show();
                                     int index = parent.indexOfChild(registerButtonFrame);
-                                    View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false);
+                                    @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.fragment_sign_up, null, false); //Supress lint because this is the desired behaviour
                                     View nouButoLogin = v.findViewById(R.id.frame_button_register);
                                     parent.removeView(registerButtonFrame);
                                     registerButtonFrame = (FrameLayout) nouButoLogin;
@@ -212,7 +203,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
                                         super.onAnimationEnd(animation);
-                                        mProgressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_IN);
+                                        mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.icons, null), PorterDuff.Mode.SRC_IN);
                                         mProgressBar.setVisibility(View.VISIBLE);
                                     }
                                 })
@@ -234,9 +225,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (email.length() <= 0){
-                            inputEmail.setError("Debes introducir un email.");
-                        }else{
+                        if (email.length() <= 0) {
+                            inputEmail.setError(getString(R.string.email_required));
+                        } else {
                             inputEmail.setError(null);
                         }
                     }
@@ -254,11 +245,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (password.isEmpty()){
-                            inputPassword.setError("Debes introducir una contraseña");
-                        }else if(password.length() < 6){
-                            inputPassword.setError("La contraseña debe contener más de 6 caracteres");
-                        }else{
+                        if (password.isEmpty()) {
+                            inputPassword.setError(getString(R.string.password_required));
+                        } else if (password.length() < 6) {
+                            inputPassword.setError(getString(R.string.password_complexity_requirements));
+                        } else {
                             inputPassword.setError(null);
                         }
                     }
@@ -279,7 +270,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSignUpFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onRegisterInteraction(String email, String password, OnCompleteListener<AuthResult> onCompleteListener);
     }
 

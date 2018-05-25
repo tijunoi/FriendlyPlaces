@@ -11,7 +11,7 @@
         android:id="@+id/tv_step1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puntúa este sitio!"
+        android:text="@string/review_add_step_1_description"
         app:layout_constraintBottom_toTopOf="@id/like_button_step1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

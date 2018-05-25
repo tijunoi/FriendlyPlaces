@@ -54,7 +54,7 @@ public class Step3Fragment extends Fragment implements BlockingStep {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_step3, container, false);
         ButterKnife.bind(this, v);
@@ -80,8 +80,6 @@ public class Step3Fragment extends Fragment implements BlockingStep {
     @Override
     public void onCompleteClicked(final StepperLayout.OnCompleteClickedCallback callback) {
         callback.getStepperLayout().showProgress("Subiendo review...");
-        //Can't extract the process to a method because the show/hide progress has to be called from main thead
-        // and callback is only availible in this method
 
         final DocumentReference friendlyPlaceReference = FirebaseFirestore.getInstance().collection(COLLECTION_FRIENDLYPLACES).document(model.getPlaceId());
 
@@ -112,8 +110,8 @@ public class Step3Fragment extends Fragment implements BlockingStep {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Snackbar.make(getView(), "Gracias por tu reseña!", Snackbar.LENGTH_LONG)
-                            .setAction("VOLVER", new View.OnClickListener() {
+                    Snackbar.make(getView(), R.string.review_thanks, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.back_snackbar, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     goBackToDetailedActivity();

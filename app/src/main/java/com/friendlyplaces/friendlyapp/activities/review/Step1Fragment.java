@@ -1,7 +1,6 @@
 package com.friendlyplaces.friendlyapp.activities.review;
 
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,12 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.friendlyplaces.friendlyapp.model.Review;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.varunest.sparkbutton.SparkButton;
@@ -30,7 +27,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Step1Fragment extends Fragment implements BlockingStep{
+public class Step1Fragment extends Fragment implements BlockingStep {
 
     @BindView(R.id.like_button_step1)
     SparkButton likeButton;
@@ -44,10 +41,8 @@ public class Step1Fragment extends Fragment implements BlockingStep{
     }
 
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_step1, container, false);
@@ -57,7 +52,7 @@ public class Step1Fragment extends Fragment implements BlockingStep{
         likeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                if (buttonState){
+                if (buttonState) {
                     dislikeButton.setChecked(false);
 
                 }
@@ -77,7 +72,7 @@ public class Step1Fragment extends Fragment implements BlockingStep{
         dislikeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                if (buttonState){
+                if (buttonState) {
                     likeButton.setChecked(false);
                 }
             }
@@ -92,6 +87,8 @@ public class Step1Fragment extends Fragment implements BlockingStep{
 
             }
         });
+
+
         return v;
     }
 
@@ -119,10 +116,10 @@ public class Step1Fragment extends Fragment implements BlockingStep{
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
         AddReviewViewModel model = ViewModelProviders.of(getActivity()).get(AddReviewViewModel.class);
-        if (likeButton.isChecked()){
+        if (likeButton.isChecked()) {
             model.getReview().setVote(Review.Vote.POSITIVO);
             callback.goToNextStep();
-        }else{
+        } else {
             model.getReview().setVote(Review.Vote.NEGATIVO);
             callback.goToNextStep();
         }

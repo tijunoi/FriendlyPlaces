@@ -7,10 +7,9 @@
     tools:context=".activities.review.Step2Fragment">
 
     <TextView
-        android:id="@+id/tv_step2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Escribe una reseña"
+        android:text="@string/review_add_step_2_description"
         app:layout_constraintBottom_toTopOf="@id/et_addReview_step2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,4 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

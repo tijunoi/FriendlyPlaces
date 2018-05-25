@@ -4,24 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spin_kit_join"
-            style="@style/SpinKitView.Large.FadingCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:elevation="20dp"
-            android:translationZ="20dp"
-            android:visibility="gone"
-            android:layout_marginBottom="110dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:SpinKit_Color="@color/colorAccent" />
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit_join"
+        style="@style/SpinKitView.Large.FadingCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="110dp"
+        android:elevation="20dp"
+        android:translationZ="20dp"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/join_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary">
@@ -48,7 +47,6 @@
                 android:src="@drawable/ic_person_add_black_24dp" />
 
             <TextView
-                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -64,8 +62,8 @@
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@color/icons"
                 android:inputType="text"
-                android:textColor="@color/icons"
-                android:maxLength="50" />
+                android:maxLength="50"
+                android:textColor="@color/icons" />
 
             <TextView
                 android:id="@+id/description"
@@ -83,10 +81,10 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@color/icons"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/icons" />
 
             <TextView
-                android:id="@+id/sex_orientation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -105,8 +103,7 @@
                 android:backgroundTint="@color/icons"
                 android:entries="@array/sexual_orientation"
                 android:prompt="@string/sexOrientation_prompt"
-                android:spinnerMode="dialog"
-                />
+                android:spinnerMode="dialog" />
 
             <Button
                 android:id="@+id/register_button"

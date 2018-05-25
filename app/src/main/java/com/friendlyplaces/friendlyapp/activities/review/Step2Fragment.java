@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,6 @@ import android.widget.EditText;
 
 import com.friendlyplaces.friendlyapp.R;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Step2Fragment extends Fragment implements BlockingStep{
+public class Step2Fragment extends Fragment implements BlockingStep {
 
     @BindView(R.id.et_addReview_step2)
     EditText addReview;
@@ -35,7 +36,7 @@ public class Step2Fragment extends Fragment implements BlockingStep{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_step2, container, false);
@@ -43,6 +44,22 @@ public class Step2Fragment extends Fragment implements BlockingStep{
         ButterKnife.bind(this, v);
 
 
+        addReview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return v;
     }
@@ -50,7 +67,7 @@ public class Step2Fragment extends Fragment implements BlockingStep{
     @Nullable
     @Override
     public VerificationError verifyStep() {
-        if (addReview.getText().toString().trim().length() < 40){
+        if (addReview.getText().toString().trim().length() < 40) {
             return new VerificationError("Debes escribir una reseña de 40 caracteres como mínimo");
         }
         return null;
