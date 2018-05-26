@@ -1,4 +1,5 @@
 # FriendlyPlaces
+[![Build Status](https://travis-ci.com/tijunoi/FriendlyPlaces.svg?branch=master)](https://travis-ci.com/tijunoi/FriendlyPlaces)
 
 This is the final school project for DAM in La Salle Gràcia. It's an
 Android app in Google Maps-style for reviewing and voting places where
