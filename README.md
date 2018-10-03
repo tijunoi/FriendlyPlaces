@@ -13,4 +13,4 @@ in Kotlin.
 
 This project uses Google Maps and Places API, and other third party libraries.
 
-//Here there should be a list of credits for these libraries. Check app module gradle file in the meantime
+Availible in Google Play: https://play.google.com/store/apps/details?id=com.friendlyplaces.friendlyapp
